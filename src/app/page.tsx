@@ -1,5 +1,5 @@
-import SystemReady from '@/ui/SystemReady';
+import LandingPage from '@/ui/LandingPage';
 
 export default function Page() {
-    return <SystemReady />;
+    return <LandingPage />;
 }
