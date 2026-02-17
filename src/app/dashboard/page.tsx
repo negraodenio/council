@@ -41,9 +41,17 @@ export default async function DashboardPage() {
                         >
                             Export Audit (CSV)
                         </a>
-                        <Link href="/" className="px-4 py-2 bg-gradient-to-r from-purple-500 to-sky-400 rounded font-bold text-sm">
+                        <Link href="/" className="px-4 py-2 bg-white/10 border border-white/20 rounded font-bold text-sm hover:bg-white/20">
                             New Session
                         </Link>
+                        <form action="/api/auth/signout" method="post">
+                            <button
+                                type="submit"
+                                className="px-4 py-2 bg-red-500/10 border border-red-500/20 text-red-400 rounded font-bold text-sm hover:bg-red-500/20"
+                            >
+                                Sign Out
+                            </button>
+                        </form>
                     </div>
                 </div>
 

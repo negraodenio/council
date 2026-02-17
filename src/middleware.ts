@@ -7,7 +7,56 @@ import { Redis } from '@upstash/redis';
 export async function middleware(req: NextRequest) {
     let supabaseResponse = NextResponse.next({ request: req });
 
-    // 1) Rate Limiting (only if Redis env vars are available)
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    // 1) Supabase Session Sync (needed for everything else)
+    if (!supabaseUrl || !supabaseAnonKey) {
+        return supabaseResponse;
+    }
+
+    const supabase = createServerClient(
+        supabaseUrl,
+        supabaseAnonKey,
+        {
+            cookies: {
+                getAll() {
+                    return req.cookies.getAll();
+                },
+                setAll(cookiesToSet) {
+                    cookiesToSet.forEach(({ name, value }) => req.cookies.set(name, value));
+                    supabaseResponse = NextResponse.next({ request: req });
+                    cookiesToSet.forEach(({ name, value, options }) =>
+                        supabaseResponse.cookies.set(name, value, options)
+                    );
+                },
+            },
+        }
+    );
+
+    const { data: { user } } = await supabase.auth.getUser();
+
+    // 2) Auth Redirects
+    const isLoginPage = req.nextUrl.pathname === '/login';
+    const isRootPage = req.nextUrl.pathname === '/';
+
+    // Redirect logged-in users away from /login or / to /dashboard
+    if (user && (isLoginPage || isRootPage)) {
+        return NextResponse.redirect(new URL('/dashboard', req.url));
+    }
+
+    // 3) Route Protection
+    const protectedPaths = ['/chamber', '/report', '/api/session', '/api/patch', '/api/repo', '/api/rag', '/dashboard'];
+    const isProtected = protectedPaths.some(p => req.nextUrl.pathname.startsWith(p));
+
+    if (isProtected && !user) {
+        const redirectUrl = req.nextUrl.clone();
+        redirectUrl.pathname = '/login';
+        redirectUrl.searchParams.set('redirectedFrom', req.nextUrl.pathname);
+        return NextResponse.redirect(redirectUrl);
+    }
+
+    // 4) Rate Limiting (API Only)
     if (req.nextUrl.pathname.startsWith('/api/')) {
         try {
             const redis = Redis.fromEnv();
@@ -24,55 +73,8 @@ export async function middleware(req: NextRequest) {
                 return NextResponse.json({ error: 'Rate limited' }, { status: 429 });
             }
         } catch (error) {
-            // If Redis is not configured, skip rate limiting but allow the request
-            console.warn('Redis not configured, skipping rate limiting:', error);
+            console.warn('Rate limiting error:', error);
         }
-    }
-
-    // 2) Supabase Session Refresh (only if Supabase env vars are available)
-    try {
-        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-        const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-        if (!supabaseUrl || !supabaseAnonKey) {
-            console.warn('Supabase credentials missing in middleware, skipping session refresh');
-            return supabaseResponse;
-        }
-
-        const supabase = createServerClient(
-            supabaseUrl,
-            supabaseAnonKey,
-            {
-                cookies: {
-                    getAll() {
-                        return req.cookies.getAll();
-                    },
-                    setAll(cookiesToSet) {
-                        cookiesToSet.forEach(({ name, value }) => req.cookies.set(name, value));
-                        supabaseResponse = NextResponse.next({ request: req });
-                        cookiesToSet.forEach(({ name, value, options }) =>
-                            supabaseResponse.cookies.set(name, value, options)
-                        );
-                    },
-                },
-            }
-        );
-
-        const { data: { user } } = await supabase.auth.getUser();
-
-        // 3) Route Protection
-        const protectedPaths = ['/chamber', '/report', '/api/session', '/api/patch', '/api/repo', '/api/rag'];
-        const isProtected = protectedPaths.some(p => req.nextUrl.pathname.startsWith(p));
-
-        if (isProtected && !user) {
-            const redirectUrl = req.nextUrl.clone();
-            redirectUrl.pathname = '/login';
-            redirectUrl.searchParams.set('redirectedFrom', req.nextUrl.pathname);
-            return NextResponse.redirect(redirectUrl);
-        }
-    } catch (error) {
-        console.error('Middleware Supabase error:', error);
-        // Continue processing the request even if Supabase fails
     }
 
     return supabaseResponse;
@@ -80,13 +82,13 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
     matcher: [
-        // Only run middleware on protected routes
-        '/chamber/:path*',
-        '/report/:path*',
-        '/dashboard/:path*',
-        '/api/session/:path*',
-        '/api/patch/:path*',
-        '/api/repo/:path*',
-        '/api/rag/:path*',
+        /*
+         * Match all request paths except for the ones starting with:
+         * - _next/static (static files)
+         * - _next/image (image optimization files)
+         * - favicon.ico (favicon file)
+         * Feel free to modify this pattern to include more paths.
+         */
+        '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
     ],
 };
