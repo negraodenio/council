@@ -1,0 +1,6 @@
+{
+    "tenant_id": "00000000-0000-0000-0000-000000000000",
+    "validation_id": "val_TEST_PHASE3",
+    "repo_id": "d0257ee9-28a7-454b-8f23-bdb094f064ff",
+    "objective": "Add a clear README section describing how to run locally"
+}

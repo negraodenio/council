@@ -1,0 +1,7 @@
+{
+    "tenant_id": "00000000-0000-0000-0000-000000000000",
+    "user_id": "00000000-0000-0000-0000-000000000000",
+    "repo_url": "https://github.com/negraodenio/Council",
+    "repo_name": "Council",
+    "wipe": true
+}
