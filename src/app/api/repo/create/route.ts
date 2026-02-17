@@ -1,19 +1,12 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { createAdminClient } from '@/lib/supabase/admin';
 
-// Optimized for Vercel Edge Runtime for faster cold starts and lower latency
-export const runtime = 'edge';
-
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    {
-        auth: { persistSession: false }, // Faster for one-off API calls
-    }
-);
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
     try {
+        const supabase = createAdminClient();
         const body = await req.json();
         const { tenant_id, user_id, repo_url, repo_name } = body;
 

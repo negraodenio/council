@@ -1,21 +1,10 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { createAdminClient } from '@/lib/supabase/admin';
+import { embedMistralCached } from '@/lib/embeddings/mistral';
+import crypto from 'crypto';
 
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
-
-async function embedMistral(text: string) {
-    const r = await fetch('https://api.mistral.ai/v1/embeddings', {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${process.env.MISTRAL_API_KEY}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ model: 'mistral-embed', input: [text] })
-    });
-    if (!r.ok) throw new Error(`Mistral embeddings failed: ${r.status}`);
-    const data = await r.json();
-    return data.data[0].embedding as number[];
-}
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 async function callJudgeOpenRouter(messages: any[]) {
     const r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
@@ -47,9 +36,11 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'tenant_id, validation_id, repo_id, objective are required' }, { status: 400 });
         }
 
+        const supabase = createAdminClient();
+
         // 1) RAG context
         console.log('Fetching RAG context...');
-        const qEmb = await embedMistral(objective);
+        const [qEmb] = await embedMistralCached([objective]);
 
         const { data: ctx, error: ctxErr } = await supabase.rpc('match_code_chunks', {
             repo_filter: repo_id,

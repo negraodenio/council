@@ -1,15 +1,14 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
-import { embedMistral } from '@/lib/embeddings/mistral';
+import { createAdminClient } from '@/lib/supabase/admin';
+import { embedMistralCached } from '@/lib/embeddings/mistral';
 
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
     try {
         const { repo_id, limit } = await req.json();
+        const supabase = createAdminClient();
         console.log(`--- EMBED REQUEST RECEIVED for repo: ${repo_id} ---`);
         const batchSize = Math.min(Number(limit ?? 32), 128);
 
@@ -29,7 +28,7 @@ export async function POST(req: Request) {
         if (!rows || rows.length === 0) return NextResponse.json({ ok: true, embedded: 0 });
 
         const texts = rows.map(r => r.content);
-        const vectors = await embedMistral(texts);
+        const vectors = await embedMistralCached(texts);
 
         // Update row-by-row (v1 simples; depois otimizamos)
         let embedded = 0;

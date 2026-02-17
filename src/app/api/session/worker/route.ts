@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { getCouncilConfig } from '@/config/council';
 import { logAICall } from '@/lib/logs/ai';
 import { apiError, apiOk } from '@/lib/api/error';
@@ -7,12 +7,10 @@ import { redactPII } from '@/lib/privacy/redact';
 import { trackUsage } from '@/lib/billing/usage';
 import { triggerWebhook } from '@/lib/webhooks/send';
 
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
-async function addEvent(run_id: string, event_type: string, model: string | null, payload: any) {
+async function addEvent(supabase: any, run_id: string, event_type: string, model: string | null, payload: any) {
     await supabase.from('debate_events').insert({ run_id, event_type, model, payload });
 }
 
@@ -52,12 +50,13 @@ async function callOpenRouter(model: string, messages: any[], opts: { zdr: boole
 export async function POST(req: Request) {
     try {
         const { validationId, runId, tenant_id, user_id, idea, region, sensitivity } = await req.json();
+        const supabase = createAdminClient();
 
         // Phase 3.2: PII Redaction
         const { redacted: ideaRedacted, hadPII } = redactPII(idea);
 
         if (hadPII) {
-            await addEvent(runId, 'system', null, { msg: 'PII detected and redacted before processing' });
+            await addEvent(supabase, runId, 'system', null, { msg: 'PII detected and redacted before processing' });
         }
 
         const config = getCouncilConfig(region, sensitivity);
@@ -78,7 +77,7 @@ export async function POST(req: Request) {
                 const out = await callOpenRouter(m.model || m.key, messagesBase, { zdr: config.judge.zdr });
                 const text = out?.choices?.[0]?.message?.content || `Analysis complete by ${m.label}.`;
 
-                await addEvent(runId, 'model_msg', m.key, { text, phase: 'initial_analysis' });
+                await addEvent(supabase, runId, 'model_msg', m.key, { text, phase: 'initial_analysis' });
 
                 await logAICall({
                     validation_id: validationId,
@@ -91,7 +90,7 @@ export async function POST(req: Request) {
                 });
             } catch (err: any) {
                 console.error(`Swarm error for ${m.key}:`, err);
-                await addEvent(runId, 'error', m.key, { msg: `Failed to get response from ${m.label}: ${err.message}` });
+                await addEvent(supabase, runId, 'error', m.key, { msg: `Failed to get response from ${m.label}: ${err.message}` });
             }
         }
 
@@ -108,7 +107,7 @@ export async function POST(req: Request) {
             });
             const judgeText = judgeOut?.choices?.[0]?.message?.content || 'Judge finalized evaluation.';
 
-            await addEvent(runId, 'judge_note', 'judge', { text: judgeText, type: 'final_consensus' });
+            await addEvent(supabase, runId, 'judge_note', 'judge', { text: judgeText, type: 'final_consensus' });
 
             const score = 85; // Placeholder
 
@@ -131,7 +130,7 @@ export async function POST(req: Request) {
 
         } catch (err: any) {
             console.error('Judge Error:', err);
-            await addEvent(runId, 'error', 'judge', { msg: `Judge failed: ${err.message}` });
+            await addEvent(supabase, runId, 'error', 'judge', { msg: `Judge failed: ${err.message}` });
         }
 
         return apiOk({});

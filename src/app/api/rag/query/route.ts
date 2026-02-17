@@ -1,15 +1,14 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
-import { embedMistral } from '@/lib/embeddings/mistral';
+import { createAdminClient } from '@/lib/supabase/admin';
+import { embedMistralCached } from '@/lib/embeddings/mistral';
 
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
     try {
         const { repo_id, query } = await req.json();
+        const supabase = createAdminClient();
 
         if (!repo_id || !query) {
             return NextResponse.json({ error: 'repo_id and query are required' }, { status: 400 });
@@ -19,7 +18,7 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'Missing MISTRAL_API_KEY' }, { status: 400 });
         }
 
-        const [queryEmbedding] = await embedMistral([query]);
+        const [queryEmbedding] = await embedMistralCached([query]);
 
         // RPC match_code_chunks
         const { data, error } = await supabase.rpc('match_code_chunks', {

@@ -1,13 +1,12 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { nanoid } from 'nanoid';
 
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
+    const supabase = createAdminClient();
     const { idea, region, sensitivity, topic, tenant_id, user_id } = await req.json();
 
     // Ensure UUID format or placeholders for development matching the tenant/user structure

@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { nanoid } from 'nanoid';
 import crypto from 'crypto';
 import { shouldIgnorePath } from '@/lib/repo/ignore';
@@ -7,10 +7,8 @@ import { gh, parseGitHubRepo, getBlobText } from '@/lib/github/client';
 import { compareCommits } from '@/lib/github/compare';
 import { apiError, apiOk } from '@/lib/api/error';
 
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 async function getRepo(owner: string, repo: string) {
     return gh(`/repos/${owner}/${repo}`);
@@ -25,6 +23,7 @@ async function listTree(owner: string, repo: string, sha: string) {
 export async function POST(req: Request) {
     try {
         const { tenant_id, user_id, repo_url, repo_name, default_branch, force_full } = await req.json();
+        const supabase = createAdminClient();
 
         if (!process.env.GITHUB_TOKEN) return apiError('Missing GITHUB_TOKEN', 400);
         if (!repo_url) return apiError('repo_url is required', 400);
