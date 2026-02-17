@@ -8,12 +8,12 @@ export default function SystemReady() {
     const router = useRouter();
     const [idea, setIdea] = useState('');
     const [loading, setLoading] = useState(false);
-
-    const supabase = createClient();
     const [userId, setUserId] = useState('');
     const [tenantId, setTenantId] = useState('');
 
     useEffect(() => {
+        const supabase = createClient();
+
         (async () => {
             const { data: { user } } = await supabase.auth.getUser();
             if (!user) return;
