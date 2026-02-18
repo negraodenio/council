@@ -1,5 +1,6 @@
 export const dynamic = 'force-dynamic';
 export const maxDuration = 800; // Vercel Pro: 13.3 minutes
+export const preferredRegion = ['iad1', 'fra1', 'arn1']; // US East, Frankfurt, Stockholm
 
 import { createClient } from '@supabase/supabase-js';
 
