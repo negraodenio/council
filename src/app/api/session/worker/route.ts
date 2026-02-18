@@ -48,6 +48,27 @@ async function callOpenRouter(model: string, messages: any[], opts: { zdr: boole
     return r.json();
 }
 
+async function callSiliconFlow(model: string, messages: any[]) {
+    const r = await fetch(`${process.env.SILICONFLOW_API_URL || 'https://api.siliconflow.com/v1'}/chat/completions`, {
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${process.env.SILICONFLOW_API_KEY}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            model,
+            messages,
+            stream: false
+        })
+    });
+
+    if (!r.ok) {
+        const txt = await r.text();
+        throw new Error(`SiliconFlow error ${r.status}: ${txt}`);
+    }
+    return r.json();
+}
+
 export async function POST(req: Request) {
     try {
         const { validationId, runId, tenant_id, user_id, idea, region, sensitivity } = await req.json();
@@ -63,23 +84,29 @@ export async function POST(req: Request) {
         const config = getCouncilConfig(region, sensitivity);
         const personas = Object.values(councilConfig.personas);
 
-        // swarm discussion
-        for (const p of personas) {
+        // Parallel swarm discussion
+        console.log(`Starting swarm for ${personas.length} personas...`);
+
+        await Promise.all(personas.map(async (p) => {
             const t0 = Date.now();
-            console.log(`Processing persona ${p.id}...`);
-
-            // Get assigned model for this persona
-            const assignedModel = config.assign[p.id as keyof typeof config.assign];
-            const modelKey = assignedModel?.model || 'openai/gpt-3.5-turbo';
-
-            const messages = [
-                { role: 'system', content: `You are the ${p.name}. Role: ${p.role}. Provide a concise, professional analysis.` },
-                { role: 'user', content: ideaRedacted }
-            ];
-
             try {
-                // Real LLM call
-                const out = await callOpenRouter(modelKey, messages, { zdr: config.judge.zdr });
+                // Get assigned model for this persona
+                const assignedModel = config.assign[p.id as keyof typeof config.assign];
+                const modelKey = assignedModel?.model || 'deepseek-ai/DeepSeek-V3'; // Default to SF if configured
+                const provider = assignedModel?.provider || 'openrouter';
+
+                const messages = [
+                    { role: 'system', content: `You are the ${p.name}. Role: ${p.role}. Provide a concise, professional analysis.` },
+                    { role: 'user', content: ideaRedacted }
+                ];
+
+                let out;
+                if (provider === 'siliconflow') {
+                    out = await callSiliconFlow(modelKey, messages);
+                } else {
+                    out = await callOpenRouter(modelKey, messages, { zdr: config.judge.zdr });
+                }
+
                 const text = out?.choices?.[0]?.message?.content || `Analysis complete by ${p.name}.`;
 
                 // Important: we save 'p.id' (e.g. 'advocate') as the model field so the UI mapping works
@@ -89,7 +116,7 @@ export async function POST(req: Request) {
                     validation_id: validationId,
                     tenant_id: tenant_id,
                     layer: 'swarm',
-                    provider: assignedModel?.provider || 'openrouter',
+                    provider: provider,
                     model: modelKey,
                     latency_ms: Date.now() - t0,
                     status: 'ok'
@@ -98,7 +125,7 @@ export async function POST(req: Request) {
                 console.error(`Swarm error for ${p.id}:`, err);
                 await addEvent(supabase, runId, 'error', p.id, { msg: `Failed to get response from ${p.name}: ${err.message}` });
             }
-        }
+        }));
 
         // Final Judge Note (Phase 3.3: Pass allowlist)
         const judgeMessages = [

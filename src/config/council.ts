@@ -21,6 +21,7 @@ export function getCouncilConfig(region: Region, sensitivity: Sensitivity) {
     // Mapping personas to specific models for best performance
     const models = {
         deepseek: { provider: 'openrouter', model: 'deepseek/deepseek-chat' },
+        silicon: { provider: 'siliconflow', model: 'deepseek-ai/DeepSeek-V3' }, // Added SiliconFlow
         mistral: { provider: 'mistral', model: 'mistral-large-latest' },
         llama: { provider: 'openrouter', model: 'meta-llama/llama-3.1-70b-instruct' },
         claude: { provider: 'anthropic', model: 'claude-3-5-sonnet-20240620' }, // fallback
@@ -31,10 +32,10 @@ export function getCouncilConfig(region: Region, sensitivity: Sensitivity) {
         // Default assignment
         return {
             assign: {
-                advocate: models.deepseek,
+                advocate: models.silicon, // Using SiliconFlow
                 skeptic: models.mistral,
                 architect: models.llama,
-                optimizer: models.deepseek, // reusing deepseek for distinct logic
+                optimizer: models.silicon, // Using SiliconFlow
             },
             judge: {
                 provider: 'openrouter',
