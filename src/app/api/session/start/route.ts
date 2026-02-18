@@ -9,7 +9,6 @@ export async function POST(req: Request) {
     const supabase = createAdminClient();
     const { idea, region, sensitivity, topic, tenant_id, user_id } = await req.json();
 
-    // Ensure UUID format or placeholders for development matching the tenant/user structure
     const t_id = tenant_id || '00000000-0000-0000-0000-000000000000';
     const u_id = user_id || '00000000-0000-0000-0000-000000000000';
 
@@ -23,7 +22,7 @@ export async function POST(req: Request) {
         region,
         sensitivity,
         idea,
-        status: 'running'
+        status: 'running',
     });
 
     if (valError) return NextResponse.json({ error: valError.message }, { status: 500 });
@@ -34,27 +33,31 @@ export async function POST(req: Request) {
         tenant_id: t_id,
         user_id: u_id,
         topic: topic ?? 'CouncilIA Live Debate',
-        status: 'running'
+        status: 'running',
     });
 
-    // CRITICAL FIX: Use NEXT_PUBLIC_SITE_URL or force production domain
-    // CRITICAL FIX: Use NEXT_PUBLIC_SITE_URL or force production domain
-    // VERCEL_URL can point to preview deployments which are password protected (401)
-    const baseUrl = process.env.NODE_ENV === 'production'
-        ? (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.councilia.com')
-        : 'http://localhost:3000';
+    const baseUrl =
+        process.env.NODE_ENV === 'production'
+            ? process.env.NEXT_PUBLIC_SITE_URL || 'https://www.councilia.com'
+            : 'http://localhost:3000';
 
     console.log(`[Start] Triggering worker at ${baseUrl}/api/session/worker`);
 
-    // Fire-and-forget (do NOT await response to avoid 504 Timeout on Vercel)
-    // The worker has maxDuration=300s but the caller (start) must return quickly
     fetch(`${baseUrl}/api/session/worker`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'x-internal': '1' },
-        body: JSON.stringify({ validationId, runId, tenant_id: t_id, user_id: u_id, idea, region, sensitivity })
-    }).catch((err) => { console.error('Worker trigger failed:', err); });
-
-    return NextResponse.json({ validationId, runId });
+        body: JSON.stringify({
+            validationId,
+            runId,
+            tenant_id: t_id,
+            user_id: u_id,
+            idea,
+            region,
+            sensitivity,
+        }),
+    }).catch((err) => {
+        console.error('Worker trigger failed:', err);
+    });
 
     return NextResponse.json({ validationId, runId });
 }
