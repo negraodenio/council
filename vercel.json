@@ -1,8 +1,7 @@
 {
     "regions": [
-        "iad1",
         "fra1",
-        "arn1"
+        "iad1"
     ],
     "rewrites": [
         {
