@@ -26,7 +26,7 @@ export default function Home() {
             <section className="pt-40 pb-24 px-6">
                 <div className="max-w-3xl mx-auto text-center">
 
-                    <p className="text-sm text-neutral-400 uppercase tracking-widest mb-6">
+                    <p className="text-sm text-neutral-500 uppercase tracking-widest mb-6">
                         Multi-agent AI deliberation
                     </p>
 
@@ -37,9 +37,9 @@ export default function Home() {
                     </h1>
 
                     <p className="text-lg md:text-xl text-neutral-500 max-w-2xl mx-auto mb-12 leading-relaxed">
-                        Submit any idea, decision, or strategy. Four AI agents
-                        with opposing perspectives debate it live. A fifth
-                        arbitrates and delivers the verdict.
+                        Not just code review. Submit any idea, decision, or strategy.
+                        Four AI agents with opposing perspectives debate it live.
+                        A fifth arbitrates and delivers a reasoned verdict.
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -60,7 +60,7 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* DEBATE VISUAL — NÃO É DIAGRAM GENÉRICO */}
+            {/* DEBATE VISUAL */}
             <section className="py-24 px-6 border-t border-neutral-100">
                 <div className="max-w-5xl mx-auto">
 
@@ -82,24 +82,24 @@ export default function Home() {
                             <div className="flex gap-3">
                                 <span className="text-red-400 shrink-0">skeptic&nbsp;&nbsp;</span>
                                 <span className="text-neutral-300">
-                                    Your team has 4 engineers. You'll spend 18 months on
-                                    infrastructure instead of product. Netflix needed it. You don't.
+                                    Your team has 4 engineers. You&apos;ll spend 18 months on
+                                    infrastructure instead of product. Netflix needed it. You don&apos;t.
                                 </span>
                             </div>
 
                             <div className="flex gap-3">
                                 <span className="text-blue-400 shrink-0">architect</span>
                                 <span className="text-neutral-300">
-                                    Modular monolith gives you 80% of the benefit with 20% of
-                                    the cost. Extract services only when bottlenecks emerge.
+                                    A modular monolith gives you 80% of the benefit with 20% of
+                                    the cost. Extract services only when real bottlenecks emerge.
                                 </span>
                             </div>
 
                             <div className="flex gap-3">
                                 <span className="text-amber-400 shrink-0">optimizer</span>
                                 <span className="text-neutral-300">
-                                    Current deploy takes 45min. A build pipeline fix gets you
-                                    to 4min. That solves the real pain without architecture risk.
+                                    Current deploy takes 45 minutes. A build pipeline fix gets you
+                                    to 4 minutes. That solves the real pain without architecture risk.
                                 </span>
                             </div>
 
@@ -107,8 +107,8 @@ export default function Home() {
                                 <div className="flex gap-3">
                                     <span className="text-white shrink-0">verdict&nbsp;&nbsp;</span>
                                     <span className="text-neutral-100">
-                                        <strong>Don't migrate.</strong> Implement modular monolith pattern.
-                                        Fix build pipeline first. Reassess at 15 engineers.
+                                        <strong>Don&apos;t migrate.</strong> Implement a modular monolith.
+                                        Fix the build pipeline first. Reassess when you reach 15 engineers.
                                         <span className="text-neutral-500"> Confidence: 87%</span>
                                     </span>
                                 </div>
@@ -124,7 +124,7 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* COMO FUNCIONA */}
+            {/* HOW IT WORKS */}
             <section id="how" className="py-24 px-6 border-t border-neutral-100">
                 <div className="max-w-4xl mx-auto">
 
@@ -139,7 +139,7 @@ export default function Home() {
                             <h3 className="text-lg font-semibold mb-2">You submit</h3>
                             <p className="text-neutral-500 leading-relaxed">
                                 An idea, a piece of code, a business decision, a strategy.
-                                Anything you need pressure-tested.
+                                Anything you need pressure-tested from multiple angles.
                             </p>
                         </div>
 
@@ -147,17 +147,17 @@ export default function Home() {
                             <div className="text-4xl font-bold text-neutral-200 mb-4">02</div>
                             <h3 className="text-lg font-semibold mb-2">Four agents debate</h3>
                             <p className="text-neutral-500 leading-relaxed">
-                                Advocate defends. Skeptic attacks. Architect restructures.
-                                Optimizer simplifies. They argue until every angle is covered.
+                                The Advocate defends. The Skeptic attacks. The Architect restructures.
+                                The Optimizer simplifies. They argue until every angle is covered.
                             </p>
                         </div>
 
                         <div>
                             <div className="text-4xl font-bold text-neutral-200 mb-4">03</div>
-                            <h3 className="text-lg font-semibold mb-2">Judge delivers verdict</h3>
+                            <h3 className="text-lg font-semibold mb-2">The Judge decides</h3>
                             <p className="text-neutral-500 leading-relaxed">
-                                Claude or GPT-4 reads the full debate, weighs the arguments,
-                                and gives you a reasoned verdict with confidence score.
+                                Claude or GPT-4 reads the full debate, weighs every argument,
+                                and gives you a reasoned verdict with a confidence score.
                             </p>
                         </div>
 
@@ -180,49 +180,49 @@ export default function Home() {
                     <div className="grid md:grid-cols-2 gap-8">
 
                         <div className="bg-white p-8 rounded-xl border border-neutral-200">
-                            <h3 className="font-semibold text-lg mb-2">Code & Architecture</h3>
+                            <h3 className="font-semibold text-lg mb-2">Code & architecture</h3>
                             <p className="text-neutral-500 text-sm leading-relaxed">
-                                "Is this production-ready?" — Get security, performance,
-                                readability, and maintainability perspectives before shipping.
+                                &quot;Is this production-ready?&quot; — Get security, performance,
+                                readability, and maintainability perspectives before you ship.
                             </p>
                         </div>
 
                         <div className="bg-white p-8 rounded-xl border border-neutral-200">
-                            <h3 className="font-semibold text-lg mb-2">Business Decisions</h3>
+                            <h3 className="font-semibold text-lg mb-2">Business decisions</h3>
                             <p className="text-neutral-500 text-sm leading-relaxed">
-                                "Should we enter the European market?" — Market analysis,
+                                &quot;Should we enter the European market?&quot; — Market analysis,
                                 risk assessment, financial modeling, timing evaluation.
                             </p>
                         </div>
 
                         <div className="bg-white p-8 rounded-xl border border-neutral-200">
-                            <h3 className="font-semibold text-lg mb-2">Startup Validation</h3>
+                            <h3 className="font-semibold text-lg mb-2">Startup validation</h3>
                             <p className="text-neutral-500 text-sm leading-relaxed">
-                                "Is this idea viable?" — Business model stress-test,
+                                &quot;Is this idea viable?&quot; — Business model stress-test,
                                 competitor analysis, market fit, unit economics.
                             </p>
                         </div>
 
                         <div className="bg-white p-8 rounded-xl border border-neutral-200">
-                            <h3 className="font-semibold text-lg mb-2">Strategy & Planning</h3>
+                            <h3 className="font-semibold text-lg mb-2">Strategy & planning</h3>
                             <p className="text-neutral-500 text-sm leading-relaxed">
-                                "Hire or outsource?" — Cost analysis, quality trade-offs,
+                                &quot;Hire or outsource?&quot; — Cost analysis, quality trade-offs,
                                 timeline impact, long-term implications.
                             </p>
                         </div>
 
                         <div className="bg-white p-8 rounded-xl border border-neutral-200">
-                            <h3 className="font-semibold text-lg mb-2">Content & Marketing</h3>
+                            <h3 className="font-semibold text-lg mb-2">Content & positioning</h3>
                             <p className="text-neutral-500 text-sm leading-relaxed">
-                                "Which positioning wins?" — Brand voice, audience fit,
-                                competitive differentiation, messaging clarity.
+                                &quot;Which positioning wins?&quot; — Brand voice, audience fit,
+                                differentiation, messaging clarity.
                             </p>
                         </div>
 
                         <div className="bg-white p-8 rounded-xl border border-neutral-200">
-                            <h3 className="font-semibold text-lg mb-2">Legal & Compliance</h3>
+                            <h3 className="font-semibold text-lg mb-2">Risk & compliance</h3>
                             <p className="text-neutral-500 text-sm leading-relaxed">
-                                "Are we GDPR compliant?" — Risk vectors, data flow analysis,
+                                &quot;Are we GDPR compliant?&quot; — Risk vectors, data flow analysis,
                                 remediation priorities, compliance gaps.
                             </p>
                         </div>
@@ -232,7 +232,7 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* OS AGENTES */}
+            {/* THE COUNCIL */}
             <section className="py-24 px-6 border-t border-neutral-100">
                 <div className="max-w-4xl mx-auto">
 
@@ -246,9 +246,8 @@ export default function Home() {
                             <div className="w-3 h-3 rounded-full bg-emerald-500 mb-4"></div>
                             <h3 className="font-semibold text-lg mb-1">The Advocate</h3>
                             <p className="text-neutral-500 text-sm leading-relaxed">
-                                Finds every reason it works. Identifies strengths,
-                                opportunities, and potential you might be undervaluing.
-                                Builds the strongest case for.
+                                Finds every reason it works. Identifies strengths, opportunities,
+                                and potential you might be undervaluing. Builds the strongest case for.
                             </p>
                         </div>
 
@@ -258,7 +257,7 @@ export default function Home() {
                             <p className="text-neutral-500 text-sm leading-relaxed">
                                 Finds every reason it breaks. Edge cases, market risks,
                                 technical debt, hidden costs. The critic you need but
-                                don't want to hear.
+                                don&apos;t want to hear.
                             </p>
                         </div>
 
@@ -268,7 +267,7 @@ export default function Home() {
                             <p className="text-neutral-500 text-sm leading-relaxed">
                                 Thinks in systems. Restructures your approach for scale,
                                 maintainability, and long-term sustainability. Sees the
-                                big picture you're missing.
+                                big picture you&apos;re missing.
                             </p>
                         </div>
 
@@ -277,8 +276,8 @@ export default function Home() {
                             <h3 className="font-semibold text-lg mb-1">The Optimizer</h3>
                             <p className="text-neutral-500 text-sm leading-relaxed">
                                 Cuts the fat. Makes it faster, cheaper, simpler.
-                                Questions every complexity. If there's a shortcut
-                                that doesn't sacrifice quality, this agent finds it.
+                                Questions every complexity. If there&apos;s a shortcut
+                                that doesn&apos;t sacrifice quality, this agent finds it.
                             </p>
                         </div>
 
@@ -289,7 +288,7 @@ export default function Home() {
                         <h3 className="font-semibold text-lg mb-1">The Judge</h3>
                         <p className="text-neutral-400 text-sm leading-relaxed max-w-lg mx-auto">
                             Claude or GPT-4. Reads the entire debate. Weighs every argument.
-                            Delivers the final verdict with confidence score, key trade-offs,
+                            Delivers the final verdict with a confidence score, key trade-offs,
                             and actionable next steps.
                         </p>
                     </div>
@@ -368,7 +367,7 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* CTA FINAL */}
+            {/* FINAL CTA */}
             <section id="start" className="py-24 px-6 border-t border-neutral-100">
                 <div className="max-w-2xl mx-auto text-center">
 
