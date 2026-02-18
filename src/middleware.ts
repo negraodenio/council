@@ -46,7 +46,7 @@ export async function middleware(req: NextRequest) {
     }
 
     // 3) Route Protection
-    const protectedPaths = ['/chamber', '/report', '/api/session', '/api/patch', '/api/repo', '/api/rag', '/dashboard'];
+    const protectedPaths = ['/chamber', '/report', '/api/session', '/api/patch', '/api/repo', '/api/rag', '/dashboard', '/new'];
     const isProtected = protectedPaths.some(p => req.nextUrl.pathname.startsWith(p));
 
     if (isProtected && !user) {
