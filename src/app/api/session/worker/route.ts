@@ -9,6 +9,7 @@ import { triggerWebhook } from '@/lib/webhooks/send';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
+export const maxDuration = 300; // Vercel Pro: 5 minutes
 
 async function addEvent(supabase: any, run_id: string, event_type: string, model: string | null, payload: any) {
     // Model field is used for 'persona' identifier in frontend
@@ -84,13 +85,13 @@ export async function POST(req: Request) {
         const config = getCouncilConfig(region, sensitivity);
         const personas = Object.values(councilConfig.personas);
 
-        // Parallel swarm discussion
-        console.log(`Starting swarm for ${personas.length} personas...`);
+        // --- ROUND 1: Initial Analysis ---
+        console.log(`Starting Round 1 for ${personas.length} personas...`);
 
-        await Promise.all(personas.map(async (p) => {
+        const round1Results = await Promise.all(personas.map(async (p) => {
             const t0 = Date.now();
             try {
-                // Get assigned model for this persona
+                // Get assigned model
                 const assignedModel = config.assign[p.id as keyof typeof config.assign];
                 const modelKey = assignedModel?.model || 'deepseek-ai/DeepSeek-V3'; // Default to SF if configured
                 const provider = assignedModel?.provider || 'openrouter';
@@ -115,22 +116,75 @@ export async function POST(req: Request) {
                 await logAICall({
                     validation_id: validationId,
                     tenant_id: tenant_id,
-                    layer: 'swarm',
+                    layer: 'swarm_r1',
                     provider: provider,
                     model: modelKey,
                     latency_ms: Date.now() - t0,
                     status: 'ok'
                 });
+
+                return { id: p.id, name: p.name, text };
             } catch (err: any) {
-                console.error(`Swarm error for ${p.id}:`, err);
-                await addEvent(supabase, runId, 'error', p.id, { msg: `Failed to get response from ${p.name}: ${err.message}` });
+                console.error(`Round 1 error for ${p.id}:`, err);
+                await addEvent(supabase, runId, 'error', p.id, { msg: `Failed Round 1: ${err.message}` });
+                return { id: p.id, name: p.name, text: '[Error in Round 1]' };
             }
         }));
 
-        // Final Judge Note (Phase 3.3: Pass allowlist)
+        // --- ROUND 2: Rebuttal & Deep Dive ---
+        const transcriptR1 = round1Results.map(r => `[${r.name}]: ${r.text}`).join('\n\n');
+
+        await addEvent(supabase, runId, 'system', null, { msg: 'Phase 2: Council Rebuttal & Cross-Examination' });
+        console.log('Starting Round 2 (Rebuttal)...');
+
+        const round2Results = await Promise.all(personas.map(async (p) => {
+            const t0 = Date.now();
+            try {
+                const assignedModel = config.assign[p.id as keyof typeof config.assign];
+                const modelKey = assignedModel?.model || 'deepseek-ai/DeepSeek-V3';
+                const provider = assignedModel?.provider || 'openrouter';
+
+                const messages = [
+                    { role: 'system', content: `You are the ${p.name}. Role: ${p.role}. \n\nThe council has spoken (Round 1). Critically evaluate your peers' arguments and provide your rebuttal or final refined conclusion. Be direct.` },
+                    { role: 'user', content: `Original Topic: ${ideaRedacted}\n\n=== ROUND 1 TRANSCRIPT ===\n${transcriptR1}` }
+                ];
+
+                let out;
+                if (provider === 'siliconflow') {
+                    out = await callSiliconFlow(modelKey, messages);
+                } else {
+                    out = await callOpenRouter(modelKey, messages, { zdr: config.judge.zdr });
+                }
+
+                const text = out?.choices?.[0]?.message?.content || `Rebuttal complete by ${p.name}.`;
+
+                await addEvent(supabase, runId, 'model_msg', p.id, { text, phase: 'rebuttal', persona: p.name, emoji: p.emoji });
+
+                await logAICall({
+                    validation_id: validationId,
+                    tenant_id: tenant_id,
+                    layer: 'swarm_r2',
+                    provider: provider,
+                    model: modelKey,
+                    latency_ms: Date.now() - t0,
+                    status: 'ok'
+                });
+
+                return { id: p.id, name: p.name, text };
+            } catch (err: any) {
+                console.error(`Round 2 error for ${p.id}:`, err);
+                // Don't error visually in UI, just log
+                return { id: p.id, name: p.name, text: '[Error in Round 2]' };
+            }
+        }));
+
+        // --- Final Judge Consensus ---
+        const transcriptR2 = round2Results.map(r => `[${r.name}]: ${r.text}`).join('\n\n');
+        const fullTranscript = `=== ROUND 1 ===\n${transcriptR1}\n\n=== ROUND 2 (REBUTTAL) ===\n${transcriptR2}`;
+
         const judgeMessages = [
-            { role: 'system', content: 'You are the Judge. Summarize the panel results and provide a final consensus score (0-100).' },
-            { role: 'user', content: `Analyze the discussion for: ${ideaRedacted}` }
+            { role: 'system', content: 'You are the Judge. Consolidate the two rounds of debate into a final verdict and consensus score (0-100).' },
+            { role: 'user', content: `Analyze the full debate:\n\n${fullTranscript}` }
         ];
 
         try {
@@ -150,7 +204,7 @@ export async function POST(req: Request) {
             await supabase.from('validations').update({
                 status: 'complete',
                 consensus_score: score,
-                full_result: { judge: judgeText }
+                full_result: { judge: judgeText, round1: round1Results, round2: round2Results }
             }).eq('id', validationId);
 
             // Billing Usage
@@ -160,7 +214,7 @@ export async function POST(req: Request) {
             await triggerWebhook({
                 tenant_id,
                 event: 'debate.complete',
-                payload: { validation_id: validationId, consensus_score: score, council: personas.length }
+                payload: { validation_id: validationId, consensus_score: score, rounds: 2 }
             });
 
         } catch (err: any) {
