@@ -88,6 +88,9 @@ export async function POST(req: Request) {
         const { validationId, runId, tenant_id, user_id, idea, region, sensitivity } = body;
         const supabase = createAdminClient();
 
+        // SIGNAL START
+        await addEvent(supabase, runId, 'system', null, { msg: '🏛️ Debate 2.0 Protocol Initiated. Worker Active.' });
+
         // Phase 3.2: PII Redaction
         const { redacted: ideaRedacted, hadPII } = redactPII(idea);
 
