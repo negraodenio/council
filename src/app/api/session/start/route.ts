@@ -4,7 +4,6 @@ import { nanoid } from 'nanoid';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
-export const preferredRegion = ['fra1', 'iad1']; // Frankfurt (EU), US East
 
 export async function POST(req: Request) {
     const supabase = createAdminClient();
