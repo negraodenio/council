@@ -49,7 +49,10 @@ export async function middleware(req: NextRequest) {
     const protectedPaths = ['/chamber', '/report', '/api/session', '/api/patch', '/api/repo', '/api/rag', '/dashboard', '/new'];
     const isProtected = protectedPaths.some(p => req.nextUrl.pathname.startsWith(p));
 
-    if (isProtected && !user) {
+    // Allow internal worker calls to bypass auth
+    const isInternal = req.headers.get('x-internal') === '1';
+
+    if (isProtected && !user && !isInternal) {
         const redirectUrl = req.nextUrl.clone();
         redirectUrl.pathname = '/login';
         redirectUrl.searchParams.set('redirectedFrom', req.nextUrl.pathname);
