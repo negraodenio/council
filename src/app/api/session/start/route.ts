@@ -37,11 +37,16 @@ export async function POST(req: Request) {
         status: 'running'
     });
 
-    fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/session/worker`, {
+    // CRITICAL FIX: Use NEXT_PUBLIC_SITE_URL (defined in Vercel) or fall back to VERCEL_URL
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || `https://${process.env.VERCEL_URL}`;
+
+    console.log(`[Start] Triggering worker at ${baseUrl}/api/session/worker`);
+
+    fetch(`${baseUrl}/api/session/worker`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'x-internal': '1' },
         body: JSON.stringify({ validationId, runId, tenant_id: t_id, user_id: u_id, idea, region, sensitivity })
-    }).catch(() => { });
+    }).catch((err) => { console.error('Worker trigger failed:', err); });
 
     return NextResponse.json({ validationId, runId });
 }
