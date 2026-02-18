@@ -1,7 +1,16 @@
 {
-    "buildCommand": "npm run build",
-    "devCommand": "npm run dev",
-    "installCommand": "npm install",
-    "framework": "nextjs",
-    "outputDirectory": ".next"
+    "functions": {
+        "src/app/api/session/worker/route.ts": {
+            "maxDuration": 900
+        },
+        "src/app/api/chamber/stream/route.ts": {
+            "maxDuration": 900
+        }
+    },
+    "rewrites": [
+        {
+            "source": "/api/(.*)",
+            "destination": "/api/$1"
+        }
+    ]
 }

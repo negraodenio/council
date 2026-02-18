@@ -40,7 +40,9 @@ export async function POST(req: Request) {
     // CRITICAL FIX: Use NEXT_PUBLIC_SITE_URL or force production domain
     // CRITICAL FIX: Use NEXT_PUBLIC_SITE_URL or force production domain
     // VERCEL_URL can point to preview deployments which are password protected (401)
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.councilia.com';
+    const baseUrl = process.env.NODE_ENV === 'production'
+        ? (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.councilia.com')
+        : 'http://localhost:3000';
 
     console.log(`[Start] Triggering worker at ${baseUrl}/api/session/worker`);
 
