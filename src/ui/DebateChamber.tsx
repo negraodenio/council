@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getCouncilConfig } from '@/config/council';
+import { councilConfig } from '@/config/council';
 
 type DebateMsg = {
     model?: string | null;
@@ -25,11 +25,12 @@ export default function DebateChamber({ runId }: { runId: string }) {
     const sensitivity = 'business' as const;
 
     const router = useRouter();
-    const cfg = useMemo(() => getCouncilConfig(region, sensitivity), [region, sensitivity]);
+    // Use personas directly from config
+    const personas = Object.values(councilConfig.personas);
 
     const [coreSync, setCoreSync] = useState(84);
     const [globalConsensus, setGlobalConsensus] = useState(68.4);
-    const [activeSpeaker, setActiveSpeaker] = useState<string | null>('deepseek');
+    const [activeSpeaker, setActiveSpeaker] = useState<string | null>('advocate');
     const [msgs, setMsgs] = useState<DebateMsg[]>([]);
     const [liveTimer, setLiveTimer] = useState('LIVE');
 
@@ -57,27 +58,28 @@ export default function DebateChamber({ runId }: { runId: string }) {
         };
 
         const mapImg: Record<string, string> = {
-            deepseek:
-                'https://lh3.googleusercontent.com/aida-public/AB6AXuDd94_1G5XF_LYADyz4wGuBXUvWpG6Tyj_jZI5rKCTUw3VfXKzCaETb7V-7w9fDTY7NpKU53QOqUQ-EJlzC-CFRHgGNOMW_kWn2jdHIft8mwq6WjYC7AfVIkjtjXN2jPlUlTtknWhpP0ZbDFsLCyE74yxN7POsm4ySnYwXA2AXV4d8ZAADi-eUUhkCfXDqLWOg63Khh7PoLW4hvCxvjewwySeF8eYEPWRnffPCs3AKTv2Q7QBu4Y5AhNo-40lFepGjw4NZT4aXPOHs',
-            qwen:
-                'https://lh3.googleusercontent.com/aida-public/AB6AXuBcEKNdV31zTNHjTfvYtwbwYGQ8fvUzTvT4YovMTHdo_tNRukZ5aLYnvZbDkZ0FrnXev2BAlN0vgrI1OEpBtPmFNWOuFL6qguwbs_O3z2Mx5NakaPxGHnq44Lw-pT3Dg7wBmSgLKoubiyNFZiKMQxWlLFSr9quWhfDcfeOU18li7OxtSDkMTYmaq7NUhFe-axWEega75UM7-gymzSLyKq4YeqdmU0Vh0DL1Oo7P7iHUcvTd7Iuwk4KwDpJm_VSV3nogCZ1J7ro78C4',
-            glm:
-                'https://lh3.googleusercontent.com/aida-public/AB6AXuCsX9Y6Is3x3NHpwyxgV2AvUgIxLwLI3FvUigHV8TSSqvWpmmOXtFdAbcRqP7jFA7gGjRCWN2H58VP8x2agoHUQN22g6Nd1TGMHSp0k1y42DKyNNQIpeaNGV4CjJTL2i3UhQDDg_ywwvVOrnMTPJ2rSCf8Qb8lgklbd9TFx5jtCA-AfO_MdHZ2Ygkg6c4uEivpBzvyAFafVWwjjtCmUYi4XF5-2G0T7ZjkpbZF9Ol0KnzYvvtbbpH-rmdY0l5zj_huW0vWPD9HYR5g',
-            llama:
-                'https://lh3.googleusercontent.com/aida-public/AB6AXuDM5W83OyJt4-NwxLGro1mrgwRqdEzInQtcm28RA5s5l39RxHpzL9v78Eqxh5_OAPL2NBLnVaOgQIITh4UizZgQFNdW-_I2x-AJEw5eyRpnx3Cpoj0OlNx4f0XWKPTTxRjpxviOXuhtfrqFboEjRW7XycO-yxxCXXboVxAq8kvZvIPZsESm1zdt7fnRKXA9L1aHBEKW3Y3yUpnAVYXj1rLb-2upkv0Yesu4rvatwtoSiNB4go8sPMRyjCn3QuSSmEcjCvRSyi24BTQ',
-            mistral:
-                'https://lh3.googleusercontent.com/aida-public/AB6AXuAtw0j0BAiuUiOI6Rv0Dyv5kbQKEbemC4r2HD7TQ9VjL3BiVAoN5LJ_HbPXn_l0Zpk8tEnUXeGsifivsJvcz0TxbtNayM2ufxW9KmCcTRsM4dLpY-Uo2mfMP6411RMJhIrpwhdKrA8-KXwq9WPF7hd3EfnKXn8ZvJX8n8loa7-WufIUIZbNPd4GOL48D6XkVaPx4aEMWpeI80ECfCamdK-RZeqhZd0PN1KECbVEMANuxWirzNYYOEHu-gwme5KSBtt4syRf7dBhFa4'
+            advocate: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDd94_1G5XF_LYADyz4wGuBXUvWpG6Tyj_jZI5rKCTUw3VfXKzCaETb7V-7w9fDTY7NpKU53QOqUQ-EJlzC-CFRHgGNOMW_kWn2jdHIft8mwq6WjYC7AfVIkjtjXN2jPlUlTtknWhpP0ZbDFsLCyE74yxN7POsm4ySnYwXA2AXV4d8ZAADi-eUUhkCfXDqLWOg63Khh7PoLW4hvCxvjewwySeF8eYEPWRnffPCs3AKTv2Q7QBu4Y5AhNo-40lFepGjw4NZT4aXPOHs',
+            skeptic: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBcEKNdV31zTNHjTfvYtwbwYGQ8fvUzTvT4YovMTHdo_tNRukZ5aLYnvZbDkZ0FrnXev2BAlN0vgrI1OEpBtPmFNWOuFL6qguwbs_O3z2Mx5NakaPxGHnq44Lw-pT3Dg7wBmSgLKoubiyNFZiKMQxWlLFSr9quWhfDcfeOU18li7OxtSDkMTYmaq7NUhFe-axWEega75UM7-gymzSLyKq4YeqdmU0Vh0DL1Oo7P7iHUcvTd7Iuwk4KwDpJm_VSV3nogCZ1J7ro78C4',
+            architect: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCsX9Y6Is3x3NHpwyxgV2AvUgIxLwLI3FvUigHV8TSSqvWpmmOXtFdAbcRqP7jFA7gGjRCWN2H58VP8x2agoHUQN22g6Nd1TGMHSp0k1y42DKyNNQIpeaNGV4CjJTL2i3UhQDDg_ywwvVOrnMTPJ2rSCf8Qb8lgklbd9TFx5jtCA-AfO_MdHZ2Ygkg6c4uEivpBzvyAFafVWwjjtCmUYi4XF5-2G0T7ZjkpbZF9Ol0KnzYvvtbbpH-rmdY0l5zj_huW0vWPD9HYR5g',
+            optimizer: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDM5W83OyJt4-NwxLGro1mrgwRqdEzInQtcm28RA5s5l39RxHpzL9v78Eqxh5_OAPL2NBLnVaOgQIITh4UizZgQFNdW-_I2x-AJEw5eyRpnx3Cpoj0OlNx4f0XWKPTTxRjpxviOXuhtfrqFboEjRW7XycO-yxxCXXboVxAq8kvZvIPZsESm1zdt7fnRKXA9L1aHBEKW3Y3yUpnAVYXj1rLb-2upkv0Yesu4rvatwtoSiNB4go8sPMRyjCn3QuSSmEcjCvRSyi24BTQ'
         };
 
-        const four = cfg.frontModels.map((m) => ({
-            key: m.key,
-            label: m.label,
-            avatarColor: m.avatarColor,
-            image: mapImg[m.key] || mapImg.deepseek
+        const mapColor: Record<string, string> = {
+            advocate: '#FF00FF',
+            skeptic: '#00FFFF',
+            architect: '#32CD32',
+            optimizer: '#FFBF00'
+        };
+
+        const four = personas.map((p) => ({
+            key: p.id,
+            label: p.name,
+            avatarColor: mapColor[p.id] || '#FFFFFF',
+            image: mapImg[p.id] || judgeNode.image
         }));
 
         return { four, judgeNode };
-    }, [cfg, runId]);
+    }, [runId]);
 
     useEffect(() => {
         const es = new EventSource(`/api/chamber/stream?runId=${runId}`);
