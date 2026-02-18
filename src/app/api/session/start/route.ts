@@ -38,34 +38,21 @@ export async function POST(req: Request) {
     });
 
     // CRITICAL FIX: Use NEXT_PUBLIC_SITE_URL or force production domain
+    // CRITICAL FIX: Use NEXT_PUBLIC_SITE_URL or force production domain
     // VERCEL_URL can point to preview deployments which are password protected (401)
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.councilia.com';
 
     console.log(`[Start] Triggering worker at ${baseUrl}/api/session/worker`);
-    let workerStatus = 0;
-    let workerText = '';
 
-    try {
-        const workerRes = await fetch(`${baseUrl}/api/session/worker`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'x-internal': '1' },
-            body: JSON.stringify({ validationId, runId, tenant_id: t_id, user_id: u_id, idea, region, sensitivity })
-        });
+    // Fire-and-forget (do NOT await response to avoid 504 Timeout on Vercel)
+    // The worker has maxDuration=300s but the caller (start) must return quickly
+    fetch(`${baseUrl}/api/session/worker`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-internal': '1' },
+        body: JSON.stringify({ validationId, runId, tenant_id: t_id, user_id: u_id, idea, region, sensitivity })
+    }).catch((err) => { console.error('Worker trigger failed:', err); });
 
-        workerStatus = workerRes.status;
-        if (!workerRes.ok) {
-            workerText = await workerRes.text();
-            console.error(`[Start] Worker failed ${workerStatus}: ${workerText}`);
-        } else {
-            console.log('[Start] Worker triggered successfully');
-        }
-    } catch (err: any) {
-        console.error('[Start] Worker fetch error:', err);
-        workerText = err.message;
-        workerStatus = 500;
-    }
-
-    return NextResponse.json({ validationId, runId, debug: { workerStatus, workerText } });
+    return NextResponse.json({ validationId, runId });
 
     return NextResponse.json({ validationId, runId });
 }
