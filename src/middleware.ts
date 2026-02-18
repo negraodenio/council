@@ -80,6 +80,17 @@ export async function middleware(req: NextRequest) {
         }
     }
 
+    // Additional specific route protection logic
+    // 4. Protect Dashboard Routes (if not already covered by general protection)
+    if (req.nextUrl.pathname.startsWith('/dashboard') && !user) {
+        return NextResponse.redirect(new URL('/login', req.url));
+    }
+
+    // 5. Redirect Root to Dashboard if logged in (Client-side fail-safe)
+    if (req.nextUrl.pathname === '/' && user) {
+        return NextResponse.redirect(new URL('/dashboard', req.url));
+    }
+
     return supabaseResponse;
 }
 
@@ -95,3 +106,4 @@ export const config = {
         '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
     ],
 };
+```
