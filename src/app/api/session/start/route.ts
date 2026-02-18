@@ -37,10 +37,11 @@ export async function POST(req: Request) {
         status: 'running'
     });
 
-    // CRITICAL FIX: Use NEXT_PUBLIC_SITE_URL (defined in Vercel) or fall back to VERCEL_URL
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || `https://${process.env.VERCEL_URL}`;
+    // CRITICAL FIX: Use NEXT_PUBLIC_SITE_URL or force production domain
+    // VERCEL_URL can point to preview deployments which are password protected (401)
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.councilia.com';
 
-    // DEBUG: Await request to catch errors (307/404/500)
+    console.log(`[Start] Triggering worker at ${baseUrl}/api/session/worker`);
     let workerStatus = 0;
     let workerText = '';
 
