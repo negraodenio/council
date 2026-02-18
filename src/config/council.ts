@@ -29,13 +29,32 @@ export function getCouncilConfig(region: Region, sensitivity: Sensitivity) {
     };
 
     const config = (() => {
-        // Default assignment
+        // EU / Sensitive Logic
+        if (euSensitive) {
+            return {
+                assign: {
+                    advocate: models.mistral,  // EU-based
+                    skeptic: models.llama,     // Open weights
+                    architect: models.mistral,
+                    optimizer: models.llama,
+                },
+                judge: {
+                    provider: 'mistral',
+                    primary: 'mistral-large-latest',
+                    fallback: 'mistral-small-latest',
+                    zdr: false, // Explicitly disabled for compliance/audit if needed, or true if preferred
+                    allowlist: ['mistral-large-latest', 'mistral-small-latest']
+                }
+            };
+        }
+
+        // Default / Global Logic
         return {
             assign: {
-                advocate: models.silicon, // Using SiliconFlow
+                advocate: models.silicon, // SiliconFlow (DeepSeek)
                 skeptic: models.mistral,
                 architect: models.llama,
-                optimizer: models.silicon, // Using SiliconFlow
+                optimizer: models.silicon, // SiliconFlow (DeepSeek)
             },
             judge: {
                 provider: 'openrouter',
