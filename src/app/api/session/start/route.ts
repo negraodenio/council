@@ -40,13 +40,31 @@ export async function POST(req: Request) {
     // CRITICAL FIX: Use NEXT_PUBLIC_SITE_URL (defined in Vercel) or fall back to VERCEL_URL
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || `https://${process.env.VERCEL_URL}`;
 
-    console.log(`[Start] Triggering worker at ${baseUrl}/api/session/worker`);
+    // DEBUG: Await request to catch errors (307/404/500)
+    let workerStatus = 0;
+    let workerText = '';
 
-    fetch(`${baseUrl}/api/session/worker`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-internal': '1' },
-        body: JSON.stringify({ validationId, runId, tenant_id: t_id, user_id: u_id, idea, region, sensitivity })
-    }).catch((err) => { console.error('Worker trigger failed:', err); });
+    try {
+        const workerRes = await fetch(`${baseUrl}/api/session/worker`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-internal': '1' },
+            body: JSON.stringify({ validationId, runId, tenant_id: t_id, user_id: u_id, idea, region, sensitivity })
+        });
+
+        workerStatus = workerRes.status;
+        if (!workerRes.ok) {
+            workerText = await workerRes.text();
+            console.error(`[Start] Worker failed ${workerStatus}: ${workerText}`);
+        } else {
+            console.log('[Start] Worker triggered successfully');
+        }
+    } catch (err: any) {
+        console.error('[Start] Worker fetch error:', err);
+        workerText = err.message;
+        workerStatus = 500;
+    }
+
+    return NextResponse.json({ validationId, runId, debug: { workerStatus, workerText } });
 
     return NextResponse.json({ validationId, runId });
 }
