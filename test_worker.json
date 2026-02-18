@@ -1,0 +1,9 @@
+{
+    "validationId": "debug_val_001",
+    "runId": "debug_run_001",
+    "tenant_id": "00000000-0000-0000-0000-000000000000",
+    "user_id": "00000000-0000-0000-0000-000000000000",
+    "idea": "Should AI be used in judicial sentencing?",
+    "region": "EU",
+    "sensitivity": "public"
+}

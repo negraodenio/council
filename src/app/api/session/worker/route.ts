@@ -50,29 +50,42 @@ async function callOpenRouter(model: string, messages: any[], opts: { zdr: boole
 }
 
 async function callSiliconFlow(model: string, messages: any[]) {
-    const r = await fetch(`${process.env.SILICONFLOW_API_URL || 'https://api.siliconflow.com/v1'}/chat/completions`, {
-        method: 'POST',
-        headers: {
-            Authorization: `Bearer ${process.env.SILICONFLOW_API_KEY}`,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            model,
-            messages,
-            stream: false
-        })
-    });
+    const url = `${process.env.SILICONFLOW_API_URL || 'https://api.siliconflow.com/v1'}/chat/completions`;
+    console.log(`[SiliconFlow] Calling ${model} at ${url}`);
 
-    if (!r.ok) {
-        const txt = await r.text();
-        throw new Error(`SiliconFlow error ${r.status}: ${txt}`);
+    try {
+        const r = await fetch(url, {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${process.env.SILICONFLOW_API_KEY}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                model,
+                messages,
+                stream: false
+            })
+        });
+
+        if (!r.ok) {
+            const txt = await r.text();
+            console.error(`[SiliconFlow] Error ${r.status}: ${txt}`);
+            throw new Error(`SiliconFlow error ${r.status}: ${txt}`);
+        }
+        return r.json();
+    } catch (e: any) {
+        console.error('[SiliconFlow] Network/Fetch Error:', e);
+        throw e;
     }
-    return r.json();
 }
 
 export async function POST(req: Request) {
+    console.log('[Worker] Received request');
     try {
-        const { validationId, runId, tenant_id, user_id, idea, region, sensitivity } = await req.json();
+        const body = await req.json();
+        console.log('[Worker] Body parsed:', JSON.stringify(body).slice(0, 100));
+
+        const { validationId, runId, tenant_id, user_id, idea, region, sensitivity } = body;
         const supabase = createAdminClient();
 
         // Phase 3.2: PII Redaction
