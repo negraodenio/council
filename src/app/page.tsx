@@ -1,206 +1,405 @@
-import Link from 'next/link';
-
-export default function HomePage() {
+export default function Home() {
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-            {/* Header */}
-            <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-                <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-600 to-blue-500 flex items-center justify-center">
-                            <span className="text-white font-bold">C</span>
-                        </div>
-                        <span className="text-xl font-bold text-slate-900">CouncilIA</span>
+        <main className="bg-white text-neutral-900">
+
+            {/* NAV */}
+            <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-sm border-b border-neutral-100">
+                <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+                    <a href="/" className="text-lg font-semibold tracking-tight">
+                        Council<span className="text-neutral-400">IA</span>
+                    </a>
+                    <div className="hidden md:flex items-center gap-8 text-sm text-neutral-500">
+                        <a href="#how" className="hover:text-neutral-900 transition">How it works</a>
+                        <a href="#usecases" className="hover:text-neutral-900 transition">Use cases</a>
+                        <a href="#pricing" className="hover:text-neutral-900 transition">Pricing</a>
+                        <a
+                            href="#start"
+                            className="bg-neutral-900 text-white px-4 py-2 rounded-md text-sm hover:bg-neutral-800 transition"
+                        >
+                            Start a session
+                        </a>
                     </div>
-
-                    <nav className="hidden md:flex items-center gap-6">
-                        <a href="#features" className="text-slate-600 hover:text-slate-900">Features</a>
-                        <a href="#pricing" className="text-slate-600 hover:text-slate-900">Pricing</a>
-                        <a href="#demo" className="text-slate-600 hover:text-slate-900">Demo</a>
-                    </nav>
-
-                    <Link
-                        href="/login"
-                        className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium"
-                    >
-                        Get Started
-                    </Link>
                 </div>
-            </header>
+            </nav>
 
-            {/* Hero */}
-            <section className="max-w-6xl mx-auto px-6 py-20 md:py-32">
-                <div className="text-center max-w-3xl mx-auto">
-                    <div className="inline-block mb-4 px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">
-                        ✨ AI-Powered Code Review
-                    </div>
+            {/* HERO */}
+            <section className="pt-40 pb-24 px-6">
+                <div className="max-w-3xl mx-auto text-center">
 
-                    <h1 className="text-5xl md:text-6xl font-bold text-slate-900 mb-6 leading-tight">
-                        4 AI Agents Debate
+                    <p className="text-sm text-neutral-400 uppercase tracking-widest mb-6">
+                        Multi-agent AI deliberation
+                    </p>
+
+                    <h1 className="text-5xl md:text-7xl font-bold leading-[1.05] tracking-tight mb-8">
+                        One AI agrees with you.
                         <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-500">
-                            Before You Commit
-                        </span>
+                        <span className="text-neutral-300">Four won't.</span>
                     </h1>
 
-                    <p className="text-xl text-slate-600 mb-8 leading-relaxed">
-                        CouncilIA simulates a council of expert AI personas—Advocate, Skeptic, Architect, Optimizer—to validate your code with live debate and automated GitHub PRs.
+                    <p className="text-lg md:text-xl text-neutral-500 max-w-2xl mx-auto mb-12 leading-relaxed">
+                        Submit any idea, decision, or strategy. Four AI agents
+                        with opposing perspectives debate it live. A fifth
+                        arbitrates and delivers the verdict.
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <Link
-                            href="/login"
-                            className="px-8 py-4 bg-purple-600 text-white rounded-xl hover:bg-purple-700 transition font-semibold text-lg shadow-lg hover:shadow-xl"
-                        >
-                            Start Free Session →
-                        </Link>
                         <a
-                            href="#demo"
-                            className="px-8 py-4 bg-white text-slate-900 rounded-xl hover:bg-slate-50 transition font-semibold text-lg border border-slate-200"
+                            href="#start"
+                            className="bg-neutral-900 text-white px-8 py-4 rounded-md text-base font-medium hover:bg-neutral-800 transition"
                         >
-                            Watch Demo
+                            Start a free session
+                        </a>
+                        <a
+                            href="#how"
+                            className="border border-neutral-200 text-neutral-600 px-8 py-4 rounded-md text-base font-medium hover:border-neutral-400 transition"
+                        >
+                            See how it works
                         </a>
                     </div>
 
-                    <p className="mt-4 text-sm text-slate-500">
-                        🎁 First 100 users get Pro free for 3 months • No credit card required
-                    </p>
                 </div>
             </section>
 
-            {/* Social Proof */}
-            <section className="max-w-6xl mx-auto px-6 pb-20">
-                <div className="bg-white rounded-2xl shadow-sm p-8 border border-slate-200">
-                    <p className="text-center text-slate-500 text-sm mb-6">TRUSTED BY DEVELOPERS AT</p>
-                    <div className="flex flex-wrap justify-center items-center gap-12 opacity-60">
-                        <span className="text-2xl font-bold text-slate-400">YourCompany</span>
-                        <span className="text-2xl font-bold text-slate-400">StartupCo</span>
-                        <span className="text-2xl font-bold text-slate-400">TechCorp</span>
-                    </div>
-                </div>
-            </section>
+            {/* DEBATE VISUAL — NÃO É DIAGRAM GENÉRICO */}
+            <section className="py-24 px-6 border-t border-neutral-100">
+                <div className="max-w-5xl mx-auto">
 
-            {/* Features */}
-            <section id="features" className="max-w-6xl mx-auto px-6 py-20 bg-white">
-                <h2 className="text-4xl font-bold text-center text-slate-900 mb-4">
-                    How It Works
-                </h2>
-                <p className="text-center text-slate-600 mb-16 max-w-2xl mx-auto">
-                    Three-step AI validation with live debate, RAG-enhanced synthesis, and automated GitHub integration.
-                </p>
+                    <div className="bg-neutral-950 rounded-2xl p-8 md:p-12 text-white font-mono text-sm overflow-hidden">
 
-                <div className="grid md:grid-cols-3 gap-8">
-                    {[
-                        {
-                            icon: '💬',
-                            title: '1. Live AI Debate',
-                            desc: '4 personas debate your code in real-time: Advocate validates, Skeptic challenges, Architect refines structure, Optimizer boosts performance.'
-                        },
-                        {
-                            icon: '⚖️',
-                            title: '2. Judge Synthesizes',
-                            desc: 'A Judge agent analyzes debate using RAG on your repo context, producing a consensus report with actionable recommendations.'
-                        },
-                        {
-                            icon: '🚀',
-                            title: '3. Auto GitHub PR',
-                            desc: 'One click opens a PR with validated code, debate summary, and compliance audit trail—ready to merge.'
-                        }
-                    ].map((feature, i) => (
-                        <div key={i} className="p-6 rounded-xl border border-slate-200 hover:border-purple-300 hover:shadow-lg transition">
-                            <div className="text-4xl mb-4">{feature.icon}</div>
-                            <h3 className="text-xl font-bold text-slate-900 mb-2">{feature.title}</h3>
-                            <p className="text-slate-600">{feature.desc}</p>
+                        <div className="text-neutral-500 mb-6">
+                            session #0847 — "Should we migrate to microservices?"
                         </div>
-                    ))}
-                </div>
-            </section>
 
-            {/* Pricing */}
-            <section id="pricing" className="max-w-6xl mx-auto px-6 py-20">
-                <h2 className="text-4xl font-bold text-center text-slate-900 mb-4">
-                    Simple Pricing
-                </h2>
-                <p className="text-center text-slate-600 mb-16">
-                    Start free, upgrade as you scale. No hidden fees.
-                </p>
-
-                <div className="grid md:grid-cols-3 gap-8">
-                    {[
-                        { name: 'Free', price: '$0', sessions: '5 sessions/month', repos: '1 repo', support: 'Community' },
-                        { name: 'Pro', price: '$29', sessions: '100 sessions/month', repos: 'Unlimited repos', support: 'Priority', highlight: true },
-                        { name: 'Team', price: '$99', sessions: 'Unlimited sessions', repos: 'SSO + Audit logs', support: 'Dedicated' }
-                    ].map((plan, i) => (
-                        <div
-                            key={i}
-                            className={`p-8 rounded-xl border ${plan.highlight ? 'border-purple-600 shadow-xl scale-105' : 'border-slate-200'} bg-white`}
-                        >
-                            <h3 className="text-2xl font-bold text-slate-900 mb-2">{plan.name}</h3>
-                            <div className="text-4xl font-bold text-slate-900 mb-6">
-                                {plan.price}<span className="text-lg text-slate-500">/mo</span>
+                        <div className="space-y-4">
+                            <div className="flex gap-3">
+                                <span className="text-emerald-400 shrink-0">advocate</span>
+                                <span className="text-neutral-300">
+                                    Microservices enable independent deployment. Team velocity
+                                    increases 3x after migration based on DORA metrics.
+                                </span>
                             </div>
-                            <ul className="space-y-3 mb-8">
-                                <li className="flex items-start gap-2">
-                                    <span className="text-green-600">✓</span>
-                                    <span className="text-slate-600">{plan.sessions}</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <span className="text-green-600">✓</span>
-                                    <span className="text-slate-600">{plan.repos}</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <span className="text-green-600">✓</span>
-                                    <span className="text-slate-600">{plan.support} support</span>
-                                </li>
-                            </ul>
-                            <Link
-                                href="/login"
-                                className={`block text-center px-6 py-3 rounded-lg font-semibold transition ${plan.highlight
-                                        ? 'bg-purple-600 text-white hover:bg-purple-700'
-                                        : 'bg-slate-100 text-slate-900 hover:bg-slate-200'
-                                    }`}
-                            >
-                                Start {plan.name}
-                            </Link>
-                        </div>
-                    ))}
-                </div>
-            </section>
 
-            {/* CTA */}
-            <section className="max-w-4xl mx-auto px-6 py-20">
-                <div className="bg-gradient-to-br from-purple-600 to-blue-500 rounded-2xl p-12 text-center text-white">
-                    <h2 className="text-4xl font-bold mb-4">Ready to Ship Better Code?</h2>
-                    <p className="text-xl opacity-90 mb-8">
-                        Join 100+ developers using AI councils to validate every commit.
+                            <div className="flex gap-3">
+                                <span className="text-red-400 shrink-0">skeptic&nbsp;&nbsp;</span>
+                                <span className="text-neutral-300">
+                                    Your team has 4 engineers. You'll spend 18 months on
+                                    infrastructure instead of product. Netflix needed it. You don't.
+                                </span>
+                            </div>
+
+                            <div className="flex gap-3">
+                                <span className="text-blue-400 shrink-0">architect</span>
+                                <span className="text-neutral-300">
+                                    Modular monolith gives you 80% of the benefit with 20% of
+                                    the cost. Extract services only when bottlenecks emerge.
+                                </span>
+                            </div>
+
+                            <div className="flex gap-3">
+                                <span className="text-amber-400 shrink-0">optimizer</span>
+                                <span className="text-neutral-300">
+                                    Current deploy takes 45min. A build pipeline fix gets you
+                                    to 4min. That solves the real pain without architecture risk.
+                                </span>
+                            </div>
+
+                            <div className="border-t border-neutral-700 pt-4 mt-6">
+                                <div className="flex gap-3">
+                                    <span className="text-white shrink-0">verdict&nbsp;&nbsp;</span>
+                                    <span className="text-neutral-100">
+                                        <strong>Don't migrate.</strong> Implement modular monolith pattern.
+                                        Fix build pipeline first. Reassess at 15 engineers.
+                                        <span className="text-neutral-500"> Confidence: 87%</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <p className="text-center text-sm text-neutral-400 mt-6">
+                        Real session output. Unedited.
                     </p>
-                    <Link
-                        href="/login"
-                        className="inline-block px-8 py-4 bg-white text-purple-600 rounded-xl hover:bg-slate-100 transition font-semibold text-lg shadow-lg"
-                    >
-                        Start Free Session →
-                    </Link>
+
                 </div>
             </section>
 
-            {/* Footer */}
-            <footer className="border-t bg-white">
-                <div className="max-w-6xl mx-auto px-6 py-8">
-                    <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-                        <div className="flex items-center gap-2">
-                            <div className="w-6 h-6 rounded bg-gradient-to-br from-purple-600 to-blue-500" />
-                            <span className="font-bold text-slate-900">CouncilIA</span>
+            {/* COMO FUNCIONA */}
+            <section id="how" className="py-24 px-6 border-t border-neutral-100">
+                <div className="max-w-4xl mx-auto">
+
+                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-16 text-center">
+                        How it works
+                    </h2>
+
+                    <div className="grid md:grid-cols-3 gap-12">
+
+                        <div>
+                            <div className="text-4xl font-bold text-neutral-200 mb-4">01</div>
+                            <h3 className="text-lg font-semibold mb-2">You submit</h3>
+                            <p className="text-neutral-500 leading-relaxed">
+                                An idea, a piece of code, a business decision, a strategy.
+                                Anything you need pressure-tested.
+                            </p>
                         </div>
-                        <div className="flex gap-6 text-sm text-slate-600">
-                            <a href="#" className="hover:text-slate-900">Privacy</a>
-                            <a href="#" className="hover:text-slate-900">Terms</a>
-                            <a href="#" className="hover:text-slate-900">Docs</a>
-                            <a href="https://github.com/negraodenio/council" className="hover:text-slate-900">GitHub</a>
+
+                        <div>
+                            <div className="text-4xl font-bold text-neutral-200 mb-4">02</div>
+                            <h3 className="text-lg font-semibold mb-2">Four agents debate</h3>
+                            <p className="text-neutral-500 leading-relaxed">
+                                Advocate defends. Skeptic attacks. Architect restructures.
+                                Optimizer simplifies. They argue until every angle is covered.
+                            </p>
                         </div>
-                        <p className="text-sm text-slate-500">© 2026 CouncilIA. EU-first, GDPR-ready.</p>
+
+                        <div>
+                            <div className="text-4xl font-bold text-neutral-200 mb-4">03</div>
+                            <h3 className="text-lg font-semibold mb-2">Judge delivers verdict</h3>
+                            <p className="text-neutral-500 leading-relaxed">
+                                Claude or GPT-4 reads the full debate, weighs the arguments,
+                                and gives you a reasoned verdict with confidence score.
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+            </section>
+
+            {/* USE CASES */}
+            <section id="usecases" className="py-24 px-6 bg-neutral-50 border-t border-neutral-100">
+                <div className="max-w-4xl mx-auto">
+
+                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-center">
+                        Debate anything
+                    </h2>
+                    <p className="text-neutral-500 text-center mb-16 text-lg">
+                        Not just code. Any decision that matters.
+                    </p>
+
+                    <div className="grid md:grid-cols-2 gap-8">
+
+                        <div className="bg-white p-8 rounded-xl border border-neutral-200">
+                            <h3 className="font-semibold text-lg mb-2">Code & Architecture</h3>
+                            <p className="text-neutral-500 text-sm leading-relaxed">
+                                "Is this production-ready?" — Get security, performance,
+                                readability, and maintainability perspectives before shipping.
+                            </p>
+                        </div>
+
+                        <div className="bg-white p-8 rounded-xl border border-neutral-200">
+                            <h3 className="font-semibold text-lg mb-2">Business Decisions</h3>
+                            <p className="text-neutral-500 text-sm leading-relaxed">
+                                "Should we enter the European market?" — Market analysis,
+                                risk assessment, financial modeling, timing evaluation.
+                            </p>
+                        </div>
+
+                        <div className="bg-white p-8 rounded-xl border border-neutral-200">
+                            <h3 className="font-semibold text-lg mb-2">Startup Validation</h3>
+                            <p className="text-neutral-500 text-sm leading-relaxed">
+                                "Is this idea viable?" — Business model stress-test,
+                                competitor analysis, market fit, unit economics.
+                            </p>
+                        </div>
+
+                        <div className="bg-white p-8 rounded-xl border border-neutral-200">
+                            <h3 className="font-semibold text-lg mb-2">Strategy & Planning</h3>
+                            <p className="text-neutral-500 text-sm leading-relaxed">
+                                "Hire or outsource?" — Cost analysis, quality trade-offs,
+                                timeline impact, long-term implications.
+                            </p>
+                        </div>
+
+                        <div className="bg-white p-8 rounded-xl border border-neutral-200">
+                            <h3 className="font-semibold text-lg mb-2">Content & Marketing</h3>
+                            <p className="text-neutral-500 text-sm leading-relaxed">
+                                "Which positioning wins?" — Brand voice, audience fit,
+                                competitive differentiation, messaging clarity.
+                            </p>
+                        </div>
+
+                        <div className="bg-white p-8 rounded-xl border border-neutral-200">
+                            <h3 className="font-semibold text-lg mb-2">Legal & Compliance</h3>
+                            <p className="text-neutral-500 text-sm leading-relaxed">
+                                "Are we GDPR compliant?" — Risk vectors, data flow analysis,
+                                remediation priorities, compliance gaps.
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+            </section>
+
+            {/* OS AGENTES */}
+            <section className="py-24 px-6 border-t border-neutral-100">
+                <div className="max-w-4xl mx-auto">
+
+                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-16 text-center">
+                        The council
+                    </h2>
+
+                    <div className="grid md:grid-cols-2 gap-8">
+
+                        <div className="p-8 rounded-xl border border-neutral-200">
+                            <div className="w-3 h-3 rounded-full bg-emerald-500 mb-4"></div>
+                            <h3 className="font-semibold text-lg mb-1">The Advocate</h3>
+                            <p className="text-neutral-500 text-sm leading-relaxed">
+                                Finds every reason it works. Identifies strengths,
+                                opportunities, and potential you might be undervaluing.
+                                Builds the strongest case for.
+                            </p>
+                        </div>
+
+                        <div className="p-8 rounded-xl border border-neutral-200">
+                            <div className="w-3 h-3 rounded-full bg-red-500 mb-4"></div>
+                            <h3 className="font-semibold text-lg mb-1">The Skeptic</h3>
+                            <p className="text-neutral-500 text-sm leading-relaxed">
+                                Finds every reason it breaks. Edge cases, market risks,
+                                technical debt, hidden costs. The critic you need but
+                                don't want to hear.
+                            </p>
+                        </div>
+
+                        <div className="p-8 rounded-xl border border-neutral-200">
+                            <div className="w-3 h-3 rounded-full bg-blue-500 mb-4"></div>
+                            <h3 className="font-semibold text-lg mb-1">The Architect</h3>
+                            <p className="text-neutral-500 text-sm leading-relaxed">
+                                Thinks in systems. Restructures your approach for scale,
+                                maintainability, and long-term sustainability. Sees the
+                                big picture you're missing.
+                            </p>
+                        </div>
+
+                        <div className="p-8 rounded-xl border border-neutral-200">
+                            <div className="w-3 h-3 rounded-full bg-amber-500 mb-4"></div>
+                            <h3 className="font-semibold text-lg mb-1">The Optimizer</h3>
+                            <p className="text-neutral-500 text-sm leading-relaxed">
+                                Cuts the fat. Makes it faster, cheaper, simpler.
+                                Questions every complexity. If there's a shortcut
+                                that doesn't sacrifice quality, this agent finds it.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div className="mt-8 p-8 rounded-xl bg-neutral-950 text-white text-center">
+                        <div className="w-3 h-3 rounded-full bg-white mx-auto mb-4"></div>
+                        <h3 className="font-semibold text-lg mb-1">The Judge</h3>
+                        <p className="text-neutral-400 text-sm leading-relaxed max-w-lg mx-auto">
+                            Claude or GPT-4. Reads the entire debate. Weighs every argument.
+                            Delivers the final verdict with confidence score, key trade-offs,
+                            and actionable next steps.
+                        </p>
+                    </div>
+
+                </div>
+            </section>
+
+            {/* PRICING */}
+            <section id="pricing" className="py-24 px-6 bg-neutral-50 border-t border-neutral-100">
+                <div className="max-w-4xl mx-auto">
+
+                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-center">
+                        Pricing
+                    </h2>
+                    <p className="text-neutral-500 text-center mb-16">
+                        Start free. No credit card.
+                    </p>
+
+                    <div className="grid md:grid-cols-3 gap-8">
+
+                        <div className="bg-white p-8 rounded-xl border border-neutral-200">
+                            <h3 className="font-semibold mb-1">Free</h3>
+                            <div className="text-3xl font-bold mb-6">$0</div>
+                            <ul className="space-y-3 text-sm text-neutral-500 mb-8">
+                                <li>5 sessions / month</li>
+                                <li>4 agents + judge</li>
+                                <li>Basic verdict report</li>
+                                <li>Community support</li>
+                            </ul>
+                            <a className="block text-center border border-neutral-200 py-3 rounded-md text-sm font-medium hover:border-neutral-400 transition cursor-pointer">
+                                Start free
+                            </a>
+                        </div>
+
+                        <div className="bg-white p-8 rounded-xl border-2 border-neutral-900 relative">
+                            <span className="absolute -top-3 left-8 bg-neutral-900 text-white text-xs px-3 py-1 rounded-full">
+                                Most popular
+                            </span>
+                            <h3 className="font-semibold mb-1">Pro</h3>
+                            <div className="text-3xl font-bold mb-6">
+                                $29<span className="text-lg text-neutral-400 font-normal">/mo</span>
+                            </div>
+                            <ul className="space-y-3 text-sm text-neutral-500 mb-8">
+                                <li>100 sessions / month</li>
+                                <li>Choose your judge model</li>
+                                <li>Full debate transcript</li>
+                                <li>Export reports (PDF, MD)</li>
+                                <li>GitHub integration</li>
+                                <li>Priority support</li>
+                            </ul>
+                            <a className="block text-center bg-neutral-900 text-white py-3 rounded-md text-sm font-medium hover:bg-neutral-800 transition cursor-pointer">
+                                Start pro
+                            </a>
+                        </div>
+
+                        <div className="bg-white p-8 rounded-xl border border-neutral-200">
+                            <h3 className="font-semibold mb-1">Team</h3>
+                            <div className="text-3xl font-bold mb-6">
+                                $99<span className="text-lg text-neutral-400 font-normal">/mo</span>
+                            </div>
+                            <ul className="space-y-3 text-sm text-neutral-500 mb-8">
+                                <li>Unlimited sessions</li>
+                                <li>Team collaboration</li>
+                                <li>Custom agent personas</li>
+                                <li>API access</li>
+                                <li>SSO + audit logs</li>
+                                <li>Dedicated support</li>
+                            </ul>
+                            <a className="block text-center border border-neutral-200 py-3 rounded-md text-sm font-medium hover:border-neutral-400 transition cursor-pointer">
+                                Contact sales
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+            </section>
+
+            {/* CTA FINAL */}
+            <section id="start" className="py-24 px-6 border-t border-neutral-100">
+                <div className="max-w-2xl mx-auto text-center">
+
+                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-6">
+                        Stop guessing.<br />Start debating.
+                    </h2>
+                    <p className="text-neutral-500 text-lg mb-10">
+                        Your next decision deserves more than one perspective.
+                    </p>
+                    <a className="inline-block bg-neutral-900 text-white px-10 py-4 rounded-md text-base font-medium hover:bg-neutral-800 transition cursor-pointer">
+                        Start your first session — free
+                    </a>
+
+                </div>
+            </section>
+
+            {/* FOOTER */}
+            <footer className="py-12 px-6 border-t border-neutral-100">
+                <div className="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+                    <span className="text-sm text-neutral-400">
+                        © 2025 CouncilIA — EU-first, GDPR-ready
+                    </span>
+                    <div className="flex gap-6 text-sm text-neutral-400">
+                        <a className="hover:text-neutral-600 transition">Privacy</a>
+                        <a className="hover:text-neutral-600 transition">Terms</a>
+                        <a className="hover:text-neutral-600 transition">Docs</a>
+                        <a className="hover:text-neutral-600 transition">GitHub</a>
                     </div>
                 </div>
             </footer>
-        </div>
-    );
+
+        </main>
+    )
 }
