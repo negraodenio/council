@@ -3,16 +3,19 @@ export const maxDuration = 800; // Vercel Pro: 13.3 minutes
 
 import { createClient } from '@supabase/supabase-js';
 
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
-
 function sse(event: string, data: unknown) {
     return `event: ${event}\ndata: ${JSON.stringify(data)}\n\n`;
 }
 
 export async function GET(req: Request) {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+    if (!supabaseUrl || !supabaseKey) {
+        return new Response('Supabase configuration missing', { status: 500 });
+    }
+
+    const supabase = createClient(supabaseUrl, supabaseKey);
     const url = new URL(req.url);
     const runId = url.searchParams.get('runId');
     if (!runId) return new Response('Missing runId', { status: 400 });

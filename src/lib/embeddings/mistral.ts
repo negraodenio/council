@@ -1,7 +1,9 @@
 import { Redis } from '@upstash/redis';
 import crypto from 'crypto';
 
-const redis = Redis.fromEnv();
+function getRedis() {
+    return Redis.fromEnv();
+}
 
 export async function embedMistral(inputs: string[]) {
     const r = await fetch('https://api.mistral.ai/v1/embeddings', {
@@ -26,6 +28,7 @@ export async function embedMistral(inputs: string[]) {
 }
 
 export async function embedMistralCached(inputs: string[]) {
+    const redis = getRedis();
     const results: number[][] = [];
     const toEmbed: { text: string; idx: number }[] = [];
 

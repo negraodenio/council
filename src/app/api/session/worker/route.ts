@@ -9,22 +9,19 @@ import { triggerWebhook } from '@/lib/webhooks/send';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
-export const maxDuration = 800; // Vercel Pro: 13.3 minutes
+export const maxDuration = 800;
 
 async function addEvent(supabase: any, run_id: string, event_type: string, model: string | null, payload: any) {
-    // Model field is used for 'persona' identifier in frontend
     await supabase.from('debate_events').insert({ run_id, event_type, model, payload });
 }
 
-async function callOpenRouter(model: string, messages: any[], opts: { zdr: boolean; allowlist?: string[] }) {
+async function callOpenRouter(model: string, messages: any[], opts: { zdr: boolean }) {
     const providerConfig: any = {
-        zdr: opts.zdr,
-        allowFallbacks: true,
         sort: { by: 'latency', partition: 'none' }
     };
 
-    if (opts.allowlist) {
-        providerConfig.order = opts.allowlist;
+    if (opts.zdr) {
+        providerConfig.data_collection = 'deny';
     }
 
     const r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
@@ -49,36 +46,6 @@ async function callOpenRouter(model: string, messages: any[], opts: { zdr: boole
     return r.json();
 }
 
-async function callSiliconFlow(model: string, messages: any[]) {
-    const url = `${process.env.SILICONFLOW_API_URL || 'https://api.siliconflow.com/v1'}/chat/completions`;
-    console.log(`[SiliconFlow] Calling ${model} at ${url}`);
-
-    try {
-        const r = await fetch(url, {
-            method: 'POST',
-            headers: {
-                Authorization: `Bearer ${process.env.SILICONFLOW_API_KEY}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                model,
-                messages,
-                stream: false
-            })
-        });
-
-        if (!r.ok) {
-            const txt = await r.text();
-            console.error(`[SiliconFlow] Error ${r.status}: ${txt}`);
-            throw new Error(`SiliconFlow error ${r.status}: ${txt}`);
-        }
-        return r.json();
-    } catch (e: any) {
-        console.error('[SiliconFlow] Network/Fetch Error:', e);
-        throw e;
-    }
-}
-
 export async function POST(req: Request) {
     console.log('[Worker] Received request');
     try {
@@ -88,10 +55,8 @@ export async function POST(req: Request) {
         const { validationId, runId, tenant_id, user_id, idea, region, sensitivity } = body;
         const supabase = createAdminClient();
 
-        // SIGNAL START
         await addEvent(supabase, runId, 'system', null, { msg: '🏛️ Debate 2.0 Protocol Initiated. Worker Active.' });
 
-        // Phase 3.2: PII Redaction
         const { redacted: ideaRedacted, hadPII } = redactPII(idea);
 
         if (hadPII) {
@@ -107,9 +72,8 @@ export async function POST(req: Request) {
         const round1Results = await Promise.all(personas.map(async (p) => {
             const t0 = Date.now();
             try {
-                // Get assigned model
                 const assignedModel = config.assign[p.id as keyof typeof config.assign];
-                const modelKey = assignedModel?.model || 'deepseek-ai/DeepSeek-V3'; // Default to SF if configured
+                const modelKey = assignedModel?.model || 'deepseek/deepseek-chat';
                 const provider = assignedModel?.provider || 'openrouter';
 
                 const messages = [
@@ -117,23 +81,17 @@ export async function POST(req: Request) {
                     { role: 'user', content: ideaRedacted }
                 ];
 
-                let out;
-                if (provider === 'siliconflow') {
-                    out = await callSiliconFlow(modelKey, messages);
-                } else {
-                    out = await callOpenRouter(modelKey, messages, { zdr: config.judge.zdr });
-                }
+                const out = await callOpenRouter(modelKey, messages, { zdr: config.judge.zdr });
 
                 const text = out?.choices?.[0]?.message?.content || `Analysis complete by ${p.name}.`;
 
-                // Important: we save 'p.id' (e.g. 'advocate') as the model field so the UI mapping works
                 await addEvent(supabase, runId, 'model_msg', p.id, { text, phase: 'initial_analysis', persona: p.name, emoji: p.emoji });
 
                 await logAICall({
                     validation_id: validationId,
                     tenant_id: tenant_id,
                     layer: 'swarm_r1',
-                    provider: provider,
+                    provider: 'openrouter',
                     model: modelKey,
                     latency_ms: Date.now() - t0,
                     status: 'ok'
@@ -157,20 +115,14 @@ export async function POST(req: Request) {
             const t0 = Date.now();
             try {
                 const assignedModel = config.assign[p.id as keyof typeof config.assign];
-                const modelKey = assignedModel?.model || 'deepseek-ai/DeepSeek-V3';
-                const provider = assignedModel?.provider || 'openrouter';
+                const modelKey = assignedModel?.model || 'deepseek/deepseek-chat';
 
                 const messages = [
                     { role: 'system', content: `You are the ${p.name}. Role: ${p.role}. \n\nThe council has spoken (Round 1). Critically evaluate your peers' arguments and provide your rebuttal or final refined conclusion. Be direct.` },
                     { role: 'user', content: `Original Topic: ${ideaRedacted}\n\n=== ROUND 1 TRANSCRIPT ===\n${transcriptR1}` }
                 ];
 
-                let out;
-                if (provider === 'siliconflow') {
-                    out = await callSiliconFlow(modelKey, messages);
-                } else {
-                    out = await callOpenRouter(modelKey, messages, { zdr: config.judge.zdr });
-                }
+                const out = await callOpenRouter(modelKey, messages, { zdr: config.judge.zdr });
 
                 const text = out?.choices?.[0]?.message?.content || `Rebuttal complete by ${p.name}.`;
 
@@ -180,7 +132,7 @@ export async function POST(req: Request) {
                     validation_id: validationId,
                     tenant_id: tenant_id,
                     layer: 'swarm_r2',
-                    provider: provider,
+                    provider: 'openrouter',
                     model: modelKey,
                     latency_ms: Date.now() - t0,
                     status: 'ok'
@@ -189,7 +141,6 @@ export async function POST(req: Request) {
                 return { id: p.id, name: p.name, text };
             } catch (err: any) {
                 console.error(`Round 2 error for ${p.id}:`, err);
-                // Don't error visually in UI, just log
                 return { id: p.id, name: p.name, text: '[Error in Round 2]' };
             }
         }));
@@ -205,28 +156,23 @@ export async function POST(req: Request) {
 
         try {
             const judgeOut = await callOpenRouter(config.judge.primary, judgeMessages, {
-                zdr: config.judge.zdr,
-                allowlist: config.judge.allowlist
+                zdr: config.judge.zdr
             });
             const judgeText = judgeOut?.choices?.[0]?.message?.content || 'Judge finalized evaluation.';
 
-            // Parse score if possible (simple heuristic)
             const scoreMatch = judgeText.match(/(\d{1,3})\/100/);
             const score = scoreMatch ? parseInt(scoreMatch[1]) : 85;
 
             await addEvent(supabase, runId, 'judge_note', 'judge', { text: judgeText, type: 'final_consensus', consensusDelta: score });
 
-            // Mark complete
             await supabase.from('validations').update({
                 status: 'complete',
                 consensus_score: score,
                 full_result: { judge: judgeText, round1: round1Results, round2: round2Results }
             }).eq('id', validationId);
 
-            // Billing Usage
             await trackUsage({ tenant_id, validation_id: validationId });
 
-            // Webhook
             await triggerWebhook({
                 tenant_id,
                 event: 'debate.complete',
@@ -236,6 +182,12 @@ export async function POST(req: Request) {
         } catch (err: any) {
             console.error('Judge Error:', err);
             await addEvent(supabase, runId, 'error', 'judge', { msg: `Judge failed: ${err.message}` });
+
+            await supabase.from('validations').update({
+                status: 'complete',
+                consensus_score: 0,
+                full_result: { judge: `Judge failed: ${err.message}`, round1: round1Results, round2: round2Results }
+            }).eq('id', validationId);
         }
 
         return apiOk({});

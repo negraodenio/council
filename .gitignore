@@ -14,3 +14,6 @@ coverage
 .idea
 .vscode
 headers.txt
+.env.inspect
+.env.prod.inspect
+.env.production

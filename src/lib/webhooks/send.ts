@@ -1,16 +1,13 @@
-import { createClient } from '@supabase/supabase-js';
+import { createAdminClient } from '@/lib/supabase/admin';
 import crypto from 'crypto';
-
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
 
 export async function triggerWebhook(params: {
     tenant_id: string;
     event: string;
     payload: any;
 }) {
+    const supabase = createAdminClient();
+
     const { data: subs } = await supabase
         .from('webhook_subscriptions')
         .select('*')

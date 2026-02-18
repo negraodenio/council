@@ -1,9 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+import { createAdminClient } from '@/lib/supabase/admin';
 
 export async function logAICall(params: {
     validation_id?: string;
@@ -18,5 +13,6 @@ export async function logAICall(params: {
     status: 'ok' | 'error' | 'timeout' | 'fallback';
     error?: string;
 }) {
+    const supabase = createAdminClient();
     await supabase.from('ai_logs').insert(params);
 }

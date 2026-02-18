@@ -17,49 +17,47 @@ export function blockChina(region: Region, sensitivity: Sensitivity) {
 export function getCouncilConfig(region: Region, sensitivity: Sensitivity) {
     const euSensitive = blockChina(region, sensitivity);
 
-    // Dynamic model selection based on region/sensitivity
-    // Mapping personas to specific models for best performance
+    // ALL models via OpenRouter — cheap tier
     const models = {
-        deepseek: { provider: 'openrouter', model: 'deepseek/deepseek-chat' },
-        silicon: { provider: 'siliconflow', model: 'deepseek-ai/DeepSeek-V3' }, // Added SiliconFlow
-        mistral: { provider: 'mistral', model: 'mistral-large-latest' },
-        llama: { provider: 'openrouter', model: 'meta-llama/llama-3.1-70b-instruct' },
-        claude: { provider: 'anthropic', model: 'claude-3-5-sonnet-20240620' }, // fallback
-        gpt4: { provider: 'openai', model: 'gpt-4o' }
+        deepseek: { provider: 'openrouter', model: 'deepseek/deepseek-chat' },              // $0.14/M in
+        gemini: { provider: 'openrouter', model: 'google/gemini-2.0-flash-001' },          // $0.10/M in
+        llama: { provider: 'openrouter', model: 'meta-llama/llama-3.1-8b-instruct' },     // $0.05/M in
+        mistral: { provider: 'openrouter', model: 'mistralai/mistral-small-latest' },       // $0.10/M in
+        gpt4mini: { provider: 'openrouter', model: 'openai/gpt-4o-mini' },                   // $0.15/M in
     };
 
     const config = (() => {
-        // EU / Sensitive Logic
+        // EU / Sensitive — no DeepSeek (China), use EU-friendly models
         if (euSensitive) {
             return {
                 assign: {
-                    advocate: models.mistral,  // EU-based
-                    skeptic: models.llama,     // Open weights
-                    architect: models.mistral,
+                    advocate: models.mistral,
+                    skeptic: models.llama,
+                    architect: models.gemini,
                     optimizer: models.llama,
                 },
                 judge: {
-                    provider: 'mistral',
-                    primary: 'mistral-large-latest',
-                    fallback: 'mistral-small-latest',
-                    zdr: false, // Explicitly disabled for compliance/audit if needed, or true if preferred
-                    allowlist: ['mistral-large-latest', 'mistral-small-latest']
+                    provider: 'openrouter',
+                    primary: 'openai/gpt-4o-mini',
+                    fallback: 'mistralai/mistral-small-latest',
+                    zdr: false,
+                    allowlist: undefined as string[] | undefined
                 }
             };
         }
 
-        // Default / Global Logic
+        // Default / Global — cheapest mix
         return {
             assign: {
-                advocate: models.silicon, // SiliconFlow (DeepSeek)
-                skeptic: models.mistral,
+                advocate: models.deepseek,
+                skeptic: models.gemini,
                 architect: models.llama,
-                optimizer: models.silicon, // SiliconFlow (DeepSeek)
+                optimizer: models.deepseek,
             },
             judge: {
                 provider: 'openrouter',
-                primary: 'openai/gpt-4o',
-                fallback: 'anthropic/claude-3-opus',
+                primary: 'openai/gpt-4o-mini',
+                fallback: 'deepseek/deepseek-chat',
                 zdr: true,
                 allowlist: undefined as string[] | undefined
             }

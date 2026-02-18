@@ -1,12 +1,9 @@
+export const dynamic = 'force-dynamic';
+
 import { createClient } from '@supabase/supabase-js';
 import { apiError, apiOk } from '@/lib/api/error';
 import { gh } from '@/lib/github/client';
 import { triggerWebhook } from '@/lib/webhooks/send';
-
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
 
 function parseGitHubRepo(url: string) {
     const cleaned = url.replace('https://github.com/', '').replace(/^\/+/, '').replace(/\/+$/, '');
@@ -15,6 +12,15 @@ function parseGitHubRepo(url: string) {
 }
 
 export async function POST(req: Request) {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+    if (!supabaseUrl || !supabaseKey) {
+        return apiError('Supabase configuration missing', 500);
+    }
+
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
     try {
         const { patch_id, title, body: prBody } = await req.json();
         if (!patch_id) return apiError('patch_id is required', 400);
