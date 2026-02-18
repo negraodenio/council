@@ -20,37 +20,45 @@ export default function Chamber() {
         // Phase 4: Use SSE for Vercel compatibility
         const es = new EventSource(`/api/chamber/stream?runId=${runId}`);
 
-        es.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-
-            if (data.type === 'system' && data.ok) {
-                console.log('Connected to Council Chamber stream');
-                return;
-            }
+        const handleStreamData = (data: any) => {
+            if (data.type === 'system' && data.ok) return;
 
             setMessages(prev => {
                 // Dedup based on timestamp + persona
-                const exists = prev.some(m => m.timestamp === data.ts && m.persona === data.persona);
+                const exists = prev.some(m => m.timestamp === data.ts && m.persona === data.model);
                 if (exists) return prev;
 
                 return [...prev, {
-                    persona: data.model, // Backend sends 'model' as persona ID (e.g. 'advocate')
+                    persona: data.model, // Backend sends 'model' as persona ID
                     content: data.text || data.msg,
                     emoji: data.emoji,
                     timestamp: data.ts || Date.now(),
                     ...data
                 }];
             });
-
-            // Update consensus
-            if (data.type === 'final_consensus' && data.consensusDelta) {
-                setConsensus(data.consensusDelta);
-            }
         };
 
+        es.onopen = () => console.log('Connected to Council Chamber stream');
+
+        // Add listeners for specific event types sent by backend
+        es.addEventListener('model_msg', (event: any) => handleStreamData(JSON.parse(event.data)));
+        es.addEventListener('system', (event: any) => handleStreamData(JSON.parse(event.data)));
+        es.addEventListener('error', (event: any) => handleStreamData(JSON.parse(event.data)));
+
+        es.addEventListener('judge_note', (event: any) => {
+            const data = JSON.parse(event.data);
+            handleStreamData(data);
+
+            // Update consensus from judge's final note
+            if (data.consensusDelta) {
+                setConsensus(data.consensusDelta);
+            }
+        });
+
         es.onerror = (err) => {
-            console.error('SSE Error:', err);
-            es.close();
+            // console.error('SSE Error:', err);
+            // Don't close immediately on error, let it retry or handle gracefully
+            // es.close(); 
         };
 
         return () => {
