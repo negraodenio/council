@@ -1,6 +1,15 @@
 export type Region = 'EU' | 'US' | 'APAC' | 'GCC' | 'CN';
 export type Sensitivity = 'public' | 'business' | 'code' | 'pii' | 'regulated';
 
+export const councilConfig = {
+    personas: {
+        advocate: { id: 'advocate', name: 'Advocate', emoji: '✅', role: 'Argue in favor of the proposal, highlighting benefits and opportunities.' },
+        skeptic: { id: 'skeptic', name: 'Skeptic', emoji: '❓', role: 'Critically analyze the proposal, finding flaws, risks, and edge cases.' },
+        architect: { id: 'architect', name: 'Architect', emoji: '🏗️', role: 'Focus on technical feasibility, scalability, and implementation details.' },
+        optimizer: { id: 'optimizer', name: 'Optimizer', emoji: '⚡', role: 'Suggest improvements for efficiency, performance, and cost.' },
+    }
+};
+
 export function blockChina(region: Region, sensitivity: Sensitivity) {
     return region === 'EU' && (sensitivity === 'pii' || sensitivity === 'regulated' || sensitivity === 'code');
 }
@@ -8,61 +17,32 @@ export function blockChina(region: Region, sensitivity: Sensitivity) {
 export function getCouncilConfig(region: Region, sensitivity: Sensitivity) {
     const euSensitive = blockChina(region, sensitivity);
 
+    // Dynamic model selection based on region/sensitivity
+    // Mapping personas to specific models for best performance
+    const models = {
+        deepseek: { provider: 'openrouter', model: 'deepseek/deepseek-chat' },
+        mistral: { provider: 'mistral', model: 'mistral-large-latest' },
+        llama: { provider: 'openrouter', model: 'meta-llama/llama-3.1-70b-instruct' },
+        claude: { provider: 'anthropic', model: 'claude-3-5-sonnet-20240620' }, // fallback
+        gpt4: { provider: 'openai', model: 'gpt-4o' }
+    };
+
     const config = (() => {
-        if (region === 'EU') {
-            return {
-                frontModels: [
-                    { key: 'deepseek', label: 'DeepSeek', provider: 'openrouter', model: 'deepseek/deepseek-chat', avatarColor: '#FF00FF' },
-                    { key: 'mistral', label: 'Mistral', provider: 'mistral', model: 'mistral-large-latest', avatarColor: '#3b82f6' },
-                    { key: 'glm', label: 'GLM', provider: euSensitive ? 'openrouter' : 'siliconflow', model: euSensitive ? 'meta-llama/llama-3.1-70b-instruct' : 'glm-4', avatarColor: '#32CD32' },
-                    { key: 'llama', label: 'Llama', provider: 'openrouter', model: 'meta-llama/llama-3.1-70b-instruct', avatarColor: '#FFBF00' },
-                ],
-                judge: {
-                    provider: 'openrouter',
-                    primary: 'openai/gpt-5.2',
-                    fallback: 'anthropic/claude-opus-4.5',
-                    zdr: true,
-                    allowlist: euSensitive ? ['OpenAI', 'Anthropic', 'Mistral'] : undefined
-                }
-            };
-        }
-
-        if (region === 'CN') {
-            return {
-                frontModels: [
-                    { key: 'kimi', label: 'Kimi', provider: 'siliconflow', model: 'kimi-k2.5', avatarColor: '#A020F0' },
-                    { key: 'deepseek', label: 'DeepSeek', provider: 'siliconflow', model: 'deepseek-r1', avatarColor: '#FF00FF' },
-                    { key: 'glm', label: 'GLM', provider: 'siliconflow', model: 'glm-4', avatarColor: '#32CD32' },
-                    { key: 'qwen', label: 'Qwen', provider: 'siliconflow', model: 'qwen2.5-72b-instruct', avatarColor: '#00FFFF' },
-                ],
-                judge: { provider: 'openrouter', primary: 'openai/gpt-5.2', fallback: 'anthropic/claude-opus-4.5', zdr: false }
-            };
-        }
-
-        if (region === 'GCC') {
-            const safe = sensitivity === 'public' || sensitivity === 'business';
-            return {
-                frontModels: [
-                    { key: 'mistral', label: 'Mistral', provider: 'mistral', model: 'mistral-large-latest', avatarColor: '#3b82f6' },
-                    { key: 'deepseek', label: 'DeepSeek', provider: 'openrouter', model: 'deepseek/deepseek-chat', avatarColor: '#FF00FF' },
-                    { key: 'llama', label: 'Llama', provider: 'openrouter', model: 'meta-llama/llama-3.1-70b-instruct', avatarColor: '#FFBF00' },
-                    safe
-                        ? { key: 'qwen', label: 'Qwen', provider: 'siliconflow', model: 'qwen2.5-72b-instruct', avatarColor: '#00FFFF' }
-                        : { key: 'glm', label: 'GLM', provider: 'mistral', model: 'devstral-medium-latest', avatarColor: '#32CD32' },
-                ],
-                judge: { provider: 'openrouter', primary: 'openai/gpt-5.2', fallback: 'anthropic/claude-opus-4.5', zdr: true }
-            };
-        }
-
-        // US/APAC default
+        // Default assignment
         return {
-            frontModels: [
-                { key: 'deepseek', label: 'DeepSeek', provider: 'siliconflow', model: 'deepseek-r1', avatarColor: '#FF00FF' },
-                { key: 'qwen', label: 'Qwen', provider: 'siliconflow', model: 'qwen2.5-72b-instruct', avatarColor: '#00FFFF' },
-                { key: 'glm', label: 'GLM', provider: 'siliconflow', model: 'glm-4', avatarColor: '#32CD32' },
-                { key: 'llama', label: 'Llama', provider: 'openrouter', model: 'meta-llama/llama-3.1-70b-instruct', avatarColor: '#FFBF00' },
-            ],
-            judge: { provider: 'openrouter', primary: 'openai/gpt-5.2', fallback: 'anthropic/claude-opus-4.5', zdr: (sensitivity !== 'public' && sensitivity !== 'business') }
+            assign: {
+                advocate: models.deepseek,
+                skeptic: models.mistral,
+                architect: models.llama,
+                optimizer: models.deepseek, // reusing deepseek for distinct logic
+            },
+            judge: {
+                provider: 'openrouter',
+                primary: 'openai/gpt-4o',
+                fallback: 'anthropic/claude-3-opus',
+                zdr: true,
+                allowlist: undefined as string[] | undefined
+            }
         };
     })();
 

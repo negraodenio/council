@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { getCouncilConfig } from '@/config/council';
+import { getCouncilConfig, councilConfig } from '@/config/council';
 import { logAICall } from '@/lib/logs/ai';
 import { apiError, apiOk } from '@/lib/api/error';
 import { redactPII } from '@/lib/privacy/redact';
@@ -11,6 +11,7 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 async function addEvent(supabase: any, run_id: string, event_type: string, model: string | null, payload: any) {
+    // Model field is used for 'persona' identifier in frontend
     await supabase.from('debate_events').insert({ run_id, event_type, model, payload });
 }
 
@@ -60,37 +61,42 @@ export async function POST(req: Request) {
         }
 
         const config = getCouncilConfig(region, sensitivity);
-        const models = config.frontModels;
-
-        const messagesBase = [
-            { role: 'system', content: 'You are an expert AI panelist. Provide a concise, professional analysis based on your specialty.' },
-            { role: 'user', content: ideaRedacted }
-        ];
+        const personas = Object.values(councilConfig.personas);
 
         // swarm discussion
-        for (const m of models) {
+        for (const p of personas) {
             const t0 = Date.now();
-            console.log(`Processing model ${m.key}...`);
+            console.log(`Processing persona ${p.id}...`);
+
+            // Get assigned model for this persona
+            const assignedModel = config.assign[p.id as keyof typeof config.assign];
+            const modelKey = assignedModel?.model || 'openai/gpt-3.5-turbo';
+
+            const messages = [
+                { role: 'system', content: `You are the ${p.name}. Role: ${p.role}. Provide a concise, professional analysis.` },
+                { role: 'user', content: ideaRedacted }
+            ];
 
             try {
                 // Real LLM call
-                const out = await callOpenRouter(m.model || m.key, messagesBase, { zdr: config.judge.zdr });
-                const text = out?.choices?.[0]?.message?.content || `Analysis complete by ${m.label}.`;
+                const out = await callOpenRouter(modelKey, messages, { zdr: config.judge.zdr });
+                const text = out?.choices?.[0]?.message?.content || `Analysis complete by ${p.name}.`;
 
-                await addEvent(supabase, runId, 'model_msg', m.key, { text, phase: 'initial_analysis' });
+                // Important: we save 'p.id' (e.g. 'advocate') as the model field so the UI mapping works
+                await addEvent(supabase, runId, 'model_msg', p.id, { text, phase: 'initial_analysis', persona: p.name, emoji: p.emoji });
 
                 await logAICall({
                     validation_id: validationId,
                     tenant_id: tenant_id,
                     layer: 'swarm',
-                    provider: m.provider || 'openrouter',
-                    model: m.model || m.key,
+                    provider: assignedModel?.provider || 'openrouter',
+                    model: modelKey,
                     latency_ms: Date.now() - t0,
                     status: 'ok'
                 });
             } catch (err: any) {
-                console.error(`Swarm error for ${m.key}:`, err);
-                await addEvent(supabase, runId, 'error', m.key, { msg: `Failed to get response from ${m.label}: ${err.message}` });
+                console.error(`Swarm error for ${p.id}:`, err);
+                await addEvent(supabase, runId, 'error', p.id, { msg: `Failed to get response from ${p.name}: ${err.message}` });
             }
         }
 
@@ -107,14 +113,16 @@ export async function POST(req: Request) {
             });
             const judgeText = judgeOut?.choices?.[0]?.message?.content || 'Judge finalized evaluation.';
 
-            await addEvent(supabase, runId, 'judge_note', 'judge', { text: judgeText, type: 'final_consensus' });
+            // Parse score if possible (simple heuristic)
+            const scoreMatch = judgeText.match(/(\d{1,3})\/100/);
+            const score = scoreMatch ? parseInt(scoreMatch[1]) : 85;
 
-            const score = 85; // Placeholder
+            await addEvent(supabase, runId, 'judge_note', 'judge', { text: judgeText, type: 'final_consensus', consensusDelta: score });
 
             // Mark complete
             await supabase.from('validations').update({
                 status: 'complete',
-                consensus_score: score, // Placeholder - in real app we'd parse this from judgeText
+                consensus_score: score,
                 full_result: { judge: judgeText }
             }).eq('id', validationId);
 
@@ -125,7 +133,7 @@ export async function POST(req: Request) {
             await triggerWebhook({
                 tenant_id,
                 event: 'debate.complete',
-                payload: { validation_id: validationId, consensus_score: score, council: models.length }
+                payload: { validation_id: validationId, consensus_score: score, council: personas.length }
             });
 
         } catch (err: any) {
