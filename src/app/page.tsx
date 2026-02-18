@@ -13,7 +13,7 @@ export default function Home() {
                         <a href="#usecases" className="hover:text-neutral-900 transition">Use cases</a>
                         <a href="#pricing" className="hover:text-neutral-900 transition">Pricing</a>
                         <a
-                            href="#start"
+                            href="/login"
                             className="bg-neutral-900 text-white px-4 py-2 rounded-md text-sm hover:bg-neutral-800 transition"
                         >
                             Start a session
@@ -44,7 +44,7 @@ export default function Home() {
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <a
-                            href="#start"
+                            href="/login"
                             className="bg-neutral-900 text-white px-8 py-4 rounded-md text-base font-medium hover:bg-neutral-800 transition"
                         >
                             Start a free session
@@ -377,7 +377,7 @@ export default function Home() {
                     <p className="text-neutral-500 text-lg mb-10">
                         Your next decision deserves more than one perspective.
                     </p>
-                    <a className="inline-block bg-neutral-900 text-white px-10 py-4 rounded-md text-base font-medium hover:bg-neutral-800 transition cursor-pointer">
+                    <a href="/login" className="inline-block bg-neutral-900 text-white px-10 py-4 rounded-md text-base font-medium hover:bg-neutral-800 transition cursor-pointer">
                         Start your first session — free
                     </a>
 
