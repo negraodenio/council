@@ -31,7 +31,7 @@ export default function LoginPage() {
             email,
             password,
             options: {
-                emailRedirectTo: `${window.location.origin}/api/auth/callback`,
+                emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || window.location.origin}/api/auth/callback`,
             }
         });
         if (err) {
