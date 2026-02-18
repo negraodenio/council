@@ -9,7 +9,7 @@ import { triggerWebhook } from '@/lib/webhooks/send';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
-export const maxDuration = 900; // Vercel Pro: 15 minutes
+export const maxDuration = 300; // Vercel Pro: 5 minutes (Limit detected during build)
 
 async function addEvent(supabase: any, run_id: string, event_type: string, model: string | null, payload: any) {
     // Model field is used for 'persona' identifier in frontend
