@@ -1,5 +1,4 @@
 export const dynamic = 'force-dynamic';
-export const dynamic = 'force-dynamic';
 export const maxDuration = 800; // Vercel Pro: 13.3 minutes
 
 import { createClient } from '@supabase/supabase-js';

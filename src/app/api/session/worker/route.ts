@@ -9,8 +9,6 @@ import { triggerWebhook } from '@/lib/webhooks/send';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
-export const runtime = 'nodejs';
-export const dynamic = 'force-dynamic';
 export const maxDuration = 800; // Vercel Pro: 13.3 minutes
 
 async function addEvent(supabase: any, run_id: string, event_type: string, model: string | null, payload: any) {
