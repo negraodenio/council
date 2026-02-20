@@ -199,7 +199,7 @@ export default function DebateChamber({ runId }: { runId: string }) {
     }
 
     return (
-        <div className="bg-[#0a0f1e] min-h-screen flex flex-col text-white">
+        <div className="bg-[#0a0f1e] min-h-screen flex flex-col text-white" suppressHydrationWarning>
             <header className="sticky top-0 z-50 bg-[#0a0f1e]/90 backdrop-blur-md border-b border-white/5 px-5 py-3 flex items-center justify-between">
                 <div className="flex items-center gap-3"><a href="/dashboard" className="text-white/40 hover:text-white text-xs mr-2">&larr;</a>
                     <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-purple-500 to-cyan-400 flex items-center justify-center">
@@ -247,7 +247,7 @@ export default function DebateChamber({ runId }: { runId: string }) {
                                 </defs>
                             </svg>
                             <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                <span className="text-xl font-black bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
+                                <span className="text-xl font-black bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent" suppressHydrationWarning>
                                     {consensus}
                                 </span>
                                 <span className="text-[7px] font-bold text-white/30 uppercase tracking-widest">sync</span>
@@ -323,16 +323,16 @@ export default function DebateChamber({ runId }: { runId: string }) {
                                     className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 border mt-1"
                                     style={{ borderColor: persona.c + '40', backgroundColor: persona.c + '15' }}
                                 >
-                                    <span className="text-sm">{persona.em}</span>
+                                    <span className="text-sm"><span>{persona.em}</span></span>
                                 </div>
                                 <div className="flex-1 bg-white/[0.03] hover:bg-white/[0.05] rounded-xl p-3 border border-white/5">
                                     <div className="flex items-center justify-between mb-1">
                                         <span className="text-[10px] font-black uppercase tracking-wider" style={{ color: persona.c }}>
-                                            {persona.dn} {msg.is_judge ? ' (Juiz)' : ''}
+                                            <span>{persona.dn}</span> <span>{msg.is_judge ? ' (Juiz)' : ''}</span>
                                         </span>
-                                        <span className="text-white/15 text-[9px] font-mono">R{msg.round}</span>
+                                        <span className="text-white/15 text-[9px] font-mono"><span>R</span><span>{msg.round}</span></span>
                                     </div>
-                                    <p className="text-sm text-white/80 leading-relaxed whitespace-pre-wrap">{msg.content}</p>
+                                    <p className="text-sm text-white/80 leading-relaxed whitespace-pre-wrap"><span>{msg.content}</span></p>
                                 </div>
                             </div>
                         );

@@ -49,7 +49,7 @@ export default function ConsensusReport({ validation, patches }: {
     const ringColor = score >= 70 ? '#22c55e' : score >= 40 ? '#f59e0b' : '#ef4444';
 
     return (
-        <div className="bg-[#0a0f1e] text-slate-50 min-h-screen relative overflow-x-hidden">
+        <div className="bg-[#0a0f1e] text-slate-50 min-h-screen relative overflow-x-hidden" suppressHydrationWarning>
             {/* BG gradient */}
             <div className="absolute inset-0 pointer-events-none z-0"
                 style={{
@@ -117,7 +117,7 @@ export default function ConsensusReport({ validation, patches }: {
                                 />
                             </svg>
                             <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                <span className="text-6xl font-black tracking-tighter">{score}</span>
+                                <span className="text-6xl font-black tracking-tighter" suppressHydrationWarning>{score}</span>
                                 <span className="font-mono text-sm text-slate-500 mt-1">/ 100</span>
                             </div>
                         </div>
@@ -135,11 +135,11 @@ export default function ConsensusReport({ validation, patches }: {
                         <div className="flex justify-between items-end mb-3">
                             <div>
                                 <span className="text-xs text-slate-500 uppercase tracking-wider">{t(lang, 'cr_dissent')}</span>
-                                <div className="text-lg font-black text-purple-400">{risk}%</div>
+                                <div className="text-lg font-black text-purple-400"><span>{risk}</span>%</div>
                             </div>
                             <div className="text-right">
                                 <span className="text-xs text-slate-500 uppercase tracking-wider">{t(lang, 'cr_agreement')}</span>
-                                <div className="text-lg font-black text-cyan-400">{align}%</div>
+                                <div className="text-lg font-black text-cyan-400"><span>{align}</span>%</div>
                             </div>
                         </div>
                         <div className="h-3 w-full bg-white/5 border border-white/10 overflow-hidden flex rounded-full">
