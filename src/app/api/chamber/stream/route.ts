@@ -1,4 +1,4 @@
-import { createAdminClient } from '@/lib/supabase/admin';
+﻿import { createAdminClient } from '@/lib/supabase/admin';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -13,24 +13,23 @@ export async function GET(req: Request) {
 
     const encoder = new TextEncoder();
     let closed = false;
+    let lastTs = '';
 
     const stream = new ReadableStream({
         async start(controller) {
             const supabase = createAdminClient();
-            let lastId = 0;
 
             function send(eventType: string, data: any) {
                 if (closed) return;
                 try {
                     controller.enqueue(
-                        encoder.encode(`event: ${eventType}\ndata: ${JSON.stringify(data)}\n\n`)
+                        encoder.encode('event: ' + eventType + '\ndata: ' + JSON.stringify(data) + '\n\n')
                     );
                 } catch {
                     closed = true;
                 }
             }
 
-            // Send initial heartbeat
             send('heartbeat', { ts: Date.now() });
 
             const poll = setInterval(async () => {
@@ -40,15 +39,14 @@ export async function GET(req: Request) {
                 }
 
                 try {
-                    // Fetch new events since last seen id
                     let query = supabase
                         .from('debate_events')
                         .select('*')
                         .eq('run_id', runId)
-                        .order('created_at', { ascending: true });
+                        .order('ts', { ascending: true });
 
-                    if (lastId > 0) {
-                        query = query.gt('id', lastId);
+                    if (lastTs) {
+                        query = query.gt('ts', lastTs);
                     }
 
                     const { data: events, error } = await query;
@@ -61,13 +59,7 @@ export async function GET(req: Request) {
                     if (!events || events.length === 0) return;
 
                     for (const ev of events) {
-                        // Track last seen id
-                        if (typeof ev.id === 'number' && ev.id > lastId) {
-                            lastId = ev.id;
-                        } else if (typeof ev.id === 'string') {
-                            // If id is UUID, use a different tracking approach
-                            lastId = lastId + 1;
-                        }
+                        if (ev.ts) lastTs = ev.ts;
 
                         const payload = ev.payload || {};
 
@@ -77,7 +69,9 @@ export async function GET(req: Request) {
                                     model: ev.model,
                                     text: payload.text || '',
                                     phase: payload.phase || '',
-                                    ts: ev.created_at,
+                                    persona: payload.persona || '',
+                                    emoji: payload.emoji || '',
+                                    ts: ev.ts,
                                 });
                                 break;
 
@@ -86,7 +80,7 @@ export async function GET(req: Request) {
                                     model: 'judge',
                                     text: payload.text || '',
                                     type: payload.type || '',
-                                    ts: ev.created_at,
+                                    ts: ev.ts,
                                 });
                                 break;
 
@@ -103,13 +97,10 @@ export async function GET(req: Request) {
                                     validationId: payload.validationId || '',
                                     consensus_score: payload.consensus_score ?? 0,
                                 });
-                                // Stop polling after complete
                                 clearInterval(poll);
                                 setTimeout(() => {
                                     if (!closed) {
-                                        try {
-                                            controller.close();
-                                        } catch { }
+                                        try { controller.close(); } catch { }
                                     }
                                 }, 1000);
                                 return;
@@ -118,39 +109,40 @@ export async function GET(req: Request) {
                                 send('model_msg', {
                                     model: 'system',
                                     text: payload.msg || '',
-                                    ts: ev.created_at,
+                                    ts: ev.ts,
                                 });
                                 break;
 
                             case 'error':
                                 send('model_msg', {
                                     model: ev.model || 'system',
-                                    text: `⚠️ ${payload.msg || 'Unknown error'}`,
-                                    ts: ev.created_at,
+                                    text: 'Warning: ' + (payload.msg || 'Unknown error'),
+                                    ts: ev.ts,
                                 });
+                                break;
+
+                            case 'lang':
+                                send('lang', { lang: payload.lang || 'English' });
                                 break;
 
                             default:
                                 send('model_msg', {
                                     model: ev.model || 'system',
                                     text: payload.text || payload.msg || '',
-                                    ts: ev.created_at,
+                                    ts: ev.ts,
                                 });
                         }
                     }
                 } catch (err) {
                     console.error('[Stream] Poll error:', err);
                 }
-            }, 1500); // Poll every 1.5s
+            }, 1500);
 
-            // Cleanup after 10 minutes max
             setTimeout(() => {
                 closed = true;
                 clearInterval(poll);
-                try {
-                    controller.close();
-                } catch { }
-            }, 600_000);
+                try { controller.close(); } catch { }
+            }, 600000);
         },
 
         cancel() {
@@ -162,7 +154,7 @@ export async function GET(req: Request) {
         headers: {
             'Content-Type': 'text/event-stream',
             'Cache-Control': 'no-cache, no-transform',
-            Connection: 'keep-alive',
+            'Connection': 'keep-alive',
             'X-Accel-Buffering': 'no',
         },
     });

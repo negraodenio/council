@@ -1,4 +1,4 @@
-export default function Home() {
+﻿export default function Home() {
     return (
         <main className="bg-white text-neutral-900">
 
@@ -10,8 +10,10 @@ export default function Home() {
                     </a>
                     <div className="hidden md:flex items-center gap-8 text-sm text-neutral-500">
                         <a href="#how" className="hover:text-neutral-900 transition">How it works</a>
+                        <a href="#council" className="hover:text-neutral-900 transition">The Council</a>
                         <a href="#usecases" className="hover:text-neutral-900 transition">Use cases</a>
                         <a href="#pricing" className="hover:text-neutral-900 transition">Pricing</a>
+                        <a href="/methodology" className="hover:text-neutral-900 transition">Methodology</a>
                         <a
                             href="/login"
                             className="bg-neutral-900 text-white px-4 py-2 rounded-md text-sm hover:bg-neutral-800 transition"
@@ -26,20 +28,21 @@ export default function Home() {
             <section className="pt-40 pb-24 px-6">
                 <div className="max-w-3xl mx-auto text-center">
 
-                    <p className="text-sm text-neutral-500 uppercase tracking-widest mb-6">
-                        Multi-agent AI deliberation
-                    </p>
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-neutral-100 text-neutral-500 text-sm mb-8">
+                        <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
+                        ACP Protocol{"'"} {"·"} 6 AI Experts {"·"} 3 Adversarial Rounds {"·"} 7 Models
+                    </div>
 
                     <h1 className="text-5xl md:text-7xl font-bold leading-[1.05] tracking-tight mb-8">
                         One AI agrees with you.
                         <br />
-                        <span className="text-neutral-300">Four won't.</span>
+                        <span className="text-neutral-300">Six won{"'"}t.</span>
                     </h1>
 
                     <p className="text-lg md:text-xl text-neutral-500 max-w-2xl mx-auto mb-12 leading-relaxed">
-                        Not just code review. Submit any idea, decision, or strategy.
-                        Four AI agents with opposing perspectives debate it live.
-                        A fifth arbitrates and delivers a reasoned verdict.
+                        Submit any idea. Six AI experts with opposing perspectives
+                        debate it in 3 adversarial rounds. A seventh arbitrates
+                        and delivers a reasoned verdict. In any language.
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -66,50 +69,63 @@ export default function Home() {
 
                     <div className="bg-neutral-950 rounded-2xl p-8 md:p-12 text-white font-mono text-sm overflow-hidden">
 
-                        <div className="text-neutral-500 mb-6">
-                            session #0847 — "Should we migrate to microservices?"
+                        <div className="text-neutral-500 mb-2 flex items-center gap-2">
+                            <span className="size-2 rounded-full bg-red-500 animate-pulse" />
+                            LIVE — session #0847
+                        </div>
+                        <div className="text-neutral-400 mb-6 text-xs">
+                            &quot;Should we open a coffee shop in Colombo Shopping, Lisbon?&quot;
                         </div>
 
                         <div className="space-y-4">
                             <div className="flex gap-3">
-                                <span className="text-emerald-400 shrink-0">advocate</span>
+                                <span className="text-purple-400 shrink-0 w-28">{"🔮"} Visionary</span>
                                 <span className="text-neutral-300">
-                                    Microservices enable independent deployment. Team velocity
-                                    increases 3x after migration based on DORA metrics.
+                                    Colombo attracts 20M visitors/year. Premium coffee is growing at 12% CAGR in Lisbon. This is a clear market opportunity with potential for brand expansion.
                                 </span>
                             </div>
 
                             <div className="flex gap-3">
-                                <span className="text-red-400 shrink-0">skeptic&nbsp;&nbsp;</span>
+                                <span className="text-red-400 shrink-0 w-28">{"😈"} Devil{"'"}s Adv.</span>
                                 <span className="text-neutral-300">
-                                    Your team has 4 engineers. You&apos;ll spend 18 months on
-                                    infrastructure instead of product. Netflix needed it. You don&apos;t.
+                                    Rent in Colombo is {"€"}8-15K/month. With Starbucks, Delta, and 12 other caf{"é"}s already there, you need 18% daily capture rate just to break even. That{"'"}s delusional.
                                 </span>
                             </div>
 
                             <div className="flex gap-3">
-                                <span className="text-blue-400 shrink-0">architect</span>
+                                <span className="text-cyan-400 shrink-0 w-28">{"⚙️"} Tech</span>
                                 <span className="text-neutral-300">
-                                    A modular monolith gives you 80% of the benefit with 20% of
-                                    the cost. Extract services only when real bottlenecks emerge.
+                                    A modular kiosk format with app-based ordering reduces staff from 5 to 2. IoT inventory tracking cuts waste by 30%.
                                 </span>
                             </div>
 
                             <div className="flex gap-3">
-                                <span className="text-amber-400 shrink-0">optimizer</span>
+                                <span className="text-emerald-400 shrink-0 w-28">{"📊"} Market</span>
                                 <span className="text-neutral-300">
-                                    Current deploy takes 45 minutes. A build pipeline fix gets you
-                                    to 4 minutes. That solves the real pain without architecture risk.
+                                    TAM for specialty coffee in Lisbon metro: {"€"}180M. Colombo captures 8% of foot traffic conversion. SAM is {"€"}14.4M — realistic SOM: {"€"}720K/year.
+                                </span>
+                            </div>
+
+                            <div className="flex gap-3">
+                                <span className="text-blue-400 shrink-0 w-28">{"💰"} Finance</span>
+                                <span className="text-neutral-300">
+                                    Unit economics: {"€"}4.50 average ticket, 280 customers/day needed. Breakeven at month 14 with {"€"}120K initial investment. Tight but feasible.
+                                </span>
+                            </div>
+
+                            <div className="flex gap-3">
+                                <span className="text-amber-400 shrink-0 w-28">{"⚖️"} Ethics</span>
+                                <span className="text-neutral-300">
+                                    Colombo lease contracts have 5-year lock-in. Exit costs are {"€"}40-60K. Regulatory risk is low but lease risk is material.
                                 </span>
                             </div>
 
                             <div className="border-t border-neutral-700 pt-4 mt-6">
                                 <div className="flex gap-3">
-                                    <span className="text-white shrink-0">verdict&nbsp;&nbsp;</span>
+                                    <span className="text-yellow-400 shrink-0 w-28">{"🏛️"} Judge</span>
                                     <span className="text-neutral-100">
-                                        <strong>Don&apos;t migrate.</strong> Implement a modular monolith.
-                                        Fix the build pipeline first. Reassess when you reach 15 engineers.
-                                        <span className="text-neutral-500"> Confidence: 87%</span>
+                                        <strong>CONDITIONAL GO — 58/100.</strong> Viable only with premium differentiation and kiosk format. Address rent risk with a revenue-share lease model.
+                                        <span className="text-neutral-500"> Confidence: MEDIUM</span>
                                     </span>
                                 </div>
                             </div>
@@ -118,7 +134,7 @@ export default function Home() {
                     </div>
 
                     <p className="text-center text-sm text-neutral-400 mt-6">
-                        Real session output. Unedited.
+                        Real session output. 6 experts, 3 rounds, unedited.
                     </p>
 
                 </div>
@@ -138,17 +154,18 @@ export default function Home() {
                             <div className="text-4xl font-bold text-neutral-200 mb-4">01</div>
                             <h3 className="text-lg font-semibold mb-2">You submit</h3>
                             <p className="text-neutral-500 leading-relaxed">
-                                An idea, a piece of code, a business decision, a strategy.
-                                Anything you need pressure-tested from multiple angles.
+                                An idea, a business decision, a strategy — in any language.
+                                The council detects your language and responds accordingly.
                             </p>
                         </div>
 
                         <div>
                             <div className="text-4xl font-bold text-neutral-200 mb-4">02</div>
-                            <h3 className="text-lg font-semibold mb-2">Four agents debate</h3>
+                            <h3 className="text-lg font-semibold mb-2">Six experts debate</h3>
                             <p className="text-neutral-500 leading-relaxed">
-                                The Advocate defends. The Skeptic attacks. The Architect restructures.
-                                The Optimizer simplifies. They argue until every angle is covered.
+                                Round 1: Each expert analyzes from their perspective.
+                                Round 2: They challenge each other{"'"}s weakest arguments.
+                                Round 3: They defend positions and give final scores.
                             </p>
                         </div>
 
@@ -156,8 +173,9 @@ export default function Home() {
                             <div className="text-4xl font-bold text-neutral-200 mb-4">03</div>
                             <h3 className="text-lg font-semibold mb-2">The Judge decides</h3>
                             <p className="text-neutral-500 leading-relaxed">
-                                Claude or GPT-4 reads the full debate, weighs every argument,
-                                and gives you a reasoned verdict with a confidence score.
+                                GPT-4o reads all 3 rounds, weighs every argument,
+                                and delivers a structured verdict with a consensus score
+                                and actionable recommendations.
                             </p>
                         </div>
 
@@ -166,8 +184,155 @@ export default function Home() {
                 </div>
             </section>
 
+            {/* FEATURES GRID */}
+            <section className="py-24 px-6 bg-neutral-50 border-t border-neutral-100">
+                <div className="max-w-4xl mx-auto">
+
+                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-center">
+                        What{"'"}s inside
+                    </h2>
+                    <p className="text-neutral-500 text-center mb-16 text-lg">
+                        Enterprise-grade AI deliberation, not a chatbot.
+                    </p>
+
+                    <div className="grid md:grid-cols-2 gap-6">
+                        <FeatureCard
+                            icon={"🌐"}
+                            title="Multi-language"
+                            desc="Write in Portuguese, Spanish, French, German, Chinese, Arabic — the entire council responds in your language."
+                        />
+                        <FeatureCard
+                            icon={"⚔️"}
+                            title="3-round adversarial debate"
+                            desc="Not just opinions. Experts analyze, attack each other, then defend. Weak arguments get destroyed."
+                        />
+                        <FeatureCard
+                            icon={"🧠"}
+                            title="7 different AI models"
+                            desc="DeepSeek R1, Gemini 2.5 Flash, Llama 4 Maverick, Mistral Medium 3, GPT-4o, Kimi K2, and Qwen 3."
+                        />
+                        <FeatureCard
+                            icon={"🇪🇺"}
+                            title="EU data sovereignty"
+                            desc="EU-first routing for sensitive requests. Zero Data Retention on supported providers. GDPR-ready."
+                        />
+                        <FeatureCard
+                            icon={"📡"}
+                            title="Live debate streaming"
+                            desc="Watch the experts argue in real-time. Interject mid-debate to steer the discussion."
+                        />
+                        <FeatureCard
+                            icon={"🔧"}
+                            title="GitHub integration"
+                            desc="For code reviews: auto-generate patches and open PRs directly from the verdict."
+                        />
+                    </div>
+
+                </div>
+            </section>
+
+            {/* ACP PROTOCOL */}
+            <section className="py-24 px-6 border-t border-neutral-100">
+                <div className="max-w-4xl mx-auto">
+
+                    <div className="text-center mb-16">
+                        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-neutral-100 text-neutral-500 text-sm mb-6">
+                            Ec = I * S²
+                        </div>
+                        <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
+                            The ACP Protocol{"™"}
+                        </h2>
+                        <p className="text-neutral-500 text-lg max-w-2xl mx-auto">
+                            Adversarial Consensus Protocol — The Operating System for Thought.
+                            A physics-based governance runtime that transforms stochastic token-fog
+                            into auditable wisdom.
+                        </p>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-6">
+                        <div className="p-6 rounded-xl border border-neutral-200">
+                            <div className="text-sm font-mono text-neutral-400 mb-2">PHASE 1 {"&"} 2</div>
+                            <h3 className="font-semibold text-base mb-1">Attentional Gravity</h3>
+                            <p className="text-neutral-500 text-sm leading-relaxed">
+                                Establishing the Coherence Lock. We warping the model{"'"}s internal attention field to ensure first-principles anchoring and momentum preservation.
+                            </p>
+                        </div>
+                        <div className="p-6 rounded-xl border border-neutral-200">
+                            <div className="text-sm font-mono text-neutral-400 mb-2">PHASE 3</div>
+                            <h3 className="font-semibold text-base mb-1">Thermodynamic Firewall</h3>
+                            <p className="text-neutral-500 text-sm leading-relaxed">
+                                The Logic Refinery. Converting raw compute into "Truth-per-Joule" (Jc) by filtering stochastic noise through a quadratic energy barrier (S²).
+                            </p>
+                        </div>
+                        <div className="p-6 rounded-xl border border-neutral-200">
+                            <div className="text-sm font-mono text-neutral-400 mb-2">PHASE 4</div>
+                            <h3 className="font-semibold text-base mb-1">Lagrangian Balance</h3>
+                            <p className="text-neutral-500 text-sm leading-relaxed">
+                                The Geodesic Navigator identifies the path of least action across the latent manifold, reaching terminal resolution with maximum efficiency.
+                            </p>
+                        </div>
+                        <div className="p-6 rounded-xl border border-neutral-200">
+                            <div className="text-sm font-mono text-neutral-400 mb-2">PHASE 5</div>
+                            <h3 className="font-semibold text-base mb-1">Sovereign Integration</h3>
+                            <p className="text-neutral-500 text-sm leading-relaxed">
+                                Settlement layer for collective wisdom. Distributed Cognitive Bus (IoC) ensures verified truths move with zero resistance.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="text-center mt-8">
+                        <a href="/methodology" className="text-sm text-neutral-500 hover:text-neutral-900 transition underline underline-offset-4">
+                            Read the full methodology {"→"}
+                        </a>
+                    </div>
+
+                </div>
+            </section>
+
+            {/* THE COUNCIL */}
+            <section id="council" className="py-24 px-6 bg-neutral-50 border-t border-neutral-100">
+                <div className="max-w-4xl mx-auto">
+
+                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-16 text-center">
+                        The council
+                    </h2>
+
+                    <div className="grid md:grid-cols-3 gap-6">
+
+                        <CouncilCard color="bg-purple-500" emoji={"🔮"} name="The Visionary"
+                            desc="Finds the 10x opportunity. Thinks like a VC evaluating a Series A. What could this become?" />
+
+                        <CouncilCard color="bg-cyan-500" emoji={"⚙️"} name="The Technologist"
+                            desc="Evaluates feasibility, architecture, scalability. Thinks like a CTO who has built 3 startups." />
+
+                        <CouncilCard color="bg-red-500" emoji={"😈"} name="Devil's Advocate"
+                            desc="Finds every flaw and failure mode. Thinks like a short-seller researching why this will fail." />
+
+                        <CouncilCard color="bg-emerald-500" emoji={"📊"} name="Market Analyst"
+                            desc="TAM/SAM/SOM, competitive landscape, go-to-market. Thinks like a McKinsey partner." />
+
+                        <CouncilCard color="bg-amber-500" emoji={"⚖️"} name="Ethics & Risk"
+                            desc="Regulatory risks, bias, privacy, reputation. Thinks like a compliance officer at a top law firm." />
+
+                        <CouncilCard color="bg-blue-500" emoji={"💰"} name="Financial Strategist"
+                            desc="Unit economics, burn rate, revenue models, path to profitability. Thinks like a CFO with PE experience." />
+
+                    </div>
+
+                    <div className="mt-6 p-8 rounded-xl bg-neutral-950 text-white text-center">
+                        <div className="text-3xl mb-3">{"🏛️"}</div>
+                        <h3 className="font-semibold text-lg mb-1">The Judge — GPT-4o</h3>
+                        <p className="text-neutral-400 text-sm leading-relaxed max-w-lg mx-auto">
+                            Reads all 3 rounds of debate. Weighs every argument. Weights unrefuted attacks heavily.
+                            Delivers the final verdict with a consensus score, strategic recommendations, and confidence level.
+                        </p>
+                    </div>
+
+                </div>
+            </section>
+
             {/* USE CASES */}
-            <section id="usecases" className="py-24 px-6 bg-neutral-50 border-t border-neutral-100">
+            <section id="usecases" className="py-24 px-6 border-t border-neutral-100">
                 <div className="max-w-4xl mx-auto">
 
                     <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-center">
@@ -177,120 +342,26 @@ export default function Home() {
                         Not just code. Any decision that matters.
                     </p>
 
-                    <div className="grid md:grid-cols-2 gap-8">
+                    <div className="grid md:grid-cols-2 gap-6">
 
-                        <div className="bg-white p-8 rounded-xl border border-neutral-200">
-                            <h3 className="font-semibold text-lg mb-2">Code & architecture</h3>
-                            <p className="text-neutral-500 text-sm leading-relaxed">
-                                &quot;Is this production-ready?&quot; — Get security, performance,
-                                readability, and maintainability perspectives before you ship.
-                            </p>
-                        </div>
+                        <UseCaseCard title="Startup validation"
+                            desc="Is this idea viable? Business model stress-test, competitor analysis, market fit, unit economics — debated from 6 angles." />
 
-                        <div className="bg-white p-8 rounded-xl border border-neutral-200">
-                            <h3 className="font-semibold text-lg mb-2">Business decisions</h3>
-                            <p className="text-neutral-500 text-sm leading-relaxed">
-                                &quot;Should we enter the European market?&quot; — Market analysis,
-                                risk assessment, financial modeling, timing evaluation.
-                            </p>
-                        </div>
+                        <UseCaseCard title="Business decisions"
+                            desc="Should we enter the European market? Market analysis, risk assessment, financial modeling, timing evaluation." />
 
-                        <div className="bg-white p-8 rounded-xl border border-neutral-200">
-                            <h3 className="font-semibold text-lg mb-2">Startup validation</h3>
-                            <p className="text-neutral-500 text-sm leading-relaxed">
-                                &quot;Is this idea viable?&quot; — Business model stress-test,
-                                competitor analysis, market fit, unit economics.
-                            </p>
-                        </div>
+                        <UseCaseCard title="Code & architecture"
+                            desc="Is this production-ready? Security, performance, readability, scalability — with auto-generated patches." />
 
-                        <div className="bg-white p-8 rounded-xl border border-neutral-200">
-                            <h3 className="font-semibold text-lg mb-2">Strategy & planning</h3>
-                            <p className="text-neutral-500 text-sm leading-relaxed">
-                                &quot;Hire or outsource?&quot; — Cost analysis, quality trade-offs,
-                                timeline impact, long-term implications.
-                            </p>
-                        </div>
+                        <UseCaseCard title="Strategy & planning"
+                            desc="Hire or outsource? Cost analysis, quality trade-offs, timeline impact, long-term implications." />
 
-                        <div className="bg-white p-8 rounded-xl border border-neutral-200">
-                            <h3 className="font-semibold text-lg mb-2">Content & positioning</h3>
-                            <p className="text-neutral-500 text-sm leading-relaxed">
-                                &quot;Which positioning wins?&quot; — Brand voice, audience fit,
-                                differentiation, messaging clarity.
-                            </p>
-                        </div>
+                        <UseCaseCard title="Content & positioning"
+                            desc="Which positioning wins? Brand voice, audience fit, differentiation, messaging clarity." />
 
-                        <div className="bg-white p-8 rounded-xl border border-neutral-200">
-                            <h3 className="font-semibold text-lg mb-2">Risk & compliance</h3>
-                            <p className="text-neutral-500 text-sm leading-relaxed">
-                                &quot;Are we GDPR compliant?&quot; — Risk vectors, data flow analysis,
-                                remediation priorities, compliance gaps.
-                            </p>
-                        </div>
+                        <UseCaseCard title="Risk & compliance"
+                            desc="Are we GDPR compliant? Risk vectors, data flow analysis, remediation priorities, compliance gaps." />
 
-                    </div>
-
-                </div>
-            </section>
-
-            {/* THE COUNCIL */}
-            <section className="py-24 px-6 border-t border-neutral-100">
-                <div className="max-w-4xl mx-auto">
-
-                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-16 text-center">
-                        The council
-                    </h2>
-
-                    <div className="grid md:grid-cols-2 gap-8">
-
-                        <div className="p-8 rounded-xl border border-neutral-200">
-                            <div className="w-3 h-3 rounded-full bg-emerald-500 mb-4"></div>
-                            <h3 className="font-semibold text-lg mb-1">The Advocate</h3>
-                            <p className="text-neutral-500 text-sm leading-relaxed">
-                                Finds every reason it works. Identifies strengths, opportunities,
-                                and potential you might be undervaluing. Builds the strongest case for.
-                            </p>
-                        </div>
-
-                        <div className="p-8 rounded-xl border border-neutral-200">
-                            <div className="w-3 h-3 rounded-full bg-red-500 mb-4"></div>
-                            <h3 className="font-semibold text-lg mb-1">The Skeptic</h3>
-                            <p className="text-neutral-500 text-sm leading-relaxed">
-                                Finds every reason it breaks. Edge cases, market risks,
-                                technical debt, hidden costs. The critic you need but
-                                don&apos;t want to hear.
-                            </p>
-                        </div>
-
-                        <div className="p-8 rounded-xl border border-neutral-200">
-                            <div className="w-3 h-3 rounded-full bg-blue-500 mb-4"></div>
-                            <h3 className="font-semibold text-lg mb-1">The Architect</h3>
-                            <p className="text-neutral-500 text-sm leading-relaxed">
-                                Thinks in systems. Restructures your approach for scale,
-                                maintainability, and long-term sustainability. Sees the
-                                big picture you&apos;re missing.
-                            </p>
-                        </div>
-
-                        <div className="p-8 rounded-xl border border-neutral-200">
-                            <div className="w-3 h-3 rounded-full bg-amber-500 mb-4"></div>
-                            <h3 className="font-semibold text-lg mb-1">The Optimizer</h3>
-                            <p className="text-neutral-500 text-sm leading-relaxed">
-                                Cuts the fat. Makes it faster, cheaper, simpler.
-                                Questions every complexity. If there&apos;s a shortcut
-                                that doesn&apos;t sacrifice quality, this agent finds it.
-                            </p>
-                        </div>
-
-                    </div>
-
-                    <div className="mt-8 p-8 rounded-xl bg-neutral-950 text-white text-center">
-                        <div className="w-3 h-3 rounded-full bg-white mx-auto mb-4"></div>
-                        <h3 className="font-semibold text-lg mb-1">The Judge</h3>
-                        <p className="text-neutral-400 text-sm leading-relaxed max-w-lg mx-auto">
-                            Claude or GPT-4. Reads the entire debate. Weighs every argument.
-                            Delivers the final verdict with a confidence score, key trade-offs,
-                            and actionable next steps.
-                        </p>
                     </div>
 
                 </div>
@@ -313,12 +384,13 @@ export default function Home() {
                             <h3 className="font-semibold mb-1">Free</h3>
                             <div className="text-3xl font-bold mb-6">$0</div>
                             <ul className="space-y-3 text-sm text-neutral-500 mb-8">
-                                <li>5 sessions / month</li>
-                                <li>4 agents + judge</li>
-                                <li>Basic verdict report</li>
-                                <li>Community support</li>
+                                <li>{"✓"} 5 sessions / month</li>
+                                <li>{"✓"} 6 experts + judge</li>
+                                <li>{"✓"} 3 adversarial rounds</li>
+                                <li>{"✓"} Multi-language</li>
+                                <li>{"✓"} Full verdict report</li>
                             </ul>
-                            <a className="block text-center border border-neutral-200 py-3 rounded-md text-sm font-medium hover:border-neutral-400 transition cursor-pointer">
+                            <a href="/login" className="block text-center border border-neutral-200 py-3 rounded-md text-sm font-medium hover:border-neutral-400 transition cursor-pointer">
                                 Start free
                             </a>
                         </div>
@@ -332,14 +404,14 @@ export default function Home() {
                                 $29<span className="text-lg text-neutral-400 font-normal">/mo</span>
                             </div>
                             <ul className="space-y-3 text-sm text-neutral-500 mb-8">
-                                <li>100 sessions / month</li>
-                                <li>Choose your judge model</li>
-                                <li>Full debate transcript</li>
-                                <li>Export reports (PDF, MD)</li>
-                                <li>GitHub integration</li>
-                                <li>Priority support</li>
+                                <li>{"✓"} 100 sessions / month</li>
+                                <li>{"✓"} Live debate streaming</li>
+                                <li>{"✓"} Interject mid-debate</li>
+                                <li>{"✓"} Full transcript export</li>
+                                <li>{"✓"} GitHub integration</li>
+                                <li>{"✓"} Priority support</li>
                             </ul>
-                            <a className="block text-center bg-neutral-900 text-white py-3 rounded-md text-sm font-medium hover:bg-neutral-800 transition cursor-pointer">
+                            <a href="/login" className="block text-center bg-neutral-900 text-white py-3 rounded-md text-sm font-medium hover:bg-neutral-800 transition cursor-pointer">
                                 Start pro
                             </a>
                         </div>
@@ -350,12 +422,12 @@ export default function Home() {
                                 $99<span className="text-lg text-neutral-400 font-normal">/mo</span>
                             </div>
                             <ul className="space-y-3 text-sm text-neutral-500 mb-8">
-                                <li>Unlimited sessions</li>
-                                <li>Team collaboration</li>
-                                <li>Custom agent personas</li>
-                                <li>API access</li>
-                                <li>SSO + audit logs</li>
-                                <li>Dedicated support</li>
+                                <li>{"✓"} Unlimited sessions</li>
+                                <li>{"✓"} Team collaboration</li>
+                                <li>{"✓"} Custom personas</li>
+                                <li>{"✓"} EU data sovereignty</li>
+                                <li>{"✓"} API access</li>
+                                <li>{"✓"} SSO + audit logs</li>
                             </ul>
                             <a className="block text-center border border-neutral-200 py-3 rounded-md text-sm font-medium hover:border-neutral-400 transition cursor-pointer">
                                 Contact sales
@@ -368,7 +440,7 @@ export default function Home() {
             </section>
 
             {/* FINAL CTA */}
-            <section id="start" className="py-24 px-6 border-t border-neutral-100">
+            <section className="py-24 px-6 border-t border-neutral-100">
                 <div className="max-w-2xl mx-auto text-center">
 
                     <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-6">
@@ -388,17 +460,49 @@ export default function Home() {
             <footer className="py-12 px-6 border-t border-neutral-100">
                 <div className="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
                     <span className="text-sm text-neutral-400">
-                        © 2025 CouncilIA — EU-first, GDPR-ready
+                        {"©"} 2025 CouncilIA — EU-first, GDPR-ready
                     </span>
                     <div className="flex gap-6 text-sm text-neutral-400">
-                        <a className="hover:text-neutral-600 transition">Privacy</a>
-                        <a className="hover:text-neutral-600 transition">Terms</a>
-                        <a className="hover:text-neutral-600 transition">Docs</a>
-                        <a className="hover:text-neutral-600 transition">GitHub</a>
+                        <a href="/methodology" className="hover:text-neutral-600 transition cursor-pointer">Methodology</a>
+                        <a href="/privacy" className="hover:text-neutral-600 transition cursor-pointer">Privacy</a>
+                        <a href="/terms" className="hover:text-neutral-600 transition cursor-pointer">Terms</a>
+                        <a href="/pricing" className="hover:text-neutral-600 transition cursor-pointer">Pricing</a>
                     </div>
                 </div>
             </footer>
 
         </main>
-    )
+    );
+}
+
+// --- Reusable Components ---
+
+function FeatureCard({ icon, title, desc }: { icon: string; title: string; desc: string }) {
+    return (
+        <div className="bg-white p-6 rounded-xl border border-neutral-200 hover:border-neutral-300 transition">
+            <div className="text-2xl mb-3">{icon}</div>
+            <h3 className="font-semibold text-base mb-1">{title}</h3>
+            <p className="text-neutral-500 text-sm leading-relaxed">{desc}</p>
+        </div>
+    );
+}
+
+function CouncilCard({ color, emoji, name, desc }: { color: string; emoji: string; name: string; desc: string }) {
+    return (
+        <div className="p-6 rounded-xl border border-neutral-200 hover:border-neutral-300 transition">
+            <div className={`w-3 h-3 rounded-full ${color} mb-4`} />
+            <div className="text-xl mb-2">{emoji}</div>
+            <h3 className="font-semibold text-base mb-1">{name}</h3>
+            <p className="text-neutral-500 text-sm leading-relaxed">{desc}</p>
+        </div>
+    );
+}
+
+function UseCaseCard({ title, desc }: { title: string; desc: string }) {
+    return (
+        <div className="bg-white p-6 rounded-xl border border-neutral-200 hover:border-neutral-300 transition">
+            <h3 className="font-semibold text-base mb-2">{title}</h3>
+            <p className="text-neutral-500 text-sm leading-relaxed">{desc}</p>
+        </div>
+    );
 }

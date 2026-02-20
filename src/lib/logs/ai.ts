@@ -3,7 +3,7 @@ import { createAdminClient } from '@/lib/supabase/admin';
 export async function logAICall(params: {
     validation_id?: string;
     tenant_id?: string;
-    layer: 'swarm' | 'debate' | 'judge' | 'rag' | 'patch' | 'swarm_r1' | 'swarm_r2';
+    layer: 'swarm' | 'debate' | 'judge' | 'rag' | 'patch' | 'swarm_r1' | 'swarm_r2' | 'swarm_r3';
     provider: string;
     model: string;
     latency_ms: number;

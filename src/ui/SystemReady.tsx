@@ -3,173 +3,153 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
+import { t, resolveUILang, type UILang } from '@/lib/i18n/ui-strings';
+
+const EXPERTS = [
+  { emoji: '\u{1F52E}', key: 'visionary',    color: '#A855F7' },
+  { emoji: '\u2699\uFE0F', key: 'technologist', color: '#06B6D4' },
+  { emoji: '\u{1F608}', key: 'devil',        color: '#EF4444' },
+  { emoji: '\u{1F4CA}', key: 'marketeer',    color: '#22C55E' },
+  { emoji: '\u2696\uFE0F', key: 'ethicist',     color: '#F59E0B' },
+  { emoji: '\u{1F4B0}', key: 'financier',    color: '#3B82F6' },
+];
 
 export default function SystemReady() {
-    const router = useRouter();
-    const [idea, setIdea] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [userId, setUserId] = useState('');
-    const [tenantId, setTenantId] = useState('');
+  const router = useRouter();
+  const [idea, setIdea] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [userId, setUserId] = useState('');
+  const [tenantId, setTenantId] = useState('');
+  const [lang] = useState<UILang>(() =>
+    resolveUILang(typeof navigator !== 'undefined' ? navigator.language : 'en')
+  );
 
-    useEffect(() => {
-        const supabase = createClient();
+  useEffect(() => {
+    const supabase = createClient();
+    (async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      setUserId(user.id);
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('tenant_id')
+        .eq('id', user.id)
+        .single();
+      if (profile) setTenantId(profile.tenant_id);
+    })();
+  }, []);
 
-        (async () => {
-            const { data: { user } } = await supabase.auth.getUser();
-            if (!user) return;
-            setUserId(user.id);
-
-            // Note: Assuming 'profiles' table exists as per prompts
-            const { data: profile } = await supabase
-                .from('profiles')
-                .select('tenant_id')
-                .eq('id', user.id)
-                .single();
-
-            if (profile) setTenantId(profile.tenant_id);
-        })();
-    }, []);
-
-    async function start() {
-        setLoading(true);
-        try {
-            const res = await fetch('/api/session/start', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    idea: idea || 'Describe your objective…',
-                    topic: 'CouncilIA Live Debate',
-                    region: 'EU',
-                    sensitivity: 'business',
-                    tenant_id: tenantId,
-                    user_id: userId
-                })
-            });
-
-            const data = await res.json();
-            if (!data?.runId) throw new Error('Missing runId from /api/session/start');
-
-            router.push(`/chamber/${data.runId}`);
-        } finally {
-            setLoading(false);
-        }
+  async function start() {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/session/start', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          idea: idea || t(lang, 'sys_placeholder'),
+          topic: 'CouncilIA Live Debate',
+          region: 'EU',
+          sensitivity: 'business',
+          tenant_id: tenantId,
+          user_id: userId,
+        }),
+      });
+      const data = await res.json();
+      if (!data?.runId) throw new Error('Missing runId');
+      router.push('/chamber/' + data.runId);
+    } finally {
+      setLoading(false);
     }
+  }
 
-    return (
-        <div className="bg-[#0f172a] text-slate-100 min-h-screen flex flex-col font-sans">
-            {/* Header */}
-            <header className="flex items-center justify-between px-6 py-5 border-b border-slate-800 bg-white/5 backdrop-blur sticky top-0 z-50">
-                <div className="flex items-center gap-3">
-                    <div className="bg-[#163a9c] p-2 rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(22,58,156,0.6)]">
-                        <span className="text-white text-xl">⌘</span>
-                    </div>
-                    <h1 className="text-xl font-bold tracking-widest text-white uppercase">Councilia</h1>
-                </div>
+  const cc = idea.length;
 
-                <div className="flex items-center gap-4">
-                    <div className="hidden md:flex flex-col items-end">
-                        <span className="text-[10px] text-sky-400 font-bold tracking-tighter uppercase">System Status</span>
-                        <span className="text-xs text-emerald-400 flex items-center gap-1 font-medium uppercase tracking-widest">
-                            <span className="h-2 w-2 rounded-full bg-emerald-400" /> Online
-                        </span>
-                    </div>
-                    <div className="h-10 w-10 rounded-full border-2 border-purple-500 p-0.5">
-                        <div className="h-full w-full rounded-full bg-slate-800 flex items-center justify-center overflow-hidden">
-                            <span className="text-slate-400">👤</span>
-                        </div>
-                    </div>
-                </div>
-            </header>
+  return (
+    <div className="min-h-screen bg-[#060a13] text-white overflow-hidden relative">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-purple-500/[0.07] rounded-full blur-[120px]" />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-cyan-500/[0.05] rounded-full blur-[120px]" />
+      </div>
 
-            <main className="flex-1 max-w-5xl mx-auto w-full px-6 py-8">
-                {/* Hero */}
-                <div className="mb-8">
-                    <p className="text-sky-400 font-bold text-sm tracking-[0.2em] mb-2 uppercase">
-                        Sequence 01 // Initialization
-                    </p>
-                    <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight">
-                        SYSTEM_READY:{' '}
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-purple-500">
-                            INITIALIZE SESSION
-                        </span>
-                    </h2>
-                </div>
+      <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
 
-                {/* Data sovereignty marketing block */}
-                <div className="mb-8 p-5 rounded-xl bg-white/5 border border-white/10">
-                    <div className="text-xs font-bold uppercase tracking-[0.22em] text-slate-300">
-                        Data sovereignty
-                    </div>
-                    <div className="mt-2 text-sm text-slate-200 leading-relaxed">
-                        EU‑first routing for sensitive requests, with policy-controlled retention and a hardened audit trail.
-                    </div>
-                    <div className="mt-3 text-xs text-slate-400">
-                        Tip: enable “Strict Privacy (L3)” when handling PII/regulated/code.
-                    </div>
-                </div>
+      <div className="relative z-10 flex flex-col min-h-screen">
+        <header className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
+          <a href="/dashboard" className="flex items-center gap-3 group">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-purple-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-purple-500/20">
+              <span className="text-white text-sm font-black">C</span>
+            </div>
+            <span className="text-sm font-bold tracking-[0.2em] text-white/60 uppercase">CouncilIA</span>
+          </a>
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-lg">
+              <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
+              <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider">{t(lang, 'sys_online')}</span>
+            </div>
+          </div>
+        </header>
 
-                {/* Input */}
-                <div className="relative group mb-8">
-                    <div className="absolute -inset-1 bg-gradient-to-r from-sky-400 to-purple-500 rounded-xl blur opacity-25 group-focus-within:opacity-60 transition duration-500" />
-                    <div className="relative bg-white/5 rounded-xl overflow-hidden p-1 border border-white/10">
-                        <textarea
-                            className="w-full bg-slate-900/50 border-0 focus:ring-0 text-white placeholder:text-slate-500 p-6 text-lg min-h-[180px] font-light leading-relaxed resize-none"
-                            placeholder="Describe your objective..."
-                            value={idea}
-                            onChange={(e) => setIdea(e.target.value)}
-                        />
-                        <div className="flex justify-between items-center px-6 py-3 bg-slate-900/80 border-t border-white/5">
-                            <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">
-                                Input Buffer: {(idea.length / 1024).toFixed(2)}kb
-                            </span>
-                            <div className="flex gap-4">
-                                <button className="text-slate-400 hover:text-white transition-colors" type="button">
-                                    📎
-                                </button>
-                                <button className="text-slate-400 hover:text-white transition-colors" type="button">
-                                    🎙
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <main className="flex-1 flex flex-col items-center justify-center px-6 py-8 max-w-3xl mx-auto w-full">
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center gap-2 bg-white/[0.04] border border-white/[0.08] rounded-full px-4 py-1.5 mb-6">
+              <span className="w-1.5 h-1.5 bg-purple-400 rounded-full" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-white/40">{t(lang, 'sys_sequence')}</span>
+            </div>
+            <h1 className="text-4xl md:text-5xl font-black leading-[1.1] tracking-tight">
+              <span className="text-white">{t(lang, 'sys_ready')} </span>
+              <span className="bg-gradient-to-r from-purple-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent">{t(lang, 'sys_init')}</span>
+            </h1>
+            <p className="mt-4 text-white/30 text-sm max-w-md mx-auto leading-relaxed">{t(lang, 'sys_sovereignty_desc')}</p>
+          </div>
 
-                {/* CTA */}
-                <div className="mt-10 flex flex-col items-center">
-                    <button
-                        onClick={start}
-                        disabled={loading}
-                        className="w-full md:w-auto px-12 py-5 bg-gradient-to-r from-purple-500 to-sky-400 rounded-xl text-white font-bold text-lg uppercase tracking-[0.2em] shadow-[0_10px_30px_rgba(124,58,237,0.4)] hover:shadow-[0_15px_40px_rgba(124,58,237,0.6)] hover:-translate-y-1 transition-all disabled:opacity-60"
-                    >
-                        {loading ? 'Executing…' : 'Execute Session'}
-                    </button>
-                    <p className="mt-4 text-slate-500 text-xs font-mono uppercase tracking-widest">
-                        Protocol 2.4.9-alpha // Authorized users only
-                    </p>
-                </div>
-            </main>
+          <div className="flex items-center justify-center gap-1 mb-8">
+            {EXPERTS.map((ex, i) => (
+              <div key={ex.key} className="flex flex-col items-center"><div className="w-9 h-9 rounded-full flex items-center justify-center border transition-all hover:scale-110 hover:-translate-y-1 cursor-default" style={{ borderColor: ex.color + '40', backgroundColor: ex.color + '15', transitionDelay: i * 50 + 'ms' }}>
+                <span className="text-sm">{ex.emoji}</span>
+              </div>
+              <span className="text-[7px] font-bold text-white/30 mt-1 uppercase">{ex.key === 'visionary' ? 'Visionary' : ex.key === 'technologist' ? 'Tech' : ex.key === 'devil' ? 'Critic' : ex.key === 'marketeer' ? 'Market' : ex.key === 'ethicist' ? 'Ethics' : 'Finance'}</span></div>
+            ))}
+            <span className="text-[10px] text-white/20 ml-3 font-bold uppercase tracking-wider">6 {'AI experts'}</span>
+          </div>
 
-            {/* Bottom nav */}
-            <nav className="bg-white/5 border-t border-white/10 py-4 px-8 mt-auto sticky bottom-0 z-50">
-                <div className="max-w-xl mx-auto flex justify-between items-center">
-                    <a className="flex flex-col items-center gap-1 text-sky-400" href="/dashboard">
-                        <span className="text-2xl">⌂</span>
-                        <span className="text-[10px] font-bold uppercase tracking-widest">Dashboard</span>
-                    </a>
-                    <a className="flex flex-col items-center gap-1 text-slate-500 hover:text-white" href="/marketplace">
-                        <span className="text-2xl">🛍</span>
-                        <span className="text-[10px] font-bold uppercase tracking-widest">Marketplace</span>
-                    </a>
-                    <a className="flex flex-col items-center gap-1 text-slate-500 hover:text-white" href="#">
-                        <span className="text-2xl">⌗</span>
-                        <span className="text-[10px] font-bold uppercase tracking-widest">Vault</span>
-                    </a>
-                    <a className="flex flex-col items-center gap-1 text-slate-500 hover:text-white" href="#">
-                        <span className="text-2xl">⚙</span>
-                        <span className="text-[10px] font-bold uppercase tracking-widest">Node</span>
-                    </a>
-                </div>
-            </nav>
-        </div>
-    );
+          <div className="w-full relative group mb-6">
+            <div className="absolute -inset-[1px] bg-gradient-to-r from-purple-500/50 via-cyan-500/50 to-purple-500/50 rounded-2xl opacity-0 group-focus-within:opacity-100 transition-opacity duration-500 blur-sm" />
+            <div className="relative bg-[#0c1220] border border-white/[0.08] group-focus-within:border-white/[0.15] rounded-2xl overflow-hidden transition-colors">
+              <textarea className="w-full bg-transparent text-white placeholder:text-white/15 p-6 pb-3 text-base min-h-[160px] resize-none focus:outline-none focus:ring-0 border-0 leading-relaxed" placeholder={t(lang, 'sys_placeholder')} value={idea} onChange={(e) => setIdea(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) start(); }} />
+              <div className="flex items-center justify-between px-6 py-3 border-t border-white/[0.04]">
+                <span className={'text-[10px] font-mono transition-colors ' + (cc > 2000 ? 'text-red-400' : cc > 0 ? 'text-white/25' : 'text-white/10')}>{cc > 0 ? cc + ' chars' : t(lang, 'sys_input_buffer') + ' 0.00kb'}</span>
+                <span className="text-[10px] text-white/10 font-mono">Ctrl+Enter</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap gap-2 mb-10 justify-center">
+            {[
+              { em: '\u{1F3C4}', tx: String(lang) === 'pt' ? 'Escola de surf na Comporta' : 'Surf school in Portugal' },
+              { em: '\u{1F916}', tx: String(lang) === 'pt' ? 'App de IA para saude mental' : 'AI mental health app' },
+              { em: '\u{1F6D2}', tx: String(lang) === 'pt' ? 'Marketplace de produtos locais' : 'Local products marketplace' },
+            ].map((ex) => (
+              <button key={ex.tx} onClick={() => setIdea(ex.tx)} className="flex items-center gap-2 bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.06] hover:border-white/[0.12] rounded-xl px-4 py-2 text-xs text-white/40 hover:text-white/70 transition-all">
+                <span>{ex.em}</span><span>{ex.tx}</span>
+              </button>
+            ))}
+          </div>
+
+          <button onClick={start} disabled={loading || !idea.trim()} className="group relative w-full md:w-auto">
+            <div className="absolute -inset-1 bg-gradient-to-r from-purple-500 to-cyan-500 rounded-2xl opacity-60 group-hover:opacity-100 blur-md transition-opacity" />
+            <div className="relative flex items-center justify-center gap-3 bg-gradient-to-r from-purple-500 to-cyan-500 px-14 py-4 rounded-2xl text-white font-bold text-sm uppercase tracking-[0.2em] group-hover:-translate-y-0.5 transition-transform disabled:opacity-40 disabled:pointer-events-none">
+              {loading ? (
+                <><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />{t(lang, 'sys_executing')}</>
+              ) : (
+                <><svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>{t(lang, 'sys_execute')}</>
+              )}
+            </div>
+          </button>
+          <p className="mt-6 text-white/10 text-[10px] font-mono uppercase tracking-[0.3em]">{t(lang, 'sys_protocol')}</p>
+        </main>
+      </div>
+    </div>
+  );
 }
+
+
