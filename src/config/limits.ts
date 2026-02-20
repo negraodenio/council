@@ -8,6 +8,13 @@ export const PLAN_LIMITS: Record<PlanType, number> = {
 };
 
 export function getLimitForPlan(plan: string | null | undefined): number {
-    const p = (plan?.toLowerCase() || 'free') as PlanType;
+    if (!plan) return PLAN_LIMITS.free;
+
+    // If it's a number string (e.g., '9999'), use it directly
+    if (/^\d+$/.test(plan)) {
+        return parseInt(plan, 10);
+    }
+
+    const p = plan.toLowerCase() as PlanType;
     return PLAN_LIMITS[p] || PLAN_LIMITS.free;
 }

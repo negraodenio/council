@@ -24,11 +24,17 @@ export default function SystemReady() {
         resolveUILang(typeof navigator !== 'undefined' ? navigator.language : 'en')
     );
 
+    const [profileLoading, setProfileLoading] = useState(true);
+
     useEffect(() => {
         const supabase = createClient();
         (async () => {
+            setProfileLoading(true);
             const { data: { user } } = await supabase.auth.getUser();
-            if (!user) return;
+            if (!user) {
+                setProfileLoading(false);
+                return;
+            }
             setUserId(user.id);
             const { data: profile } = await supabase
                 .from('profiles')
@@ -36,6 +42,7 @@ export default function SystemReady() {
                 .eq('id', user.id)
                 .single();
             if (profile) setTenantId(profile.tenant_id);
+            setProfileLoading(false);
         })();
     }, []);
 
@@ -148,15 +155,19 @@ export default function SystemReady() {
                         ))}
                     </div>
 
-                    <button onClick={start} disabled={loading || !idea.trim()} className="group relative w-full md:w-auto">
-                        <div className="absolute -inset-1 bg-gradient-to-r from-purple-500 to-cyan-500 rounded-2xl opacity-60 group-hover:opacity-100 blur-md transition-opacity" />
-                        <div className="relative flex items-center justify-center gap-3 bg-gradient-to-r from-purple-500 to-cyan-500 px-14 py-4 rounded-2xl text-white font-bold text-sm uppercase tracking-[0.2em] group-hover:-translate-y-0.5 transition-transform disabled:opacity-40 disabled:pointer-events-none">
-                            {loading ? (
-                                <><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />{t(lang, 'sys_executing')}</>
-                            ) : (
-                                <><svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>{t(lang, 'sys_execute')}</>
-                            )}
-                        </div>
+                    <button
+                        onClick={start}
+                        disabled={loading || profileLoading || !idea.trim()}
+                        className="w-full bg-gradient-to-r from-purple-500 via-cyan-500 to-purple-500 text-white font-black py-5 rounded-2xl shadow-xl shadow-purple-500/20 hover:shadow-purple-500/40 transition-all active:scale-[0.98] disabled:opacity-50 disabled:grayscale disabled:scale-100 flex items-center justify-center gap-3 group"
+                    >
+                        {loading || profileLoading ? (
+                            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        ) : (
+                            <>
+                                <span className="text-xl">🏛️</span>
+                                <span className="uppercase tracking-[0.2em]">{t(lang, 'sys_execute')}</span>
+                            </>
+                        )}
                     </button>
                     <p className="mt-6 text-white/10 text-[10px] font-mono uppercase tracking-[0.3em]">{t(lang, 'sys_protocol')}</p>
                 </main>
