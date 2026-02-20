@@ -354,6 +354,11 @@ export default function MethodologyPage() {
                             </tbody>
                         </table>
                     </div>
+                    <div className="mt-8 text-center">
+                        <a href="https://openrouter.ai/models" target="_blank" rel="noopener noreferrer" className="text-xs text-neutral-400 underline underline-offset-2 hover:text-neutral-600 transition">
+                            Veja especificações técnicas no OpenRouter
+                        </a>
+                    </div>
                 </div>
             </section>
 
