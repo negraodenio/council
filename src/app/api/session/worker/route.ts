@@ -575,10 +575,17 @@ RULES:
 export async function POST(req: Request) {
     console.log('[Worker] v2.3 — ACE Engine (Adversarial Consensus Engine) starting');
     try {
-        const body = await req.json();
+        const body = await req.json() || {};
         const { validationId, runId, tenant_id, user_id, idea, region, sensitivity } = body;
+
+        if (!runId || !idea) {
+            console.error('[Worker] Missing required params:', { runId, idea: !!idea });
+            return apiError('Missing params', 400);
+        }
+
         const supabase = createAdminClient();
 
+        console.log(`[Worker] Starting run ${runId} for idea: ${idea.substring(0, 50)}...`);
         const lang = detectLanguage(idea);
         console.log(`[Worker] Detected language: ${lang}`);
         await addEvent(supabase, runId, 'lang', null, { lang });

@@ -69,10 +69,9 @@ export async function POST(req: Request) {
         status: 'running',
     });
 
-    const baseUrl =
-        process.env.NODE_ENV === 'production'
-            ? process.env.NEXT_PUBLIC_SITE_URL || 'https://www.councilia.com'
-            : 'http://localhost:3000';
+    const host = req.headers.get('host');
+    const protocol = req.headers.get('x-forwarded-proto') || 'https';
+    const baseUrl = `${protocol}://${host}`;
 
     console.log(`[Start] Triggering worker at ${baseUrl}/api/session/worker`);
 
