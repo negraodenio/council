@@ -15,7 +15,7 @@ export async function POST(req: Request) {
     let t_id = tenant_id;
     let u_id = user_id;
 
-    // 1. Resolve Tenant/User
+    // 1. Resolve User ID from Auth if missing
     if (!u_id || u_id === '00000000-0000-0000-0000-000000000000') {
         const { data: { user } } = await supabase.auth.getUser();
         if (user) u_id = user.id;
@@ -23,24 +23,30 @@ export async function POST(req: Request) {
 
     if (!u_id) return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
 
-    // Fallback: If tenant_id is missing but u_id is present, lookup tenant_id
-    if (!t_id || t_id === '00000000-0000-0000-0000-000000000000') {
+    // 2. Resolve Tenant ID
+    // Robust check for "zero" or missing tenant
+    const isZero = (id: any) => !id || id === '00000000-0000-0000-0000-000000000000' || String(id).trim() === '';
+
+    if (isZero(t_id)) {
         const { data: profile } = await supabase
             .from('profiles')
             .select('tenant_id')
             .eq('id', u_id)
             .maybeSingle();
 
-        if (profile?.tenant_id) {
+        // If profile has a real tenant, use it. Otherwise, isolate usage to the user's ID.
+        if (profile?.tenant_id && !isZero(profile.tenant_id)) {
             t_id = profile.tenant_id;
         } else {
-            // CRITICAL: If still no tenant, use u_id as ISOLATED bucket
-            // This prevents shared usage between different users
             t_id = u_id;
         }
     }
 
-    // 1. Verify Usage & Subscription
+    // SAFETY: Ensure tenant and profile records exist to avoid FK violations (validations_tenant_id_fkey)
+    await supabase.from('tenants').upsert({ id: t_id, name: 'Personal Workspace' }, { onConflict: 'id' });
+    await supabase.from('profiles').upsert({ id: u_id, tenant_id: t_id, role: 'admin' }, { onConflict: 'id' });
+
+    // 3. Verify Usage & Subscription
     const now = new Date();
     const periodMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
 
@@ -81,6 +87,7 @@ export async function POST(req: Request) {
         );
     }
 
+    // 4. Create Validation
     const validationId = `val_${nanoid(10)}`;
     const runId = `run_${nanoid(10)}`;
 
