@@ -242,7 +242,7 @@ export default function MethodologyPage() {
                     <ExpertCard
                         emoji={"💰"}
                         name="The Financial Strategist"
-                        model="Mistral Medium 3"
+                        model="Qwen 3 (235B)"
                         color="border-blue-200 bg-blue-50/50"
                         thinksLike="A CFO with private equity experience"
                         naturalBias="Conservative — focused on unit economics and survival"
@@ -254,7 +254,7 @@ export default function MethodologyPage() {
                     <ExpertCard
                         emoji={"⚖️"}
                         name="Ethics & Risk"
-                        model="Qwen 3"
+                        model="Mistral Medium 3"
                         color="border-amber-200 bg-amber-50/50"
                         thinksLike="A compliance officer at a top law firm"
                         naturalBias="Cautious — focused on what could go wrong legally and reputationally"
@@ -335,15 +335,15 @@ export default function MethodologyPage() {
                                 </tr>
                                 <tr className="border-b border-neutral-100">
                                     <td className="py-3">{"💰"} Financier</td>
-                                    <td className="py-3 font-mono text-xs">Mistral Medium 3</td>
-                                    <td className="py-3 text-xs">Mistral AI</td>
-                                    <td className="py-3 text-xs text-neutral-400">Precise, European, structured output</td>
+                                    <td className="py-3 font-mono text-xs">Qwen 3 (235B)</td>
+                                    <td className="py-3 text-xs">Alibaba</td>
+                                    <td className="py-3 text-xs text-neutral-400">Large parameter count, strong analytical reasoning</td>
                                 </tr>
                                 <tr className="border-b border-neutral-100">
                                     <td className="py-3">{"⚖️"} Ethics</td>
-                                    <td className="py-3 font-mono text-xs">Qwen 3</td>
-                                    <td className="py-3 text-xs">Alibaba</td>
-                                    <td className="py-3 text-xs text-neutral-400">Multi-lingual, compliance-aware</td>
+                                    <td className="py-3 font-mono text-xs">Mistral Medium 3</td>
+                                    <td className="py-3 text-xs">Mistral AI</td>
+                                    <td className="py-3 text-xs text-neutral-400">European, precise, compliance-aware</td>
                                 </tr>
                                 <tr className="border-b border-neutral-100">
                                     <td className="py-3">{"🏛️"} Judge</td>
