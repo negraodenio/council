@@ -13,19 +13,32 @@ export async function POST(req: Request) {
     if (!idea) return NextResponse.json({ error: 'Missing idea' }, { status: 400 });
 
     let t_id = tenant_id;
-    let u_id = user_id || '00000000-0000-0000-0000-000000000000';
+    let u_id = user_id;
+
+    // 1. Resolve Tenant/User
+    if (!u_id || u_id === '00000000-0000-0000-0000-000000000000') {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) u_id = user.id;
+    }
+
+    if (!u_id) return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
 
     // Fallback: If tenant_id is missing but u_id is present, lookup tenant_id
-    if (!t_id && u_id !== '00000000-0000-0000-0000-000000000000') {
+    if (!t_id || t_id === '00000000-0000-0000-0000-000000000000') {
         const { data: profile } = await supabase
             .from('profiles')
             .select('tenant_id')
             .eq('id', u_id)
             .maybeSingle();
-        if (profile) t_id = profile.tenant_id;
-    }
 
-    t_id = t_id || '00000000-0000-0000-0000-000000000000';
+        if (profile?.tenant_id) {
+            t_id = profile.tenant_id;
+        } else {
+            // CRITICAL: If still no tenant, use u_id as ISOLATED bucket
+            // This prevents shared usage between different users
+            t_id = u_id;
+        }
+    }
 
     // 1. Verify Usage & Subscription
     const now = new Date();
@@ -57,8 +70,11 @@ export async function POST(req: Request) {
                 usage: currentUsage,
                 debug: {
                     tenant: t_id,
-                    plan: subscription?.plan || 'none',
-                    month: periodMonth
+                    user: u_id,
+                    plan: subscription?.plan || 'free',
+                    month: periodMonth,
+                    currentUsage,
+                    limit
                 }
             },
             { status: 403 }

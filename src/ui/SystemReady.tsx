@@ -25,6 +25,8 @@ export default function SystemReady() {
     );
 
     const [profileLoading, setProfileLoading] = useState(true);
+    const [showUpgrade, setShowUpgrade] = useState(false);
+    const [debugInfo, setDebugInfo] = useState<any>(null);
 
     useEffect(() => {
         const supabase = createClient();
@@ -46,8 +48,6 @@ export default function SystemReady() {
         })();
     }, []);
 
-    const [showUpgrade, setShowUpgrade] = useState(false);
-
     async function start() {
         setLoading(true);
         try {
@@ -68,6 +68,7 @@ export default function SystemReady() {
 
             if (res.status === 403 && data.error === 'LIMIT_REACHED') {
                 console.warn('[Limit Reached] Debug info:', data.debug);
+                setDebugInfo(data);
                 setShowUpgrade(true);
                 return;
             }
@@ -185,9 +186,23 @@ export default function SystemReady() {
                                 </svg>
                             </div>
                             <h2 className="text-2xl font-bold text-white mb-2">Limit Reached</h2>
-                            <p className="text-white/50 text-sm leading-relaxed">
-                                You{"'"}ve used all your credits for this month. Upgrade to Pro to get 30 sessions, full PDF reports, and priority processing.
+                            <p className="text-white/50 text-sm leading-relaxed mb-4">
+                                {debugInfo ? (
+                                    <span>Plan: <b className="text-purple-400 uppercase">{debugInfo.debug?.plan}</b> · Usage: <b className="text-white">{debugInfo.usage} / {debugInfo.limit}</b></span>
+                                ) : (
+                                    t(lang, 'sys_limit_reached_desc')
+                                )}
                             </p>
+
+                            {debugInfo?.debug && (
+                                <div className="p-3 bg-white/[0.03] rounded-xl border border-white/[0.05] mb-4">
+                                    <p className="text-[9px] font-mono text-white/20 uppercase tracking-tighter mb-1">Debug Session Info</p>
+                                    <p className="text-[10px] font-mono text-white/40 break-all leading-tight">
+                                        Tenant: {debugInfo.debug.tenant?.substring(0, 16)}...<br />
+                                        User: {debugInfo.debug.user?.substring(0, 16)}...
+                                    </p>
+                                </div>
+                            )}
                         </div>
 
                         <div className="flex flex-col gap-3">
@@ -214,5 +229,3 @@ export default function SystemReady() {
         </div>
     );
 }
-
-
