@@ -398,10 +398,10 @@
                             </span>
                             <h3 className="font-semibold mb-1">Pro</h3>
                             <div className="text-3xl font-bold mb-6">
-                                $29<span className="text-lg text-neutral-400 font-normal">/mo</span>
+                                €29<span className="text-lg text-neutral-400 font-normal">/mo</span>
                             </div>
                             <ul className="space-y-3 text-sm text-neutral-500 mb-8">
-                                <li>{"✓"} 100 sessions / month</li>
+                                <li>{"✓"} 30 sessions / month</li>
                                 <li>{"✓"} Live debate streaming</li>
                                 <li>{"✓"} Interject mid-debate</li>
                                 <li>{"✓"} Full transcript export</li>
@@ -416,11 +416,11 @@
                         <div className="bg-white p-8 rounded-xl border border-neutral-200">
                             <h3 className="font-semibold mb-1">Team</h3>
                             <div className="text-3xl font-bold mb-6">
-                                $99<span className="text-lg text-neutral-400 font-normal">/mo</span>
+                                €99<span className="text-lg text-neutral-400 font-normal">/mo</span>
                             </div>
                             <ul className="space-y-3 text-sm text-neutral-500 mb-8">
                                 <li>{"✓"} 300 sessions / month</li>
-                                <li>{"✓"} Overage: $0.30/session</li>
+                                <li>{"✓"} Overage: €0.30/session</li>
                                 <li>{"✓"} Team collaboration</li>
                                 <li>{"✓"} Custom personas</li>
                                 <li>{"✓"} EU data sovereignty</li>

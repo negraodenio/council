@@ -37,6 +37,20 @@ export default function PricingPage() {
 
                     <PricingCards />
 
+                    {/* Social Proof */}
+                    <div className="mt-20 py-8 border-y border-neutral-100">
+                        <p className="text-xs uppercase tracking-[0.2em] text-neutral-400 font-semibold mb-8">
+                            Used by 200+ founders & strategists
+                        </p>
+                        <div className="flex flex-wrap justify-center gap-x-12 gap-y-8 grayscale opacity-50">
+                            {/* SVG Logos would go here, using placeholders for now */}
+                            <div className="font-bold text-neutral-900 text-xl tracking-tighter italic">LINDOS</div>
+                            <div className="font-extrabold text-neutral-900 text-xl tracking-tight">KREATIVE</div>
+                            <div className="font-black text-neutral-900 text-xl">SDR.ai</div>
+                            <div className="font-bold text-neutral-900 text-xl tracking-widest">QUARTZ</div>
+                        </div>
+                    </div>
+
                     <div className="mt-16 max-w-2xl mx-auto">
                         <h2 className="font-semibold text-lg mb-6">Every plan includes</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left text-sm">
@@ -61,38 +75,82 @@ export default function PricingPage() {
                     </div>
 
                     {/* TRANSPARENT PRICING */}
-                    <div className="mt-16 max-w-2xl mx-auto text-left">
-                        <h2 className="text-2xl font-bold tracking-tight mb-8 text-center">Transparent Pricing</h2>
-                        <div className="bg-white rounded-2xl border border-neutral-100 overflow-hidden shadow-sm">
-                            <div className="p-8 border-b border-neutral-50">
-                                <h3 className="font-semibold mb-4 text-neutral-400 uppercase text-xs tracking-widest">Real cost per session</h3>
-                                <div className="space-y-4">
+                    <div className="mt-24 max-w-2xl mx-auto text-left">
+                        <div className="text-center mb-12">
+                            <h2 className="text-3xl font-bold tracking-tight mb-4">Why this price?</h2>
+                            <p className="text-neutral-500">Continuous innovation isn{"'"}t free. Here{"'"}s how it works.</p>
+                        </div>
+
+                        <div className="bg-white rounded-3xl border border-neutral-100 overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+                            <div className="p-10 border-b border-neutral-50">
+                                <h3 className="font-semibold mb-6 text-neutral-400 uppercase text-[10px] tracking-[0.2em]">Real cost per session</h3>
+                                <div className="space-y-6">
                                     <div className="flex justify-between items-center text-sm">
-                                        <span className="text-neutral-500">6 Experts (Optimized Models)</span>
-                                        <span className="font-mono text-neutral-900">~$0.06</span>
+                                        <div className="flex flex-col">
+                                            <span className="text-neutral-900 font-medium">6 Experts (Multi-Model)</span>
+                                            <span className="text-neutral-400 text-xs text-[10px]">DeepSeek, Qwen, Mistral, Llama, Kimi, Gemini</span>
+                                        </div>
+                                        <span className="font-mono text-neutral-900">~€0.06</span>
                                     </div>
                                     <div className="flex justify-between items-center text-sm">
-                                        <span className="text-neutral-500">1 Judge (GPT-4o)</span>
-                                        <span className="font-mono text-neutral-900">~$0.05</span>
+                                        <div className="flex flex-col">
+                                            <span className="text-neutral-900 font-medium">1 Head Judge</span>
+                                            <span className="text-neutral-400 text-xs text-[10px]">GPT-4o 2024-08-06 (Latest)</span>
+                                        </div>
+                                        <span className="font-mono text-neutral-900">~€0.05</span>
                                     </div>
                                     <div className="flex justify-between items-center text-sm">
-                                        <span className="text-neutral-500">Infrastructure & Routing</span>
-                                        <span className="font-mono text-neutral-900">~$0.01</span>
+                                        <div className="flex flex-col">
+                                            <span className="text-neutral-900 font-medium">EU Infrastructure</span>
+                                            <span className="text-neutral-400 text-xs text-[10px]">Sovereign routing & Zero Data Retention</span>
+                                        </div>
+                                        <span className="font-mono text-neutral-900">~€0.01</span>
                                     </div>
-                                    <div className="pt-4 border-t border-neutral-50 flex justify-between items-center">
-                                        <span className="font-semibold">Total Baseline Cost</span>
-                                        <span className="font-mono font-bold">~$0.12</span>
+                                    <div className="pt-6 border-t border-neutral-50 flex justify-between items-center">
+                                        <span className="font-bold text-lg">Total Baseline AI Cost</span>
+                                        <span className="font-mono font-bold text-lg text-emerald-600">~€0.12</span>
                                     </div>
                                 </div>
                             </div>
-                            <div className="p-8 bg-neutral-50/50">
-                                <h3 className="font-semibold mb-4 text-neutral-400 uppercase text-xs tracking-widest">Your session Pro ($0.29)</h3>
-                                <div className="space-y-2 text-sm">
-                                    <p className="text-neutral-600">{"·"} <span className="font-mono text-neutral-900">~$0.12</span> → Real AI cost</p>
-                                    <p className="text-neutral-600">{"·"} <span className="font-mono text-neutral-900">~$0.17</span> → Development, Support, & R&D</p>
+                            <div className="p-10 bg-neutral-50/50">
+                                <h3 className="font-semibold mb-6 text-neutral-400 uppercase text-[10px] tracking-[0.2em]">Pro Efficiency (€0.97/session)</h3>
+                                <div className="space-y-4 text-sm leading-relaxed">
+                                    <p className="text-neutral-600">{"·"} <span className="font-mono text-neutral-900 font-semibold">~€0.12</span> → Direct AI compute pass-through.</p>
+                                    <p className="text-neutral-600">{"·"} <span className="font-mono text-neutral-900 font-semibold">~€0.85</span> → Used for continuous R&D, human support, and infrastructure maintenance.</p>
                                 </div>
-                                <p className="mt-6 text-xs text-neutral-400 italic">No hidden fees. No massive markups. Just sustainable, high-performance AI.</p>
+                                <div className="mt-8 flex items-center justify-between p-4 bg-white rounded-2xl border border-neutral-100">
+                                    <div className="flex items-center gap-3">
+                                        <span className="text-xl">🛡️</span>
+                                        <p className="text-xs text-neutral-500 font-medium">No hidden fees. No massive markups.</p>
+                                    </div>
+                                    <div className="flex items-center gap-1.5 px-3 py-1 bg-neutral-900 text-white rounded-full scale-90 origin-right">
+                                        <span className="text-[10px] font-bold uppercase tracking-wider">7-DAY REFUND</span>
+                                    </div>
+                                </div>
                             </div>
+                        </div>
+                    </div>
+
+                    {/* FAQ */}
+                    <div className="mt-24 max-w-2xl mx-auto text-left">
+                        <h2 className="text-3xl font-bold tracking-tight mb-12 text-center">Frequently Asked Questions</h2>
+                        <div className="space-y-8">
+                            <FAQItem
+                                q="What counts as 1 session?"
+                                a="A session is a full debate loop: Language detection + 6 experts (Round 1) + Adversarial challenge (Round 2) + Defense/Synthesis (Round 3) + Final Judicial Verdict. It includes all AI model calls involved."
+                            />
+                            <FAQItem
+                                q="Is my data used for training?"
+                                a="No. We use Zero Data Retention (ZDR) APIs for all EU-sensitive routing. Your ideas and debates remain yours and are never used to train future AI models."
+                            />
+                            <FAQItem
+                                q="What happens if I run out of sessions?"
+                                a="On the Pro plan, you can purchase additional session packs. On the Team plan, overage is automatically billed at €0.30/session at the end of the month."
+                            />
+                            <FAQItem
+                                q="Can I cancel anytime?"
+                                a="Yes. You can cancel your subscription with one click through our Stripe Customer Portal. You will keep access until the end of your billing period."
+                            />
                         </div>
                     </div>
                 </div>
@@ -143,6 +201,15 @@ export default function PricingPage() {
                 </div>
             </footer>
         </main>
+    );
+}
+
+function FAQItem({ q, a }: { q: string; a: string }) {
+    return (
+        <div className="border-b border-neutral-100 pb-6">
+            <h4 className="font-semibold text-neutral-900 mb-2">{q}</h4>
+            <p className="text-sm text-neutral-500 leading-relaxed">{a}</p>
+        </div>
     );
 }
 
