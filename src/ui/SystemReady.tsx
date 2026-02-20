@@ -67,6 +67,7 @@ export default function SystemReady() {
             const data = await res.json();
 
             if (res.status === 403 && data.error === 'LIMIT_REACHED') {
+                console.warn('[Limit Reached] Debug info:', data.debug);
                 setShowUpgrade(true);
                 return;
             }

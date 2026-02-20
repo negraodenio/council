@@ -8,10 +8,24 @@ export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
     const supabase = createAdminClient();
-    const { idea, region, sensitivity, topic, tenant_id, user_id } = await req.json();
+    const { idea, region, sensitivity, topic, tenant_id, user_id } = await req.json() || {};
 
-    const t_id = tenant_id || '00000000-0000-0000-0000-000000000000';
-    const u_id = user_id || '00000000-0000-0000-0000-000000000000';
+    if (!idea) return NextResponse.json({ error: 'Missing idea' }, { status: 400 });
+
+    let t_id = tenant_id;
+    let u_id = user_id || '00000000-0000-0000-0000-000000000000';
+
+    // Fallback: If tenant_id is missing but u_id is present, lookup tenant_id
+    if (!t_id && u_id !== '00000000-0000-0000-0000-000000000000') {
+        const { data: profile } = await supabase
+            .from('profiles')
+            .select('tenant_id')
+            .eq('id', u_id)
+            .maybeSingle();
+        if (profile) t_id = profile.tenant_id;
+    }
+
+    t_id = t_id || '00000000-0000-0000-0000-000000000000';
 
     // 1. Verify Usage & Subscription
     const now = new Date();
@@ -34,12 +48,18 @@ export async function POST(req: Request) {
     const currentUsage = usage?.validations_count || 0;
 
     if (currentUsage >= limit) {
+        console.log(`[Limit] Blocked. Tenant: ${t_id} | Usage: ${currentUsage} | Limit: ${limit} | Plan: ${subscription?.plan}`);
         return NextResponse.json(
             {
                 error: 'LIMIT_REACHED',
                 message: 'Your monthly session limit has been reached.',
                 limit,
-                usage: currentUsage
+                usage: currentUsage,
+                debug: {
+                    tenant: t_id,
+                    plan: subscription?.plan || 'none',
+                    month: periodMonth
+                }
             },
             { status: 403 }
         );
