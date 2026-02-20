@@ -230,7 +230,7 @@ export default function MethodologyPage() {
                     <ExpertCard
                         emoji={"📊"}
                         name="The Market Analyst"
-                        model="Gemini 2.5 Flash"
+                        model="google/gemini-2.5-flash-preview-05-20"
                         color="border-emerald-200 bg-emerald-50/50"
                         thinksLike="A McKinsey partner"
                         naturalBias="Data-driven — needs numbers to believe"
@@ -302,54 +302,54 @@ export default function MethodologyPage() {
                         <table className="w-full text-sm">
                             <thead>
                                 <tr className="border-b border-neutral-200">
-                                    <th className="text-left py-3 font-semibold">Role</th>
-                                    <th className="text-left py-3 font-semibold">AI Model</th>
+                                    <th className="text-left py-3 font-semibold">Expert</th>
+                                    <th className="text-left py-3 font-semibold">Site Display</th>
+                                    <th className="text-left py-3 font-semibold">OpenRouter ID</th>
                                     <th className="text-left py-3 font-semibold">Provider</th>
-                                    <th className="text-left py-3 font-semibold">Why this model</th>
                                 </tr>
                             </thead>
                             <tbody className="text-neutral-600">
-                                <tr className="border-b border-neutral-100">
+                                <tr className="border-b border-neutral-100 text-[10px] md:text-sm">
                                     <td className="py-3">{"🔮"} Visionary</td>
-                                    <td className="py-3 font-mono text-xs">DeepSeek R1</td>
-                                    <td className="py-3 text-xs">DeepSeek</td>
-                                    <td className="py-3 text-xs text-neutral-400">Strong reasoning, creative connections</td>
+                                    <td className="py-3">DeepSeek R1</td>
+                                    <td className="py-3 font-mono opacity-60">deepseek/deepseek-r1</td>
+                                    <td className="py-3">DeepSeek</td>
                                 </tr>
-                                <tr className="border-b border-neutral-100">
-                                    <td className="py-3">{"⚙️"} Technologist</td>
-                                    <td className="py-3 font-mono text-xs">Kimi K2</td>
-                                    <td className="py-3 text-xs">Moonshot AI</td>
-                                    <td className="py-3 text-xs text-neutral-400">Strong technical analysis, code-aware</td>
+                                <tr className="border-b border-neutral-100 text-[10px] md:text-sm">
+                                    <td className="py-3">{"⚙️"} Tech</td>
+                                    <td className="py-3">Kimi K2</td>
+                                    <td className="py-3 font-mono opacity-60">moonshotai/kimi-k2</td>
+                                    <td className="py-3">Moonshot AI</td>
                                 </tr>
-                                <tr className="border-b border-neutral-100">
-                                    <td className="py-3">{"😈"} Devil{"'"}s Advocate</td>
-                                    <td className="py-3 font-mono text-xs">Llama 4 Maverick</td>
-                                    <td className="py-3 text-xs">Meta</td>
-                                    <td className="py-3 text-xs text-neutral-400">Less filtered, more willing to disagree</td>
+                                <tr className="border-b border-neutral-100 text-[10px] md:text-sm">
+                                    <td className="py-3">{"😈"} Devil</td>
+                                    <td className="py-3">Llama 4 Maverick</td>
+                                    <td className="py-3 font-mono opacity-60">meta-llama/llama-4-maverick</td>
+                                    <td className="py-3">Meta</td>
                                 </tr>
-                                <tr className="border-b border-neutral-100">
-                                    <td className="py-3">{"📊"} Market Analyst</td>
-                                    <td className="py-3 font-mono text-xs">Gemini 2.5 Flash</td>
-                                    <td className="py-3 text-xs">Google</td>
-                                    <td className="py-3 text-xs text-neutral-400">Fast, data-oriented, search-grounded</td>
+                                <tr className="border-b border-neutral-100 text-[10px] md:text-sm">
+                                    <td className="py-3">{"📊"} Market</td>
+                                    <td className="py-3">Gemini 2.5 Flash</td>
+                                    <td className="py-3 font-mono opacity-60">google/gemini-2.5-flash-preview-05-20</td>
+                                    <td className="py-3">Google</td>
                                 </tr>
-                                <tr className="border-b border-neutral-100">
-                                    <td className="py-3">{"💰"} Financier</td>
-                                    <td className="py-3 font-mono text-xs">Qwen 3 (235B)</td>
-                                    <td className="py-3 text-xs">Alibaba</td>
-                                    <td className="py-3 text-xs text-neutral-400">Large parameter count, strong analytical reasoning</td>
+                                <tr className="border-b border-neutral-100 text-[10px] md:text-sm">
+                                    <td className="py-3">{"💰"} Finance</td>
+                                    <td className="py-3">Qwen 3 (235B)</td>
+                                    <td className="py-3 font-mono opacity-60">qwen/qwen3-235b-a22b</td>
+                                    <td className="py-3">Alibaba</td>
                                 </tr>
-                                <tr className="border-b border-neutral-100">
+                                <tr className="border-b border-neutral-100 text-[10px] md:text-sm">
                                     <td className="py-3">{"⚖️"} Ethics</td>
-                                    <td className="py-3 font-mono text-xs">Mistral Medium 3</td>
-                                    <td className="py-3 text-xs">Mistral AI</td>
-                                    <td className="py-3 text-xs text-neutral-400">European, precise, compliance-aware</td>
+                                    <td className="py-3">Mistral Medium 3</td>
+                                    <td className="py-3 font-mono opacity-60">mistralai/mistral-medium-3</td>
+                                    <td className="py-3">Mistral AI</td>
                                 </tr>
-                                <tr className="border-b border-neutral-100">
+                                <tr className="border-b border-neutral-100 text-[10px] md:text-sm">
                                     <td className="py-3">{"🏛️"} Judge</td>
-                                    <td className="py-3 font-mono text-xs">GPT-4o</td>
-                                    <td className="py-3 text-xs">OpenAI</td>
-                                    <td className="py-3 text-xs text-neutral-400">Strongest general reasoning for arbitration</td>
+                                    <td className="py-3">GPT-4o</td>
+                                    <td className="py-3 font-mono opacity-60">openai/gpt-4o</td>
+                                    <td className="py-3">OpenAI</td>
                                 </tr>
                             </tbody>
                         </table>

@@ -51,7 +51,7 @@ export type ModelConfig = { provider: 'openrouter' | 'siliconflow'; model: strin
 
 const models: Record<string, ModelConfig> = {
     deepseek: { provider: 'openrouter', model: 'deepseek/deepseek-r1' },
-    gemini: { provider: 'openrouter', model: 'google/gemini-2.5-flash' },
+    gemini: { provider: 'openrouter', model: 'google/gemini-2.5-flash-preview-05-20' },
     llama: { provider: 'openrouter', model: 'meta-llama/llama-4-maverick' },
     mistral: { provider: 'openrouter', model: 'mistralai/mistral-medium-3' },
     gpt4o: { provider: 'openrouter', model: 'openai/gpt-4o' },

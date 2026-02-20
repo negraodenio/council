@@ -419,7 +419,8 @@
                                 $99<span className="text-lg text-neutral-400 font-normal">/mo</span>
                             </div>
                             <ul className="space-y-3 text-sm text-neutral-500 mb-8">
-                                <li>{"✓"} Unlimited sessions</li>
+                                <li>{"✓"} 300 sessions / month</li>
+                                <li>{"✓"} Overage: $0.30/session</li>
                                 <li>{"✓"} Team collaboration</li>
                                 <li>{"✓"} Custom personas</li>
                                 <li>{"✓"} EU data sovereignty</li>

@@ -43,7 +43,8 @@ const plans = [
         period: "/month",
         description: "For teams & agencies",
         features: [
-            "Unlimited sessions",
+            "300 sessions / month",
+            "Overage: $0.30/session",
             "All 7 AI models",
             "3-round debate",
             "Full PDF reports",
@@ -89,11 +90,10 @@ export function PricingCards() {
             {plans.map((plan) => (
                 <div
                     key={plan.name}
-                    className={`rounded-2xl p-8 text-left flex flex-col ${
-                        plan.highlighted
+                    className={`rounded-2xl p-8 text-left flex flex-col ${plan.highlighted
                             ? "border-2 border-neutral-900 shadow-lg relative"
                             : "border border-neutral-200"
-                    }`}
+                        }`}
                 >
                     {plan.highlighted && (
                         <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-neutral-900 text-white text-xs px-4 py-1 rounded-full">
@@ -123,11 +123,10 @@ export function PricingCards() {
                     {plan.href ? (
                         <a
                             href={plan.href}
-                            className={`block text-center py-3 rounded-lg text-sm font-medium transition ${
-                                plan.highlighted
+                            className={`block text-center py-3 rounded-lg text-sm font-medium transition ${plan.highlighted
                                     ? "bg-neutral-900 text-white hover:bg-neutral-800"
                                     : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"
-                            }`}
+                                }`}
                         >
                             {plan.cta}
                         </a>
@@ -135,11 +134,10 @@ export function PricingCards() {
                         <button
                             onClick={() => plan.priceId && handleCheckout(plan.priceId, plan.name)}
                             disabled={loading === plan.name || !plan.priceId}
-                            className={`block w-full text-center py-3 rounded-lg text-sm font-medium transition disabled:opacity-50 ${
-                                plan.highlighted
+                            className={`block w-full text-center py-3 rounded-lg text-sm font-medium transition disabled:opacity-50 ${plan.highlighted
                                     ? "bg-neutral-900 text-white hover:bg-neutral-800"
                                     : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"
-                            }`}
+                                }`}
                         >
                             {loading === plan.name ? "Redirecting..." : plan.priceId ? plan.cta : "Coming soon"}
                         </button>

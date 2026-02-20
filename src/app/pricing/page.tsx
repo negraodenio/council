@@ -59,6 +59,42 @@ export default function PricingPage() {
                             7-day refund policy for first-time subscribers.
                         </p>
                     </div>
+
+                    {/* TRANSPARENT PRICING */}
+                    <div className="mt-16 max-w-2xl mx-auto text-left">
+                        <h2 className="text-2xl font-bold tracking-tight mb-8 text-center">Transparent Pricing</h2>
+                        <div className="bg-white rounded-2xl border border-neutral-100 overflow-hidden shadow-sm">
+                            <div className="p-8 border-b border-neutral-50">
+                                <h3 className="font-semibold mb-4 text-neutral-400 uppercase text-xs tracking-widest">Real cost per session</h3>
+                                <div className="space-y-4">
+                                    <div className="flex justify-between items-center text-sm">
+                                        <span className="text-neutral-500">6 Experts (Optimized Models)</span>
+                                        <span className="font-mono text-neutral-900">~$0.06</span>
+                                    </div>
+                                    <div className="flex justify-between items-center text-sm">
+                                        <span className="text-neutral-500">1 Judge (GPT-4o)</span>
+                                        <span className="font-mono text-neutral-900">~$0.05</span>
+                                    </div>
+                                    <div className="flex justify-between items-center text-sm">
+                                        <span className="text-neutral-500">Infrastructure & Routing</span>
+                                        <span className="font-mono text-neutral-900">~$0.01</span>
+                                    </div>
+                                    <div className="pt-4 border-t border-neutral-50 flex justify-between items-center">
+                                        <span className="font-semibold">Total Baseline Cost</span>
+                                        <span className="font-mono font-bold">~$0.12</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="p-8 bg-neutral-50/50">
+                                <h3 className="font-semibold mb-4 text-neutral-400 uppercase text-xs tracking-widest">Your session Pro ($0.29)</h3>
+                                <div className="space-y-2 text-sm">
+                                    <p className="text-neutral-600">{"·"} <span className="font-mono text-neutral-900">~$0.12</span> → Real AI cost</p>
+                                    <p className="text-neutral-600">{"·"} <span className="font-mono text-neutral-900">~$0.17</span> → Development, Support, & R&D</p>
+                                </div>
+                                <p className="mt-6 text-xs text-neutral-400 italic">No hidden fees. No massive markups. Just sustainable, high-performance AI.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
