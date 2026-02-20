@@ -7,6 +7,7 @@
                 <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
                     <a href="/" className="text-lg font-semibold tracking-tight">
                         Council<span className="text-neutral-400">IA</span>
+                        <span className="ml-2 text-[10px] text-neutral-400 font-mono tracking-widest uppercase align-middle">CaaS</span>
                     </a>
                     <div className="hidden md:flex items-center gap-8 text-sm text-neutral-500">
                         <a href="#how" className="hover:text-neutral-900 transition">How it works</a>
@@ -30,7 +31,7 @@
 
                     <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-neutral-100 text-neutral-500 text-sm mb-8">
                         <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
-                        ACP Protocol{"'"} {"·"} 6 AI Experts {"·"} 3 Adversarial Rounds {"·"} 7 Models
+                        Council as a Service {"·"} Powered by ACP Protocol™
                     </div>
 
                     <h1 className="text-5xl md:text-7xl font-bold leading-[1.05] tracking-tight mb-8">
