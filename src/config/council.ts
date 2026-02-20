@@ -55,7 +55,7 @@ const models: Record<string, ModelConfig> = {
     llama: { provider: 'openrouter', model: 'meta-llama/llama-3.3-70b-instruct' },
     mistral: { provider: 'openrouter', model: 'mistralai/mistral-large-2411' },
     gpt4o: { provider: 'openrouter', model: 'openai/gpt-4o-2024-08-06' },
-    kimi: { provider: 'openrouter', model: 'moonshotai/moonshot-v1-8k' },
+    kimi: { provider: 'openrouter', model: 'qwen/qwen-2.5-coder-32b-instruct' },
     qwen: { provider: 'openrouter', model: 'qwen/qwen-2.5-72b-instruct' },
 };
 
