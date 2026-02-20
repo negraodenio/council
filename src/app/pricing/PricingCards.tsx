@@ -7,7 +7,7 @@ const plans = [
         name: "Free",
         price: "0",
         period: "",
-        description: "Try the ACP Protocol",
+        description: "Try the ACE Engine",
         features: [
             "2 sessions / month",
             "All 7 AI models",

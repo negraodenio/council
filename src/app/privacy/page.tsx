@@ -50,7 +50,7 @@ export default function PrivacyPage() {
                                 <li>To run AI debate sessions and generate reports.</li>
                                 <li>To manage your account and subscription.</li>
                                 <li>To route requests to appropriate AI providers (EU geo-routing for data sovereignty).</li>
-                                <li>To improve the ACP Protocol and debate quality.</li>
+                                <li>To improve the ACE Engine and debate quality.</li>
                                 <li>We do <strong>NOT</strong> sell your data. Ever.</li>
                             </ul>
                         </Section>

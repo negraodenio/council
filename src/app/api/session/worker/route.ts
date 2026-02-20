@@ -183,7 +183,7 @@ function inferGeoContext(idea: string, lang: string): string {
     return '';
 }
 
-// ——— v2.3 ACP Protocol — Persona Cognitive Archetypes ———————————————
+// ——— v2.3 ACE Engine — Persona Cognitive Archetypes ———————————————
 
 const PERSONA_PROMPTS: Record<string, string> = {
     visionary: `You are "The Visionary" (🔮), a CEO-archetype.
@@ -303,7 +303,7 @@ You can be too conservative. Amazon burned cash for years. Tesla was "months fro
 bankruptcy" repeatedly. Some bets are worth making before the spreadsheet says yes.`,
 };
 
-// ——— v2.3 ACP Protocol — Conflict Matrix for Round 2 ———————————————
+// ——— v2.3 ACE Engine — Conflict Matrix for Round 2 ———————————————
 
 const CONFLICT_MATRIX: Record<string, { target: string; instruction: string }> = {
     visionary: {
@@ -349,7 +349,7 @@ rate to get there? Dreams don't pay salaries.`,
     },
 };
 
-// ——— Prompt Builders (v2.3 ACP Protocol) ———————————————————
+// ——— Prompt Builders (v2.3 ACE Engine) ———————————————————
 
 function buildRound1Prompt(persona: any, lang: string, idea: string = ''): string {
     const cognitivePrompt = PERSONA_PROMPTS[persona.id] || '';
@@ -594,7 +594,7 @@ function buildJudgePrompt(lang: string): string {
 
     return `You are the CHIEF JUDGE of CouncilIA, the world's most rigorous AI startup validation council.
 
-You have observed a 3-round adversarial debate (ACP Protocol — Adversarial Consensus Protocol) 
+You have observed a 3-round adversarial debate (ACE Engine — Adversarial Consensus Engine) 
 between 6 expert personas, each with different cognitive frameworks and natural biases.
 
 YOUR TASK: Deliver the definitive verdict.
@@ -616,10 +616,10 @@ RULES:
 5. Reference specific experts by name when citing evidence.${langInstruction(lang)}`;
 }
 
-// ——— Main Worker (v2.3 ACP Protocol) ———————————————————
+// ——— Main Worker (v2.3 ACE Engine) ———————————————————
 
 export async function POST(req: Request) {
-    console.log('[Worker] v2.3 — ACP Protocol (Adversarial Consensus Protocol) starting');
+    console.log('[Worker] v2.3 — ACE Engine (Adversarial Consensus Engine) starting');
     try {
         const body = await req.json();
         const { validationId, runId, tenant_id, user_id, idea, region, sensitivity } = body;
@@ -630,7 +630,7 @@ export async function POST(req: Request) {
         await addEvent(supabase, runId, 'lang', null, { lang });
 
         await addEvent(supabase, runId, 'system', null, {
-            msg: '🏛️ ACP Protocol v2.3 — Adversarial Consensus Protocol Initiated\n📚 Hegelian Dialectics · Delphi Method · Red Teaming · Pre-Mortem · Game Theory',
+            msg: '🏛️ ACE Engine v2.3 — Adversarial Consensus Engine Initiated\n📚 Hegelian Dialectics · Delphi Method · Red Teaming · Pre-Mortem · Game Theory',
         });
 
         const { redacted: ideaRedacted, hadPII } = redactPII(idea);
@@ -783,7 +783,7 @@ export async function POST(req: Request) {
             const judgeModel: ModelConfig = { provider: 'openrouter', model: config.judge.primary };
             const judgeMessages = [
                 { role: 'system', content: buildJudgePrompt(lang) },
-                { role: 'user', content: `Deliver your verdict on:\n\n"${ideaRedacted}"\n\nFULL ACP DEBATE (3 rounds, 6 experts):\n\n${fullTranscript}` },
+                { role: 'user', content: `Deliver your verdict on:\n\n"${ideaRedacted}"\n\nFULL ACE DEBATE (3 rounds, 6 experts):\n\n${fullTranscript}` },
             ];
 
             const judgeOut = await callModel(judgeModel, judgeMessages, { zdr: config.judge.zdr, maxTokens: 1500 });
@@ -803,7 +803,7 @@ export async function POST(req: Request) {
                 status: 'complete', consensus_score: finalScore,
                 full_result: {
                     lang,
-                    protocol: 'ACP_v2.3',
+                    protocol: 'ACE_v2.3',
                     judge: judgeText, round1: round1Results,
                     round2: round2Results, round3: round3Results,
                     model_config: {
@@ -817,7 +817,7 @@ export async function POST(req: Request) {
             await trackUsage({ tenant_id, validation_id: validationId });
             await triggerWebhook({
                 tenant_id, event: 'debate.complete',
-                payload: { validation_id: validationId, consensus_score: finalScore, rounds: 3, models_used: 7, protocol: 'ACP_v2.3' },
+                payload: { validation_id: validationId, consensus_score: finalScore, rounds: 3, models_used: 7, protocol: 'ACE_v2.3' },
             });
         } catch (err: any) {
             console.error('[Judge] Primary failed:', err.message);
@@ -845,17 +845,17 @@ export async function POST(req: Request) {
 
             await supabase.from('validations').update({
                 status: 'complete', consensus_score: finalScore,
-                full_result: { lang, protocol: 'ACP_v2.3', judge: `Error: ${err.message}`, round1: round1Results, round2: round2Results, round3: round3Results },
+                full_result: { lang, protocol: 'ACE_v2.3', judge: `Error: ${err.message}`, round1: round1Results, round2: round2Results, round3: round3Results },
             }).eq('id', validationId);
         }
 
         // ══════ COMPLETE ══════
         await addEvent(supabase, runId, 'complete', null, {
-            validationId, consensus_score: finalScore, status: 'complete', protocol: 'ACP_v2.3',
+            validationId, consensus_score: finalScore, status: 'complete', protocol: 'ACE_v2.3',
         });
         await supabase.from('debate_runs').update({ status: 'complete' }).eq('id', runId);
 
-        console.log(`[Worker] ✅ ${runId} complete. Score: ${finalScore}/100 | Lang: ${lang} | Protocol: ACP_v2.3`);
+        console.log(`[Worker] ✅ ${runId} complete. Score: ${finalScore}/100 | Lang: ${lang} | Engine: ACE_v2.3`);
         return apiOk({ runId, validationId, score: finalScore });
     } catch (error: any) {
         console.error('[Worker] Fatal:', error);

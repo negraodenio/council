@@ -1,5 +1,5 @@
 ﻿// src/config/council.ts
-// CouncilIA v2.3 — ACP Protocol — 6 Models, 6 Personas, Adversarial Debate
+// CouncilIA v2.3 — ACE Engine — 6 Models, 6 Personas, Adversarial Debate
 
 export type Region = 'EU' | 'US' | 'APAC' | 'GCC' | 'CN';
 export type Sensitivity = 'public' | 'business' | 'code' | 'pii' | 'regulated';

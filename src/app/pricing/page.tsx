@@ -3,7 +3,7 @@ import { PricingCards } from "./PricingCards";
 
 export const metadata: Metadata = {
     title: "Pricing — CouncilIA",
-    description: "Simple, transparent pricing. Start free, scale when ready.",
+    description: "Simple, transparent pricing. Start free with 2 sessions, scale when ready.",
 };
 
 export default function PricingPage() {
@@ -41,13 +41,13 @@ export default function PricingPage() {
                         <h2 className="font-semibold text-lg mb-6">Every plan includes</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left text-sm">
                             <Feature text="7 different AI models per session" />
-                            <Feature text="3-round Hegelian dialectic debate" />
-                            <Feature text="6 cognitive archetypes" />
+                            <Feature text="3-round adversarial debate" />
+                            <Feature text="6 expert perspectives" />
                             <Feature text="Structured judicial verdict" />
-                            <Feature text="PDF report export" />
-                            <Feature text="Multi-language support (6 languages)" />
+                            <Feature text="Consensus score (0-100)" />
+                            <Feature text="Multi-language support" />
                             <Feature text="EU data sovereignty routing" />
-                            <Feature text="Score evolution tracking" />
+                            <Feature text="Actionable recommendations" />
                         </div>
                     </div>
 
@@ -63,13 +63,46 @@ export default function PricingPage() {
             </section>
 
             <footer className="py-12 px-6 border-t border-neutral-100">
-                <div className="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-                    <span className="text-sm text-neutral-400">© 2025 CouncilIA</span>
-                    <div className="flex gap-6 text-sm text-neutral-400">
-                        <a href="/methodology" className="hover:text-neutral-600 transition cursor-pointer">Methodology</a>
-                        <a href="/privacy" className="hover:text-neutral-600 transition cursor-pointer">Privacy</a>
-                        <a href="/terms" className="hover:text-neutral-600 transition cursor-pointer">Terms</a>
-                        <a href="/pricing" className="hover:text-neutral-600 transition cursor-pointer">Pricing</a>
+                <div className="max-w-5xl mx-auto">
+                    <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-8">
+                        <div className="space-y-2">
+                            <div className="text-base font-semibold">
+                                Council<span className="text-neutral-400">IA</span>
+                            </div>
+                            <p className="text-sm text-neutral-400">
+                                Council as a Service — Powered by{" "}
+                                <a href="https://www.ia4all.eu" target="_blank" rel="noopener noreferrer" className="underline hover:text-neutral-600 transition">
+                                    ia4all.eu
+                                </a>
+                            </p>
+                            <div className="flex items-center gap-2 text-sm text-neutral-400">
+                                <span>{"🇵🇹"}</span>
+                                <span>Av. {"Á"}lvares Cabral 13, Lisboa, Portugal</span>
+                            </div>
+                            <p className="text-sm text-neutral-400">
+                                <a href="mailto:help@ia4all.eu" className="hover:text-neutral-600 transition">
+                                    help@ia4all.eu
+                                </a>
+                            </p>
+                        </div>
+                        <div className="flex gap-6 text-sm text-neutral-400">
+                            <a href="/methodology" className="hover:text-neutral-600 transition">Methodology</a>
+                            <a href="/privacy" className="hover:text-neutral-600 transition">Privacy</a>
+                            <a href="/terms" className="hover:text-neutral-600 transition">Terms</a>
+                            <a href="/pricing" className="hover:text-neutral-600 transition">Pricing</a>
+                        </div>
+                    </div>
+                    <div className="border-t border-neutral-100 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
+                        <span className="text-xs text-neutral-400">
+                            {"©"} 2025 CouncilIA — EU-first, GDPR-ready
+                        </span>
+                        <div className="flex items-center gap-4 text-xs text-neutral-400">
+                            <span>Founded by{" "}
+                                <a href="https://linkedin.com/in/denionegrao" target="_blank" rel="noopener noreferrer" className="underline hover:text-neutral-600 transition">
+                                    Denio Negrao
+                                </a>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </footer>

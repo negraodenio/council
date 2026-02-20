@@ -37,7 +37,7 @@ export default function TermsPage() {
                         <Section title="2. What CouncilIA Is">
                             <p>
                                 CouncilIA is an AI-powered decision-support tool that uses Structured Debate
-                                Intelligence (ACP) — multiple AI models debating your ideas through adversarial
+                                Intelligence (ACE) — multiple AI models debating your ideas through adversarial
                                 rounds. It provides analysis, not advice. It is not a substitute for
                                 professional legal, financial, or medical counsel.
                             </p>
@@ -66,7 +66,7 @@ export default function TermsPage() {
                             <p>You may NOT use CouncilIA to:</p>
                             <ul className="list-disc ml-6 space-y-2">
                                 <li>Generate content that is illegal, harmful, or violates third-party rights.</li>
-                                <li>Attempt to extract, reverse-engineer, or replicate the ACP Protocol.</li>
+                                <li>Attempt to extract, reverse-engineer, or replicate the ACE Engine.</li>
                                 <li>Submit prompts containing personal data of third parties without consent.</li>
                                 <li>Abuse the API or attempt to circumvent usage limits.</li>
                                 <li>Resell access or share session outputs commercially without attribution.</li>
@@ -77,7 +77,7 @@ export default function TermsPage() {
                             <ul className="list-disc ml-6 space-y-2">
                                 <li><strong>Your prompts:</strong> You own them. We do not claim ownership.</li>
                                 <li><strong>AI-generated outputs:</strong> Session transcripts and reports are licensed to you for personal and commercial use.</li>
-                                <li><strong>The ACP Protocol:</strong> The methodology, prompts, conflict matrix, and debate architecture are proprietary to CouncilIA.</li>
+                                <li><strong>The ACE Engine:</strong> The methodology, prompts, conflict matrix, and debate architecture are proprietary to CouncilIA.</li>
                                 <li><strong>The CouncilIA brand:</strong> Name, logo, and design are trademarks of CouncilIA Lda.</li>
                             </ul>
                         </Section>
@@ -90,7 +90,7 @@ export default function TermsPage() {
                             </p>
                             <p>
                                 We do not guarantee the accuracy, completeness, or reliability of any
-                                AI-generated content. The ACP Protocol reduces but does not eliminate
+                                AI-generated content. The ACE Engine reduces but does not eliminate
                                 AI limitations.
                             </p>
                         </Section>

@@ -7,7 +7,6 @@
                 <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
                     <a href="/" className="text-lg font-semibold tracking-tight">
                         Council<span className="text-neutral-400">IA</span>
-                        <span className="ml-2 text-[10px] text-neutral-400 font-mono tracking-widest uppercase align-middle">CaaS</span>
                     </a>
                     <div className="hidden md:flex items-center gap-8 text-sm text-neutral-500">
                         <a href="#how" className="hover:text-neutral-900 transition">How it works</a>
@@ -31,7 +30,7 @@
 
                     <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-neutral-100 text-neutral-500 text-sm mb-8">
                         <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
-                        Council as a Service {"·"} Powered by ACP Protocol™
+                        Council as a Service {"·"} Powered by ACE Engine{"™"}
                     </div>
 
                     <h1 className="text-5xl md:text-7xl font-bold leading-[1.05] tracking-tight mb-8">
@@ -232,51 +231,48 @@
                 </div>
             </section>
 
-            {/* ACP PROTOCOL */}
+            {/* ACE ENGINE */}
             <section className="py-24 px-6 border-t border-neutral-100">
                 <div className="max-w-4xl mx-auto">
 
                     <div className="text-center mb-16">
-                        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-neutral-100 text-neutral-500 text-sm mb-6">
-                            Ec = I * S²
-                        </div>
                         <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
-                            The ACP Protocol{"™"}
+                            The ACE Engine{"™"}
                         </h2>
                         <p className="text-neutral-500 text-lg max-w-2xl mx-auto">
-                            Adversarial Consensus Protocol — The Operating System for Thought.
-                            A physics-based governance runtime that transforms stochastic token-fog
-                            into auditable wisdom.
+                            Adversarial Consensus Engine — our multi-agent reasoning framework
+                            that structures debate, eliminates sycophancy, and produces
+                            actionable verdicts you can trust.
                         </p>
                     </div>
 
                     <div className="grid md:grid-cols-2 gap-6">
                         <div className="p-6 rounded-xl border border-neutral-200">
-                            <div className="text-sm font-mono text-neutral-400 mb-2">PHASE 1 {"&"} 2</div>
-                            <h3 className="font-semibold text-base mb-1">Attentional Gravity</h3>
+                            <div className="text-sm font-mono text-neutral-400 mb-2">PHASE 1</div>
+                            <h3 className="font-semibold text-base mb-1">Focus Lock</h3>
                             <p className="text-neutral-500 text-sm leading-relaxed">
-                                Establishing the Coherence Lock. We warping the model{"'"}s internal attention field to ensure first-principles anchoring and momentum preservation.
+                                Each AI expert is anchored to its role and perspective. No drift, no generic answers. The Visionary stays visionary, the Devil stays adversarial.
+                            </p>
+                        </div>
+                        <div className="p-6 rounded-xl border border-neutral-200">
+                            <div className="text-sm font-mono text-neutral-400 mb-2">PHASE 2</div>
+                            <h3 className="font-semibold text-base mb-1">Adversarial Challenge</h3>
+                            <p className="text-neutral-500 text-sm leading-relaxed">
+                                In Round 2, each expert reads what the others said and attacks the weakest arguments. Weak reasoning gets exposed and dismantled.
                             </p>
                         </div>
                         <div className="p-6 rounded-xl border border-neutral-200">
                             <div className="text-sm font-mono text-neutral-400 mb-2">PHASE 3</div>
-                            <h3 className="font-semibold text-base mb-1">Thermodynamic Firewall</h3>
+                            <h3 className="font-semibold text-base mb-1">Defense {"&"} Concession</h3>
                             <p className="text-neutral-500 text-sm leading-relaxed">
-                                The Logic Refinery. Converting raw compute into "Truth-per-Joule" (Jc) by filtering stochastic noise through a quadratic energy barrier (S²).
+                                In Round 3, experts defend their surviving arguments and concede where they were wrong. This produces intellectual honesty, not stubbornness.
                             </p>
                         </div>
                         <div className="p-6 rounded-xl border border-neutral-200">
                             <div className="text-sm font-mono text-neutral-400 mb-2">PHASE 4</div>
-                            <h3 className="font-semibold text-base mb-1">Lagrangian Balance</h3>
+                            <h3 className="font-semibold text-base mb-1">Judicial Arbitration</h3>
                             <p className="text-neutral-500 text-sm leading-relaxed">
-                                The Geodesic Navigator identifies the path of least action across the latent manifold, reaching terminal resolution with maximum efficiency.
-                            </p>
-                        </div>
-                        <div className="p-6 rounded-xl border border-neutral-200">
-                            <div className="text-sm font-mono text-neutral-400 mb-2">PHASE 5</div>
-                            <h3 className="font-semibold text-base mb-1">Sovereign Integration</h3>
-                            <p className="text-neutral-500 text-sm leading-relaxed">
-                                Settlement layer for collective wisdom. Distributed Cognitive Bus (IoC) ensures verified truths move with zero resistance.
+                                GPT-4o acts as an impartial judge. It weighs all arguments, penalizes unrefuted attacks, and delivers a scored verdict with concrete recommendations.
                             </p>
                         </div>
                     </div>
@@ -385,7 +381,7 @@
                             <h3 className="font-semibold mb-1">Free</h3>
                             <div className="text-3xl font-bold mb-6">$0</div>
                             <ul className="space-y-3 text-sm text-neutral-500 mb-8">
-                                <li>{"✓"} 5 sessions / month</li>
+                                <li>{"✓"} 2 sessions / month</li>
                                 <li>{"✓"} 6 experts + judge</li>
                                 <li>{"✓"} 3 adversarial rounds</li>
                                 <li>{"✓"} Multi-language</li>
@@ -459,16 +455,57 @@
 
             {/* FOOTER */}
             <footer className="py-12 px-6 border-t border-neutral-100">
-                <div className="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-                    <span className="text-sm text-neutral-400">
-                        {"©"} 2025 CouncilIA — EU-first, GDPR-ready
-                    </span>
-                    <div className="flex gap-6 text-sm text-neutral-400">
-                        <a href="/methodology" className="hover:text-neutral-600 transition cursor-pointer">Methodology</a>
-                        <a href="/privacy" className="hover:text-neutral-600 transition cursor-pointer">Privacy</a>
-                        <a href="/terms" className="hover:text-neutral-600 transition cursor-pointer">Terms</a>
-                        <a href="/pricing" className="hover:text-neutral-600 transition cursor-pointer">Pricing</a>
+                <div className="max-w-5xl mx-auto">
+
+                    {/* Top row */}
+                    <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-8">
+
+                        {/* Company info */}
+                        <div className="space-y-2">
+                            <div className="text-base font-semibold">
+                                Council<span className="text-neutral-400">IA</span>
+                            </div>
+                            <p className="text-sm text-neutral-400">
+                                Council as a Service — Powered by{" "}
+                                <a href="https://www.ia4all.eu" target="_blank" rel="noopener noreferrer" className="underline hover:text-neutral-600 transition">
+                                    ia4all.eu
+                                </a>
+                            </p>
+                            <div className="flex items-center gap-2 text-sm text-neutral-400">
+                                <span>🇵🇹</span>
+                                <span>Av. Álvares Cabral 13, Lisboa, Portugal</span>
+                            </div>
+                            <p className="text-sm text-neutral-400">
+                                <a href="mailto:help@ia4all.eu" className="hover:text-neutral-600 transition">
+                                    help@ia4all.eu
+                                </a>
+                            </p>
+                        </div>
+
+                        {/* Links */}
+                        <div className="flex gap-6 text-sm text-neutral-400">
+                            <a href="/methodology" className="hover:text-neutral-600 transition">Methodology</a>
+                            <a href="/privacy" className="hover:text-neutral-600 transition">Privacy</a>
+                            <a href="/terms" className="hover:text-neutral-600 transition">Terms</a>
+                            <a href="/pricing" className="hover:text-neutral-600 transition">Pricing</a>
+                        </div>
+
                     </div>
+
+                    {/* Bottom row */}
+                    <div className="border-t border-neutral-100 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
+                        <span className="text-xs text-neutral-400">
+                            {"©"} 2025 CouncilIA — EU-first, GDPR-ready
+                        </span>
+                        <div className="flex items-center gap-4 text-xs text-neutral-400">
+                            <span>Founded by{" "}
+                                <a href="https://linkedin.com/in/denionegrao" target="_blank" rel="noopener noreferrer" className="underline hover:text-neutral-600 transition">
+                                    Denio Negrao
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+
                 </div>
             </footer>
 
