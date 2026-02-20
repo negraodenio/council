@@ -51,12 +51,12 @@ export type ModelConfig = { provider: 'openrouter' | 'siliconflow'; model: strin
 
 const models: Record<string, ModelConfig> = {
     deepseek: { provider: 'openrouter', model: 'deepseek/deepseek-r1' },
-    gemini: { provider: 'openrouter', model: 'google/gemini-2.5-flash-preview-05-20' },
-    llama: { provider: 'openrouter', model: 'meta-llama/llama-4-maverick' },
-    mistral: { provider: 'openrouter', model: 'mistralai/mistral-medium-3' },
-    gpt4o: { provider: 'openrouter', model: 'openai/gpt-4o' },
-    kimi: { provider: 'openrouter', model: 'moonshotai/kimi-k2' },
-    qwen: { provider: 'openrouter', model: 'qwen/qwen3-235b-a22b' },
+    gemini: { provider: 'openrouter', model: 'google/gemini-2.0-flash-001' },
+    llama: { provider: 'openrouter', model: 'meta-llama/llama-3.3-70b-instruct' },
+    mistral: { provider: 'openrouter', model: 'mistralai/mistral-large-2411' },
+    gpt4o: { provider: 'openrouter', model: 'openai/gpt-4o-2024-08-06' },
+    kimi: { provider: 'openrouter', model: 'moonshotai/moonshot-v1-8k' },
+    qwen: { provider: 'openrouter', model: 'qwen/qwen-2.5-72b-instruct' },
 };
 
 export function blockChina(region: Region, sensitivity: Sensitivity): boolean {

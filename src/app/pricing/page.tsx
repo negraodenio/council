@@ -1,4 +1,7 @@
 ﻿import type { Metadata } from "next";
+import { Suspense } from "react";
+import { Navbar } from "@/ui/Navbar";
+import { Footer } from "@/ui/Footer";
 import { PricingCards } from "./PricingCards";
 
 export const metadata: Metadata = {
@@ -9,21 +12,7 @@ export const metadata: Metadata = {
 export default function PricingPage() {
     return (
         <main className="bg-white text-neutral-900 min-h-screen">
-            <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-sm border-b border-neutral-100">
-                <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-                    <a href="/" className="text-lg font-semibold tracking-tight">
-                        Council<span className="text-neutral-400">IA</span>
-                    </a>
-                    <div className="hidden md:flex items-center gap-8 text-sm text-neutral-500">
-                        <a href="/#how" className="hover:text-neutral-900 transition">How it works</a>
-                        <a href="/methodology" className="hover:text-neutral-900 transition">Methodology</a>
-                        <a href="/pricing" className="text-neutral-900 font-medium">Pricing</a>
-                        <a href="/login" className="bg-neutral-900 text-white px-4 py-2 rounded-md text-sm hover:bg-neutral-800 transition">
-                            Start a session
-                        </a>
-                    </div>
-                </div>
-            </nav>
+            <Navbar />
 
             <section className="pt-32 pb-20 px-6">
                 <div className="max-w-5xl mx-auto text-center">
@@ -35,7 +24,9 @@ export default function PricingPage() {
                         power of 7 AI models debating in real-time.
                     </p>
 
-                    <PricingCards />
+                    <Suspense fallback={<div className="h-96 flex items-center justify-center text-neutral-400">Loading plans...</div>}>
+                        <PricingCards />
+                    </Suspense>
 
                     {/* Section 3: Compare plans */}
                     <div className="mt-24 max-w-4xl mx-auto overflow-hidden">
@@ -146,7 +137,6 @@ export default function PricingPage() {
                             Used by 200+ founders & strategists
                         </p>
                         <div className="flex flex-wrap justify-center gap-x-12 gap-y-8 grayscale opacity-50">
-                            {/* SVG Logos would go here, using placeholders for now */}
                             <div className="font-bold text-neutral-900 text-xl tracking-tighter italic">LINDOS</div>
                             <div className="font-extrabold text-neutral-900 text-xl tracking-tight">KREATIVE</div>
                             <div className="font-black text-neutral-900 text-xl">SDR.ai</div>
@@ -303,50 +293,7 @@ export default function PricingPage() {
                 </div>
             </section>
 
-            <footer className="py-12 px-6 border-t border-neutral-100">
-                <div className="max-w-5xl mx-auto">
-                    <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-8">
-                        <div className="space-y-2">
-                            <div className="text-base font-semibold">
-                                Council<span className="text-neutral-400">IA</span>
-                            </div>
-                            <p className="text-sm text-neutral-400">
-                                Council as a Service — Powered by{" "}
-                                <a href="https://www.ia4all.eu" target="_blank" rel="noopener noreferrer" className="underline hover:text-neutral-600 transition">
-                                    ia4all.eu
-                                </a>
-                            </p>
-                            <div className="flex items-center gap-2 text-sm text-neutral-400">
-                                <span>{"🇵🇹"}</span>
-                                <span>Av. {"Á"}lvares Cabral 13, Lisboa, Portugal</span>
-                            </div>
-                            <p className="text-sm text-neutral-400">
-                                <a href="mailto:help@ia4all.eu" className="hover:text-neutral-600 transition">
-                                    help@ia4all.eu
-                                </a>
-                            </p>
-                        </div>
-                        <div className="flex gap-6 text-sm text-neutral-400">
-                            <a href="/methodology" className="hover:text-neutral-600 transition">Methodology</a>
-                            <a href="/privacy" className="hover:text-neutral-600 transition">Privacy</a>
-                            <a href="/terms" className="hover:text-neutral-600 transition">Terms</a>
-                            <a href="/pricing" className="hover:text-neutral-600 transition">Pricing</a>
-                        </div>
-                    </div>
-                    <div className="border-t border-neutral-100 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
-                        <span className="text-xs text-neutral-400">
-                            {"©"} 2025 CouncilIA — EU-first, GDPR-ready
-                        </span>
-                        <div className="flex items-center gap-4 text-xs text-neutral-400">
-                            <span>Founded by{" "}
-                                <a href="https://linkedin.com/in/denionegrao" target="_blank" rel="noopener noreferrer" className="underline hover:text-neutral-600 transition">
-                                    Denio Negrao
-                                </a>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </footer>
+            <Footer />
         </main>
     );
 }

@@ -13,7 +13,7 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: 'Stripe configuration missing' }, { status: 500 });
     }
 
-    const stripe = new Stripe(stripeKey, { apiVersion: '2025-01-27.acacia' as any });
+    const stripe = new Stripe(stripeKey, { apiVersion: '2026-01-28.clover' as any });
     const supabase = createAdminClient();
     const body = await req.text();
     const sig = req.headers.get('stripe-signature')!;
@@ -26,22 +26,43 @@ export async function POST(req: Request) {
     }
 
     switch (event.type) {
-        case 'customer.subscription.created':
+        case 'checkout.session.completed': {
+            const session = event.data.object as Stripe.Checkout.Session;
+            const subscriptionId = session.subscription as string;
+            const tenantId = session.metadata?.tenant_id;
+            const plan = session.metadata?.plan || 'pro';
+
+            if (tenantId && subscriptionId) {
+                const sub = await stripe.subscriptions.retrieve(subscriptionId);
+                await supabase.from('subscriptions').upsert({
+                    id: sub.id,
+                    tenant_id: tenantId,
+                    stripe_customer_id: sub.customer as string,
+                    status: sub.status,
+                    plan: plan,
+                    current_period_start: new Date((sub as any).current_period_start * 1000).toISOString(),
+                    current_period_end: new Date((sub as any).current_period_end * 1000).toISOString()
+                });
+            }
+            break;
+        }
+
         case 'customer.subscription.updated': {
             const sub = event.data.object as Stripe.Subscription;
+            const tenantId = sub.metadata?.tenant_id;
+            const plan = sub.metadata?.plan || 'pro';
 
-            const tenantId = sub.metadata.tenant_id;
-            if (!tenantId) break;
-
-            await supabase.from('subscriptions').upsert({
-                id: sub.id,
-                tenant_id: tenantId,
-                stripe_customer_id: sub.customer as string,
-                status: sub.status,
-                plan: sub.metadata.plan || 'starter',
-                current_period_start: new Date((sub as any).current_period_start * 1000).toISOString(),
-                current_period_end: new Date((sub as any).current_period_end * 1000).toISOString()
-            });
+            if (tenantId) {
+                await supabase.from('subscriptions').upsert({
+                    id: sub.id,
+                    tenant_id: tenantId,
+                    stripe_customer_id: sub.customer as string,
+                    status: sub.status,
+                    plan: plan,
+                    current_period_start: new Date((sub as any).current_period_start * 1000).toISOString(),
+                    current_period_end: new Date((sub as any).current_period_end * 1000).toISOString()
+                });
+            }
             break;
         }
 

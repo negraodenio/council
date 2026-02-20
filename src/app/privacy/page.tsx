@@ -1,4 +1,6 @@
 ﻿import type { Metadata } from "next";
+import { Navbar } from "@/ui/Navbar";
+import { Footer } from "@/ui/Footer";
 
 export const metadata: Metadata = {
     title: "Privacy Policy — CouncilIA",
@@ -8,16 +10,7 @@ export const metadata: Metadata = {
 export default function PrivacyPage() {
     return (
         <main className="bg-white text-neutral-900 min-h-screen">
-            <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-sm border-b border-neutral-100">
-                <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-                    <a href="/" className="text-lg font-semibold tracking-tight">
-                        Council<span className="text-neutral-400">IA</span>
-                    </a>
-                    <a href="/login" className="bg-neutral-900 text-white px-4 py-2 rounded-md text-sm hover:bg-neutral-800 transition">
-                        Start a session
-                    </a>
-                </div>
-            </nav>
+            <Navbar />
 
             <section className="pt-32 pb-20 px-6">
                 <div className="max-w-3xl mx-auto">
@@ -117,17 +110,7 @@ export default function PrivacyPage() {
                 </div>
             </section>
 
-            <footer className="py-12 px-6 border-t border-neutral-100">
-                <div className="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-                    <span className="text-sm text-neutral-400">© 2025 CouncilIA</span>
-                    <div className="flex gap-6 text-sm text-neutral-400">
-                        <a href="/methodology" className="hover:text-neutral-600 transition cursor-pointer">Methodology</a>
-                        <a href="/privacy" className="hover:text-neutral-600 transition cursor-pointer">Privacy</a>
-                        <a href="/terms" className="hover:text-neutral-600 transition cursor-pointer">Terms</a>
-                        <a href="/pricing" className="hover:text-neutral-600 transition cursor-pointer">Pricing</a>
-                    </div>
-                </div>
-            </footer>
+            <Footer />
         </main>
     );
 }

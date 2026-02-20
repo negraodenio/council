@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { nanoid } from 'nanoid';
+import { getLimitForPlan } from '@/config/limits';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -11,6 +12,38 @@ export async function POST(req: Request) {
 
     const t_id = tenant_id || '00000000-0000-0000-0000-000000000000';
     const u_id = user_id || '00000000-0000-0000-0000-000000000000';
+
+    // 1. Verify Usage & Subscription
+    const now = new Date();
+    const periodMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+
+    const { data: subscription } = await supabase
+        .from('subscriptions')
+        .select('plan')
+        .eq('tenant_id', t_id)
+        .maybeSingle();
+
+    const { data: usage } = await supabase
+        .from('usage_records')
+        .select('validations_count')
+        .eq('tenant_id', t_id)
+        .eq('period_month', periodMonth)
+        .maybeSingle();
+
+    const limit = getLimitForPlan(subscription?.plan);
+    const currentUsage = usage?.validations_count || 0;
+
+    if (currentUsage >= limit) {
+        return NextResponse.json(
+            {
+                error: 'LIMIT_REACHED',
+                message: 'Your monthly session limit has been reached.',
+                limit,
+                usage: currentUsage
+            },
+            { status: 403 }
+        );
+    }
 
     const validationId = `val_${nanoid(10)}`;
     const runId = `run_${nanoid(10)}`;

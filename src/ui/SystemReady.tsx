@@ -39,6 +39,8 @@ export default function SystemReady() {
         })();
     }, []);
 
+    const [showUpgrade, setShowUpgrade] = useState(false);
+
     async function start() {
         setLoading(true);
         try {
@@ -54,9 +56,18 @@ export default function SystemReady() {
                     user_id: userId,
                 }),
             });
+
             const data = await res.json();
-            if (!data?.runId) throw new Error('Missing runId');
+
+            if (res.status === 403 && data.error === 'LIMIT_REACHED') {
+                setShowUpgrade(true);
+                return;
+            }
+
+            if (!data?.runId) throw new Error(data.error || 'Missing runId');
             router.push('/chamber/' + data.runId);
+        } catch (err: any) {
+            alert(err.message || 'Something went wrong');
         } finally {
             setLoading(false);
         }
@@ -150,6 +161,44 @@ export default function SystemReady() {
                     <p className="mt-6 text-white/10 text-[10px] font-mono uppercase tracking-[0.3em]">{t(lang, 'sys_protocol')}</p>
                 </main>
             </div>
+            {showUpgrade && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
+                    <div className="bg-[#0f172a] border border-white/10 rounded-3xl p-8 max-w-md w-full shadow-2xl shadow-purple-500/20 relative overflow-hidden">
+                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-cyan-500" />
+
+                        <div className="mb-6">
+                            <div className="w-14 h-14 bg-purple-500/10 rounded-2xl flex items-center justify-center mb-4">
+                                <svg className="w-8 h-8 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                </svg>
+                            </div>
+                            <h2 className="text-2xl font-bold text-white mb-2">Limit Reached</h2>
+                            <p className="text-white/50 text-sm leading-relaxed">
+                                You{"'"}ve used all your credits for this month. Upgrade to Pro to get 30 sessions, full PDF reports, and priority processing.
+                            </p>
+                        </div>
+
+                        <div className="flex flex-col gap-3">
+                            <button
+                                onClick={() => router.push('/pricing?checkout=pro')}
+                                className="w-full bg-gradient-to-r from-purple-600 to-cyan-500 text-white font-bold py-4 rounded-xl hover:shadow-lg hover:shadow-purple-500/30 transition-all active:scale-[0.98]"
+                            >
+                                Upgrade to Pro
+                            </button>
+                            <button
+                                onClick={() => setShowUpgrade(false)}
+                                className="w-full bg-white/5 border border-white/10 text-white/50 font-medium py-3 rounded-xl hover:bg-white/10 transition-all"
+                            >
+                                Close
+                            </button>
+                        </div>
+
+                        <p className="mt-6 text-center text-[10px] text-white/20 uppercase tracking-widest font-bold">
+                            Secure payment via Stripe
+                        </p>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

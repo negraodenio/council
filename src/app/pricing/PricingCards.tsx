@@ -1,6 +1,7 @@
 ﻿"use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const plans = [
     {
@@ -35,7 +36,7 @@ const plans = [
         cta: "Start Pro",
         href: null,
         highlighted: true,
-        priceId: process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID || null,
+        priceId: process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID || "price_1T2xyY4Rc5FoCe67ImTxzsb8",
     },
     {
         name: "Team",
@@ -57,13 +58,33 @@ const plans = [
         cta: "Start Team",
         href: null,
         highlighted: false,
-        priceId: process.env.NEXT_PUBLIC_STRIPE_TEAM_PRICE_ID || null,
+        priceId: process.env.NEXT_PUBLIC_STRIPE_TEAM_PRICE_ID || "price_1T2xzO4Rc5FoCe67UCL3pseJ",
     },
 ];
 
 export function PricingCards() {
     const [loading, setLoading] = useState<string | null>(null);
     const [isAnnual, setIsAnnual] = useState(false);
+    const router = useRouter();
+    const searchParams = useSearchParams();
+
+    // Handle automatic checkout if coming back from login
+    useEffect(() => {
+        const checkoutPlan = searchParams.get("checkout");
+        if (checkoutPlan) {
+            const plan = plans.find(p => p.name.toLowerCase() === checkoutPlan.toLowerCase());
+            if (plan && plan.priceId) {
+                // Find and trigger checkout, but delay slightly to ensure session is loaded
+                const timer = setTimeout(() => {
+                    handleCheckout(plan.priceId!, plan.name);
+                    // Remove query params but stay on page
+                    const newUrl = window.location.pathname;
+                    window.history.replaceState({ ...window.history.state, as: newUrl, url: newUrl }, '', newUrl);
+                }, 1000);
+                return () => clearTimeout(timer);
+            }
+        }
+    }, [searchParams]);
 
     const activePlans = plans.map(plan => ({
         ...plan,
@@ -77,8 +98,15 @@ export function PricingCards() {
             const res = await fetch("/api/stripe/checkout", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ priceId }),
+                body: JSON.stringify({ priceId, planName: planName.toLowerCase() }),
             });
+
+            if (res.status === 401) {
+                // Redirect to login if not authenticated
+                router.push(`/login?redirect=/pricing&checkout=${planName.toLowerCase()}`);
+                return;
+            }
+
             const data = await res.json();
             if (data.url) {
                 window.location.href = data.url;

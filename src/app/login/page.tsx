@@ -1,8 +1,8 @@
 ﻿'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
@@ -11,7 +11,11 @@ export default function LoginPage() {
     const [error, setError] = useState('');
     const [info, setInfo] = useState('');
     const router = useRouter();
+    const searchParams = useSearchParams();
     const supabase = createClient();
+
+    const redirectTo = searchParams.get('redirect') || '/new';
+    const checkout = searchParams.get('checkout');
 
     async function handleLogin() {
         setLoading(true);
@@ -23,18 +27,24 @@ export default function LoginPage() {
             setLoading(false);
             return;
         }
-        router.push('/new');
+
+        const finalRedirect = checkout ? `${redirectTo}?checkout=${checkout}` : redirectTo;
+        router.push(finalRedirect);
     }
 
     async function handleSignup() {
         setLoading(true);
         setError('');
         setInfo('');
+
+        const finalNext = checkout ? `${redirectTo}?checkout=${checkout}` : redirectTo;
+        const confirmUrl = `${window.location.origin}/api/auth/callback?next=${encodeURIComponent(finalNext)}`;
+
         const { error: err } = await supabase.auth.signUp({
             email,
             password,
             options: {
-                emailRedirectTo: `${window.location.origin}/api/auth/callback`,
+                emailRedirectTo: confirmUrl,
             },
         });
         if (err) {

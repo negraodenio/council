@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        const { priceId } = await req.json();
+        const { priceId, planName } = await req.json();
 
         if (!priceId) {
             return NextResponse.json(
@@ -26,20 +26,21 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        // Check if user already has a Stripe customer ID
+        // Check if user already has a Stripe customer ID and get tenant_id
         const { data: profile } = await supabase
             .from("profiles")
-            .select("stripe_customer_id")
+            .select("stripe_customer_id, tenant_id")
             .eq("id", user.id)
             .single();
 
         let customerId = profile?.stripe_customer_id;
+        const tenantId = profile?.tenant_id || '00000000-0000-0000-0000-000000000000';
 
         // Create Stripe customer if needed
         if (!customerId) {
             const customer = await stripe.customers.create({
-                email: user.email,
-                metadata: { supabase_user_id: user.id },
+                email: user.email!,
+                metadata: { supabase_user_id: user.id, tenant_id: tenantId },
             });
             customerId = customer.id;
 
@@ -51,7 +52,7 @@ export async function POST(req: NextRequest) {
         }
 
         // Create checkout session
-        const origin = req.headers.get("origin") || "https://council-ia.com";
+        const origin = req.headers.get("origin") || "https://www.councilia.com";
 
         const session = await stripe.checkout.sessions.create({
             customer: customerId,
@@ -59,9 +60,17 @@ export async function POST(req: NextRequest) {
             line_items: [{ price: priceId, quantity: 1 }],
             success_url: `${origin}/dashboard?checkout=success`,
             cancel_url: `${origin}/pricing?checkout=cancelled`,
-            metadata: { supabase_user_id: user.id },
+            metadata: {
+                supabase_user_id: user.id,
+                tenant_id: tenantId,
+                plan: planName || 'pro'
+            },
             subscription_data: {
-                metadata: { supabase_user_id: user.id },
+                metadata: {
+                    supabase_user_id: user.id,
+                    tenant_id: tenantId,
+                    plan: planName || 'pro'
+                },
             },
             allow_promotion_codes: true,
         });
