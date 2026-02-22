@@ -16,6 +16,8 @@
     "autoprefixer": "^10.4.24",
     "diff": "^8.0.3",
     "dotenv": "^17.3.1",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^4.2.0",
     "nanoid": "^5.1.6",
     "next": "14.2.15",
     "node-fetch": "^2.7.0",

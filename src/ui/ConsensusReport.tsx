@@ -2,6 +2,9 @@
 import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { t, resolveUILang, type UILang } from '@/lib/i18n/ui-strings';
+import PDFReportTemplate from './PDFReportTemplate';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 // ─── V2 Persona config ────────────────────────
 const PERSONA_META: Record<string, { color: string; gradient: string; emoji: string }> = {
@@ -22,6 +25,7 @@ export default function ConsensusReport({ validation, patches }: {
     patches: any[];
 }) {
     const [activeTab, setActiveTab] = useState<'verdict' | 'round1' | 'round2' | 'round3'>('verdict');
+    const [isExporting, setIsExporting] = useState(false);
     const result = validation.full_result || {};
     const lang: UILang = resolveUILang(result.lang);
 
@@ -49,6 +53,66 @@ export default function ConsensusReport({ validation, patches }: {
             : t(lang, 'cr_high_risk_desc');
     const ringColor = score >= 70 ? '#22c55e' : score >= 40 ? '#f59e0b' : '#ef4444';
 
+    const handleExportPDF = async () => {
+        setIsExporting(true);
+        try {
+            const container = document.getElementById('pdf-report-container');
+            if (!container) {
+                setIsExporting(false);
+                return;
+            }
+
+            // Temporarily unhide for capture
+            container.style.display = 'block';
+            container.style.position = 'absolute';
+            container.style.top = '-9999px';
+
+            const canvas = await html2canvas(container, {
+                scale: 2, // High resolution
+                useCORS: true,
+                logging: false,
+                backgroundColor: '#030712'
+            });
+
+            container.style.display = 'none';
+
+            const imgData = canvas.toDataURL('image/png');
+
+            // Generate A4 PDF
+            const pdf = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4'
+            });
+
+            const imgProps = pdf.getImageProperties(imgData);
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+            // Handle multi-page if the HTML is taller than a single A4 height
+            let heightLeft = pdfHeight;
+            let position = 0;
+            const pageHeight = pdf.internal.pageSize.getHeight();
+
+            pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+            heightLeft -= pageHeight;
+
+            while (heightLeft >= 0) {
+                position = heightLeft - pdfHeight;
+                pdf.addPage();
+                pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+                heightLeft -= pageHeight;
+            }
+
+            pdf.save(`CouncilIA_${validation.id.substring(0, 8)}.pdf`);
+        } catch (error) {
+            console.error('Failed to generate PDF:', error);
+            alert('Um erro ocorreu ao gerar o PDF. / An error occurred while generating the PDF.');
+        } finally {
+            setIsExporting(false);
+        }
+    };
+
     return (
         <div className="bg-[#0a0f1e] text-slate-50 min-h-screen relative overflow-x-hidden" suppressHydrationWarning>
             {/* BG gradient */}
@@ -69,12 +133,38 @@ export default function ConsensusReport({ validation, patches }: {
                     </span>
                     <span className="font-semibold text-sm">{t(lang, 'cr_back')}</span>
                 </a>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-4">
                     <span className="font-mono text-xs text-slate-500 hidden sm:block">
                         {validation.id.slice(0, 8)}
                     </span>
+                    <button
+                        onClick={handleExportPDF}
+                        disabled={isExporting}
+                        className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 hover:bg-indigo-500/30 hover:text-white transition-colors text-xs font-bold uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        {isExporting ? (
+                            <>
+                                <svg className="animate-spin -ml-1 mr-1 h-3 w-3 text-indigo-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                                {t(lang, 'speaking') || 'Gerando...'}
+                            </>
+                        ) : (
+                            <>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                Export PDF
+                            </>
+                        )}
+                    </button>
                 </div>
             </header>
+
+            {/* Hidden PDF Container */}
+            <div style={{ display: 'none' }}>
+                <PDFReportTemplate validation={validation} lang={lang} />
+            </div>
 
             <main className="relative z-10 w-full max-w-7xl mx-auto p-4 pb-24 lg:p-8 lg:pb-8 flex flex-col gap-8 lg:flex-row lg:gap-12">
 
