@@ -263,11 +263,11 @@ export default function SystemReady() {
 
                             <div className="glass-panel p-3 rounded-lg border border-[#ff00e5]/30 hover:bg-[#ff00e5]/10 cursor-default transition-all">
                                 <div className="flex justify-between items-start mb-2">
-                                    <span className="material-symbols-outlined text-[#ff00e5] text-xl">rate_review</span>
+                                    <span className="material-symbols-outlined text-[#ff00e5] text-xl">skull</span>
                                     <div className="w-1.5 h-1.5 rounded-full bg-[#afff33] shadow-[0_0_5px_#afff33]"></div>
                                 </div>
-                                <h4 className="font-bold text-xs text-white">Critic</h4>
-                                <p className="text-[9px] text-[#ff00e5]/60 uppercase font-mono mt-1">Logic Validation</p>
+                                <h4 className="font-bold text-xs text-white">Advocate</h4>
+                                <p className="text-[9px] text-[#ff00e5]/60 uppercase font-mono mt-1">Devil's Advocate</p>
                             </div>
 
                             <div className="glass-panel p-3 rounded-lg border border-[#afff33]/30 hover:bg-[#afff33]/10 cursor-default transition-all">
