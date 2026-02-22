@@ -15,7 +15,7 @@ async function triggerWebhook(data: Record<string, any>) {
     console.log('[telemetry] Webhook:', data.event, JSON.stringify(data.payload).substring(0, 100));
 }
 
-export const maxDuration = 300;
+export const maxDuration = 800;
 
 // ——— Model Callers ———————————————————
 
