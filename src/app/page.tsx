@@ -5,8 +5,8 @@
             <header className="fixed top-0 w-full z-50 border-b border-panel-blue bg-space-black/80 backdrop-blur-md">
                 <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                        <div className="size-10 bg-neon-cyan/10 rounded-lg flex items-center justify-center border border-neon-cyan/30 shadow-[0_0_15px_rgba(0,240,255,0.2)]">
-                            <span className="material-symbols-outlined text-neon-cyan font-bold">account_tree</span>
+                        <div className="size-10 bg-neon-cyan/10 rounded-lg flex items-center justify-center border border-neon-cyan/30 shadow-[0_0_15px_rgba(0,240,255,0.2)] shrink-0 overflow-hidden">
+                            <span className="material-symbols-outlined text-neon-cyan font-bold select-none">account_tree</span>
                         </div>
                         <span className="text-xl font-black tracking-tighter uppercase font-display">Council<span className="text-neon-cyan">IA</span></span>
                     </div>
@@ -355,15 +355,15 @@
                         </div>
                         <ul className="space-y-4 mb-8 flex-grow">
                             <li className="flex items-center gap-3 text-sm text-[#c4c4ff]">
-                                <span className="material-symbols-outlined text-neon-cyan text-lg">check_circle</span>
+                                <span className="material-symbols-outlined text-neon-cyan text-lg shrink-0 select-none">check_circle</span>
                                 1 session / month
                             </li>
                             <li className="flex items-center gap-3 text-sm text-[#c4c4ff]">
-                                <span className="material-symbols-outlined text-neon-cyan text-lg">check_circle</span>
+                                <span className="material-symbols-outlined text-neon-cyan text-lg shrink-0 select-none">check_circle</span>
                                 3-Agent Council
                             </li>
                             <li className="flex items-center gap-3 text-sm text-[#c4c4ff]">
-                                <span className="material-symbols-outlined text-neon-cyan text-lg">check_circle</span>
+                                <span className="material-symbols-outlined text-neon-cyan text-lg shrink-0 select-none">check_circle</span>
                                 Standard Arbitration
                             </li>
                         </ul>
@@ -379,19 +379,19 @@
                         </div>
                         <ul className="space-y-4 mb-8 flex-grow">
                             <li className="flex items-center gap-3 text-sm text-[#c4c4ff]">
-                                <span className="material-symbols-outlined text-neon-cyan text-lg">check_circle</span>
+                                <span className="material-symbols-outlined text-neon-cyan text-lg shrink-0 select-none">check_circle</span>
                                 10 sessions / month
                             </li>
                             <li className="flex items-center gap-3 text-sm text-[#c4c4ff]">
-                                <span className="material-symbols-outlined text-neon-cyan text-lg">check_circle</span>
+                                <span className="material-symbols-outlined text-neon-cyan text-lg shrink-0 select-none">check_circle</span>
                                 Full 7-Agent Council
                             </li>
                             <li className="flex items-center gap-3 text-sm text-[#c4c4ff]">
-                                <span className="material-symbols-outlined text-neon-cyan text-lg">check_circle</span>
+                                <span className="material-symbols-outlined text-neon-cyan text-lg shrink-0 select-none">check_circle</span>
                                 ACE Engine™ Analysis
                             </li>
                             <li className="flex items-center gap-3 text-sm text-[#c4c4ff]">
-                                <span className="material-symbols-outlined text-neon-cyan text-lg">check_circle</span>
+                                <span className="material-symbols-outlined text-neon-cyan text-lg shrink-0 select-none">check_circle</span>
                                 Exportable PDF Reports
                             </li>
                         </ul>
@@ -406,19 +406,19 @@
                         </div>
                         <ul className="space-y-4 mb-8 flex-grow">
                             <li className="flex items-center gap-3 text-sm text-[#c4c4ff]">
-                                <span className="material-symbols-outlined text-neon-cyan text-lg">check_circle</span>
+                                <span className="material-symbols-outlined text-neon-cyan text-lg shrink-0 select-none">check_circle</span>
                                 Unlimited sessions
                             </li>
                             <li className="flex items-center gap-3 text-sm text-[#c4c4ff]">
-                                <span className="material-symbols-outlined text-neon-cyan text-lg">check_circle</span>
+                                <span className="material-symbols-outlined text-neon-cyan text-lg shrink-0 select-none">check_circle</span>
                                 Custom Council Persona Training
                             </li>
                             <li className="flex items-center gap-3 text-sm text-[#c4c4ff]">
-                                <span className="material-symbols-outlined text-neon-cyan text-lg">check_circle</span>
+                                <span className="material-symbols-outlined text-neon-cyan text-lg shrink-0 select-none">check_circle</span>
                                 Priority Judicial Processing
                             </li>
                             <li className="flex items-center gap-3 text-sm text-[#c4c4ff]">
-                                <span className="material-symbols-outlined text-neon-cyan text-lg">check_circle</span>
+                                <span className="material-symbols-outlined text-neon-cyan text-lg shrink-0 select-none">check_circle</span>
                                 Team Collaboration Tools
                             </li>
                         </ul>
@@ -432,8 +432,8 @@
                 <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
                     <div className="col-span-1 md:col-span-1">
                         <div className="flex items-center gap-3 mb-6">
-                            <div className="size-8 bg-neon-cyan/10 border border-[rgba(0,240,255,0.3)] rounded flex items-center justify-center">
-                                <span className="material-symbols-outlined text-neon-cyan text-sm font-bold">account_tree</span>
+                            <div className="size-8 bg-neon-cyan/10 border border-[rgba(0,240,255,0.3)] rounded flex items-center justify-center shrink-0 overflow-hidden">
+                                <span className="material-symbols-outlined text-neon-cyan text-sm font-bold select-none">account_tree</span>
                             </div>
                             <span className="text-lg font-black tracking-tighter uppercase font-display">Council<span className="text-neon-cyan">IA</span></span>
                         </div>
@@ -441,8 +441,8 @@
                             Part of the Antigravity Ecosystem. Built in Lisbon, Portugal for high-stakes decision validation.
                         </p>
                         <div className="flex gap-4">
-                            <a className="text-slate-500 hover:text-neon-cyan transition-colors" href="#"><span className="material-symbols-outlined">public</span></a>
-                            <a className="text-slate-500 hover:text-neon-cyan transition-colors" href="#"><span className="material-symbols-outlined">mail</span></a>
+                            <a className="text-slate-500 hover:text-neon-cyan transition-colors" href="#"><span className="material-symbols-outlined select-none">public</span></a>
+                            <a className="text-slate-500 hover:text-neon-cyan transition-colors" href="#"><span className="material-symbols-outlined select-none">mail</span></a>
                         </div>
                     </div>
                     <div>
