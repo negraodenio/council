@@ -44,9 +44,11 @@ const PERSONAS: Record<string, { lbl: string; pt: string; em: string; c: string 
 
 function gp(name: string, lang: UILang) {
     const key = Object.keys(PERSONAS).find(k => name.toLowerCase().includes(k));
-    const p = key ? PERSONAS[key] : { lbl: name, pt: name, em: '\u{1F916}', c: '#6366F1' };
-    return { ...p, dn: lang === 'pt' ? p.pt : p.lbl };
+    const p = key ? PERSONAS[key] : { lbl: name, pt: name, em: '🤖', c: '#6366F1' };
+    return { ...p, dn: lang === 'pt' ? p.pt : p.lbl, key: key || name };
 }
+
+const INITIAL_EXPERTS = ['visionary', 'technologist', 'devil', 'marketeer', 'ethicist', 'financier'];
 
 const HEX = [
     { left: '50%', top: '5%' },
@@ -70,7 +72,7 @@ export default function DebateChamber({ runId }: { runId: string }) {
     const router = useRouter();
     const scrollRef = useRef<HTMLDivElement>(null);
     const [messages, setMessages] = useState<Msg[]>([]);
-    const [experts, setExperts] = useState<string[]>([]);
+    const [experts] = useState<string[]>(INITIAL_EXPERTS);
     const [speaking, setSpeaking] = useState('');
     const [phase, setPhase] = useState('');
     const [done, setDone] = useState(false);
@@ -122,11 +124,6 @@ export default function DebateChamber({ runId }: { runId: string }) {
                         });
 
                     setMessages(parsed);
-
-                    const names = Array.from(
-                        new Set(parsed.filter(m => !m.is_judge).map(m => m.expert_name))
-                    );
-                    setExperts(names);
 
                     const last = parsed[parsed.length - 1];
                     if (last) {
@@ -258,7 +255,8 @@ export default function DebateChamber({ runId }: { runId: string }) {
                     {experts.map((name, i) => {
                         const pos = HEX[i % 6];
                         const persona = gp(name, lang);
-                        const active = speaking === name;
+                        const speakingKey = speaking ? gp(speaking, lang).key : null;
+                        const active = speakingKey === persona.key;
                         return (
                             <div
                                 key={name}
@@ -287,7 +285,7 @@ export default function DebateChamber({ runId }: { runId: string }) {
                         );
                     })}
 
-                    {experts.length === 0 && (
+                    {messages.length === 0 && (
                         <div className="flex flex-col items-center gap-3 z-20">
                             <div className="w-10 h-10 border-2 border-purple-500/30 border-t-purple-500 rounded-full animate-spin" />
                             <p className="text-white/30 text-xs font-bold">{t(lang, 'waiting')}</p>
