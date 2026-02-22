@@ -49,12 +49,12 @@ function gp(name: string, lang: UILang) {
 }
 
 const HEX = [
-    { left: '50%', top: '5%' },
-    { left: '88%', top: '27%' },
-    { left: '88%', top: '73%' },
-    { left: '50%', top: '95%' },
-    { left: '12%', top: '73%' },
-    { left: '12%', top: '27%' },
+    { left: '50%', top: '15%' }, // Top
+    { left: '85%', top: '30%' }, // Top Right
+    { left: '85%', top: '70%' }, // Bottom Right
+    { left: '50%', top: '85%' }, // Bottom
+    { left: '15%', top: '70%' }, // Bottom Left
+    { left: '15%', top: '30%' }, // Top Left
 ];
 
 interface Msg {
@@ -265,24 +265,40 @@ export default function DebateChamber({ runId }: { runId: string }) {
                                 className="absolute flex flex-col items-center gap-1"
                                 style={{ left: pos.left, top: pos.top, transform: 'translate(-50%, -50%)' }}
                             >
-                                <div
-                                    className={'w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all duration-300 ' + (active ? 'scale-110' : 'scale-100')}
-                                    style={{
-                                        borderColor: persona.c,
-                                        backgroundColor: persona.c + '20',
-                                        boxShadow: active ? '0 0 20px ' + persona.c + '60' : 'none',
-                                    }}
-                                >
-                                    <span className="text-lg">{persona.em}</span>
+                                <div className="relative">
+                                    {active && (
+                                        <div
+                                            className="absolute inset-0 rounded-full animate-ping opacity-20"
+                                            style={{ backgroundColor: persona.c }}
+                                        />
+                                    )}
+                                    <div
+                                        className={'relative z-10 w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all duration-500 ' +
+                                            (active ? 'scale-125 opacity-100 grayscale-0 shadow-lg' : 'scale-100 opacity-40 grayscale-[50%]')}
+                                        style={{
+                                            borderColor: persona.c,
+                                            backgroundColor: persona.c + (active ? '30' : '10'),
+                                            boxShadow: active ? `0 0 25px ${persona.c}80` : 'none',
+                                        }}
+                                    >
+                                        <span className="text-lg">{persona.em}</span>
+                                    </div>
                                 </div>
-                                <span className="text-[9px] font-bold text-white/70 bg-black/60 px-2 py-0.5 rounded-full text-center max-w-[80px] truncate">
-                                    {persona.dn}
-                                </span>
-                                {active && (
-                                    <span className="text-[8px] font-bold text-emerald-400 animate-pulse">
-                                        {t(lang, 'speaking')}
+                                <div className={`flex flex-col items-center gap-0.5 mt-2 transition-all duration-500 ${active ? 'translate-y-1' : 'translate-y-0'}`}>
+                                    <span className={`text-[9px] font-bold px-2.5 py-1 rounded-full text-center max-w-[85px] truncate transition-colors duration-500 border
+                                        ${active ? 'text-white bg-black/80 shadow-md' : 'text-white/50 bg-black/40 border-transparent'}`}
+                                        style={{
+                                            borderColor: active ? persona.c + '60' : 'transparent',
+                                            textShadow: active ? `0 0 8px ${persona.c}` : 'none',
+                                        }}>
+                                        {persona.dn}
                                     </span>
-                                )}
+                                    {active && (
+                                        <span className="text-[8px] font-bold mt-0.5 animate-pulse uppercase tracking-wider" style={{ color: persona.c }}>
+                                            {t(lang, 'speaking')}
+                                        </span>
+                                    )}
+                                </div>
                             </div>
                         );
                     })}
