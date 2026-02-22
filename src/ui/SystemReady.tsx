@@ -389,6 +389,82 @@ export default function SystemReady() {
                     </div>
                 )
             }
+
+            {/* Context Modal */}
+            {showContextModal && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+                    <div className="bg-[#0a0a1f] border border-[#ff00e5]/30 rounded-2xl w-full max-w-2xl overflow-hidden shadow-[0_0_50px_rgba(255,0,229,0.15)] flex flex-col max-h-[90vh]">
+                        {/* Modal Header */}
+                        <div className="px-6 py-4 border-b border-[#ff00e5]/20 bg-[#ff00e5]/5 flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                                <span className="material-symbols-outlined text-[#ff00e5]">library_add</span>
+                                <div>
+                                    <h3 className="font-display font-bold text-white uppercase tracking-widest text-sm">Inject Context</h3>
+                                    <p className="font-mono text-[10px] text-[#ff00e5]/60 uppercase tracking-widest">Supplemental Memory Bank</p>
+                                </div>
+                            </div>
+                            <button onClick={() => setShowContextModal(false)} className="text-slate-500 hover:text-white transition-colors">
+                                <span className="material-symbols-outlined">close</span>
+                            </button>
+                        </div>
+
+                        {/* Modal Body */}
+                        <div className="p-6 flex-1 overflow-y-auto custom-scrollbar flex flex-col gap-6">
+                            <div>
+                                <label className="block text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-2">Memory Bank Label</label>
+                                <input
+                                    type="text"
+                                    value={repoName}
+                                    onChange={(e) => setRepoName(e.target.value)}
+                                    placeholder="e.g. Q4 Financial Report, Competitor Analysis..."
+                                    className="w-full bg-black/50 border border-slate-700 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-[#ff00e5]/50 focus:bg-black/80 transition-all font-sans"
+                                />
+                            </div>
+                            <div className="flex-1 flex flex-col">
+                                <div className="flex items-center justify-between mb-2">
+                                    <label className="block text-[10px] font-mono text-slate-400 uppercase tracking-widest">Raw Data payload</label>
+                                    <span className="text-[10px] font-mono text-[#ff00e5] bg-[#ff00e5]/10 px-2 py-0.5 rounded border border-[#ff00e5]/20">
+                                        ~{contextTokens.toLocaleString()} tokens
+                                    </span>
+                                </div>
+                                <textarea
+                                    value={contextText}
+                                    onChange={(e) => setContextText(e.target.value)}
+                                    placeholder="Paste full articles, reports, code snippets, or raw terminal output here..."
+                                    className="flex-1 min-h-[250px] w-full bg-black/50 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-300 focus:outline-none focus:border-[#ff00e5]/50 focus:bg-black/80 transition-all font-mono custom-scrollbar resize-none"
+                                />
+                            </div>
+                        </div>
+
+                        {/* Modal Footer */}
+                        <div className="px-6 py-4 border-t border-slate-800 bg-black/30 flex justify-end gap-3">
+                            <button
+                                onClick={() => setShowContextModal(false)}
+                                className="px-6 py-2.5 rounded-lg font-bold text-xs uppercase tracking-widest text-slate-400 hover:text-white transition-colors"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleIngestContext}
+                                disabled={ingestingContext || !contextText.trim() || !repoName.trim()}
+                                className="flex items-center gap-2 px-6 py-2.5 bg-[#ff00e5]/10 border border-[#ff00e5]/50 text-[#ff00e5] font-bold text-xs uppercase tracking-widest rounded-lg hover:bg-[#ff00e5] hover:text-black transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_15px_rgba(255,0,229,0.2)]"
+                            >
+                                {ingestingContext ? (
+                                    <>
+                                        <span className="material-symbols-outlined animate-spin text-[16px]">sync</span>
+                                        Ingesting...
+                                    </>
+                                ) : (
+                                    <>
+                                        <span className="material-symbols-outlined text-[16px]">memory</span>
+                                        Ingest Data
+                                    </>
+                                )}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div >
     );
 }
