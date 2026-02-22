@@ -111,6 +111,10 @@ function detectLanguage(text: string): string {
             /\bestou\b/, /\bestá\b/, /\bisto\b/, /\bisso\b/, /\baquilo\b/,
             /\buma\b/, /\bumas\b/, /\bdos\b/, /\bdas\b/, /\bpelo\b/, /\bpela\b/,
             /\btenho\b/, /\btemos\b/, /\bsomos\b/, /\bsão\b/, /\bser\b/,
+            /\bpara\b/, /\bcom\b/, /\bcomo\b/, /\bpor\b/, /\bmais\b/,
+            /\baqui\b/, /\bsobre\b/, /\bmuita\b/, /\bdepois\b/, /\bantes\b/,
+            /\bagora\b/, /\bsempre\b/, /\bnunca\b/, /\btudo\b/, /\bnada\b/,
+            /\bcriar\b/, /\bpatos\b/, /\blagoa\b/, /\bparque\b/, /\bjamor\b/
         ],
         French: [
             /\bje\b/, /\bveux\b/, /\bouvrir\b/, /\bmagasin\b/, /\bentreprise\b/,

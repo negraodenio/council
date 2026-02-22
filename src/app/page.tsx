@@ -325,15 +325,87 @@
                                 </div>
                             </div>
                         </div>
-                        <div className="md:w-1/2 relative">
-                            <div className="aspect-square bg-neon-cyan/5 rounded-full border border-neon-cyan/20 flex items-center justify-center p-12">
-                                <div className="w-full h-full bg-neon-cyan/10 rounded-full border border-neon-cyan/30 flex items-center justify-center p-12 animate-pulse">
-                                    <div className="w-full h-full bg-neon-cyan/20 rounded-full border border-neon-cyan flex items-center justify-center">
-                                        <span className="material-symbols-outlined text-6xl text-neon-cyan glow-text">shield_with_heart</span>
-                                    </div>
-                                </div>
+                        <div className="md:w-1/2 relative min-h-[500px] flex items-center justify-center">
+                            {/* Grid Background */}
+                            <div className="absolute inset-0 bg-[linear-gradient(rgba(0,240,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(0,240,255,0.05)_1px,transparent_1px)] bg-[size:20px_20px] rounded-full [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]"></div>
+
+                            {/* Connecting lines */}
+                            <svg className="absolute inset-0 w-full h-full -z-10 pointer-events-none opacity-20">
+                                {/* Center to Agents */}
+                                <line x1="50%" y1="50%" x2="50%" y2="15%" stroke="#00f0ff" strokeWidth="1" strokeDasharray="4 4" />
+                                <line x1="50%" y1="50%" x2="85%" y2="30%" stroke="#00f0ff" strokeWidth="1" strokeDasharray="4 4" />
+                                <line x1="50%" y1="50%" x2="85%" y2="70%" stroke="#00f0ff" strokeWidth="1" strokeDasharray="4 4" />
+                                <line x1="50%" y1="50%" x2="50%" y2="85%" stroke="#00f0ff" strokeWidth="1" strokeDasharray="4 4" />
+                                <line x1="50%" y1="50%" x2="15%" y2="70%" stroke="#00f0ff" strokeWidth="1" strokeDasharray="4 4" />
+                                <line x1="50%" y1="50%" x2="15%" y2="30%" stroke="#00f0ff" strokeWidth="1" strokeDasharray="4 4" />
+                            </svg>
+
+                            {/* Central Hub */}
+                            <div className="relative z-10 size-32 rounded-full bg-[#0a0a1f] border border-slate-700/50 flex flex-col items-center justify-center shadow-[0_0_30px_rgba(0,0,0,0.8)]">
+                                {/* Progress Ring */}
+                                <svg className="absolute inset-0 w-full h-full -rotate-90 drop-shadow-[0_0_10px_rgba(0,240,255,0.5)]">
+                                    <circle cx="64" cy="64" r="60" fill="none" stroke="#1a1a3a" strokeWidth="4" />
+                                    <circle cx="64" cy="64" r="60" fill="none" stroke="#00f0ff" strokeWidth="4" strokeDasharray="377" strokeDashoffset="260" className="animate-pulse" />
+                                </svg>
+                                <span className="text-4xl font-black bg-clip-text text-transparent bg-gradient-to-br from-[#c084fc] to-[#00f0ff] font-display">25</span>
+                                <span className="text-[10px] text-slate-400 font-bold tracking-widest mt-1">SYNC</span>
                             </div>
-                            <div className="absolute -z-10 top-0 left-0 w-full h-full opacity-10 tech-grid"></div>
+
+                            {/* Agent 1: Market Analyst (Top) */}
+                            <div className="absolute top-[5%] left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 hover:scale-105 transition-transform cursor-default">
+                                <div className="size-12 rounded-full border border-green-500/30 bg-[#0a0a1f] flex items-center justify-center shadow-[0_0_15px_rgba(34,197,94,0.1)]">
+                                    <span className="material-symbols-outlined shrink-0 select-none text-green-500 text-xl">query_stats</span>
+                                </div>
+                                <div className="bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-green-500/20 text-[10px] font-bold text-slate-200 shadow-xl">Market Analyst</div>
+                                <div className="bg-black/80 backdrop-blur-md border border-green-500/20 px-3 py-1.5 rounded-lg text-[8px] text-green-400/80 font-mono w-32 truncate text-center opacity-80 shadow-xl">"TAM Analysis: eBay..."</div>
+                            </div>
+
+                            {/* Agent 2: Technologist (Top-Right) */}
+                            <div className="absolute top-[20%] right-[2%] flex flex-col items-center gap-2 hover:scale-105 transition-transform cursor-default">
+                                <div className="size-12 rounded-full border border-cyan-500/30 bg-[#0a0a1f] flex items-center justify-center shadow-[0_0_15px_rgba(6,182,212,0.1)]">
+                                    <span className="material-symbols-outlined shrink-0 select-none text-cyan-500 text-xl">terminal</span>
+                                </div>
+                                <div className="bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-cyan-500/20 text-[10px] font-bold text-slate-200 shadow-xl">Technologist</div>
+                                <div className="bg-black/80 backdrop-blur-md border border-cyan-500/20 px-3 py-1.5 rounded-lg text-[8px] text-cyan-400/80 font-mono w-32 truncate text-center opacity-80 shadow-xl">"### PRIMARY ATTACK..."</div>
+                            </div>
+
+                            {/* Agent 3: Finance (Bottom-Right) - ACTIVE GLOW */}
+                            <div className="absolute bottom-[20%] right-[2%] flex flex-col items-center gap-2 hover:scale-105 transition-transform cursor-default z-20">
+                                <div className="relative size-14 rounded-full border-2 border-blue-500/80 bg-[#0a0a1f] flex items-center justify-center shadow-[0_0_40px_rgba(59,130,246,0.5)]">
+                                    <div className="absolute inset-0 rounded-full border-[3px] border-blue-400 opacity-50 animate-ping"></div>
+                                    <span className="material-symbols-outlined shrink-0 select-none text-blue-400 text-2xl drop-shadow-[0_0_8px_rgba(59,130,246,0.8)]">account_balance</span>
+                                </div>
+                                <div className="bg-black/90 backdrop-blur-md px-4 py-1.5 rounded-full border border-blue-500 text-xs font-bold text-white shadow-[0_4px_15px_rgba(0,0,0,0.5)]">Finance</div>
+                                <div className="bg-black/90 backdrop-blur-md border border-blue-500/40 px-3 py-2 rounded-lg text-[9px] text-blue-300 font-mono w-36 truncate text-center shadow-xl">"A elaborar argumento..."</div>
+                            </div>
+
+                            {/* Agent 4: Ethics (Bottom) */}
+                            <div className="absolute bottom-[5%] left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 hover:scale-105 transition-transform cursor-default">
+                                <div className="size-12 rounded-full border border-amber-500/30 bg-[#0a0a1f] flex items-center justify-center shadow-[0_0_15px_rgba(245,158,11,0.1)]">
+                                    <span className="material-symbols-outlined shrink-0 select-none text-amber-500 text-xl">gavel</span>
+                                </div>
+                                <div className="bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-amber-500/20 text-[10px] font-bold text-slate-200 shadow-xl">Ethics & Risk</div>
+                                <div className="bg-black/80 backdrop-blur-md border border-amber-500/20 px-3 py-1.5 rounded-lg text-[8px] text-amber-400/80 font-mono w-32 truncate text-center opacity-80 shadow-xl">"Regulatory & Compl..."</div>
+                            </div>
+
+                            {/* Agent 5: Advocate (Bottom-Left) - ACTIVE GLOW */}
+                            <div className="absolute bottom-[20%] left-[2%] flex flex-col items-center gap-2 hover:scale-105 transition-transform cursor-default z-20">
+                                <div className="relative size-14 rounded-full border-2 border-[#ff00e5]/80 bg-[#0a0a1f] flex items-center justify-center shadow-[0_0_40px_rgba(255,0,229,0.5)]">
+                                    <div className="absolute inset-0 rounded-full border-[3px] border-[#ff00e5] opacity-30 animate-pulse"></div>
+                                    <span className="material-symbols-outlined shrink-0 select-none text-[#ff00e5] text-2xl drop-shadow-[0_0_10px_rgba(255,0,229,0.8)]">skull</span>
+                                </div>
+                                <div className="bg-black/90 backdrop-blur-md px-4 py-1.5 rounded-full border border-[#ff00e5] text-xs font-bold text-white shadow-[0_4px_15px_rgba(0,0,0,0.5)]">Advocate</div>
+                                <div className="bg-black/90 backdrop-blur-md border border-[#ff00e5]/40 px-3 py-2 rounded-lg text-[9px] text-[#ff00e5] font-mono w-36 text-center shadow-xl leading-relaxed whitespace-normal min-h-[30px] flex items-center justify-center">"Challenging 📊 Market Analyst: The..."</div>
+                            </div>
+
+                            {/* Agent 6: Visionary (Top-Left) */}
+                            <div className="absolute top-[20%] left-[2%] flex flex-col items-center gap-2 hover:scale-105 transition-transform cursor-default">
+                                <div className="size-12 rounded-full border border-purple-500/30 bg-[#0a0a1f] flex items-center justify-center shadow-[0_0_15px_rgba(168,85,247,0.1)]">
+                                    <span className="material-symbols-outlined shrink-0 select-none text-purple-400 text-xl">visibility</span>
+                                </div>
+                                <div className="bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-purple-500/20 text-[10px] font-bold text-slate-200 shadow-xl">Visionary</div>
+                                <div className="bg-black/80 backdrop-blur-md border border-purple-500/20 px-3 py-1.5 rounded-lg text-[8px] text-purple-400/80 font-mono w-32 truncate text-center opacity-80 shadow-xl">"Market Potential Ana..."</div>
+                            </div>
                         </div>
                     </div>
                 </div>

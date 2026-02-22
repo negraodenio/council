@@ -185,7 +185,7 @@ export default function ConsensusReport({ validation, patches }: {
             </header>
 
             {/* Hidden PDF Container */}
-            <div style={{ display: 'none' }}>
+            <div style={{ position: 'absolute', top: '-9999px', left: '-9999px' }}>
                 <PDFReportTemplate validation={validation} lang={lang} />
             </div>
 
