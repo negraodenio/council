@@ -14,7 +14,7 @@
                         <a className="text-sm font-medium hover:text-neon-cyan transition-colors" href="#how-it-works">How it works</a>
                         <a className="text-sm font-medium hover:text-neon-cyan transition-colors" href="#the-council">The Council</a>
                         <a className="text-sm font-medium hover:text-neon-cyan transition-colors" href="#use-cases">Use cases</a>
-                        <a className="text-sm font-medium hover:text-neon-cyan transition-colors" href="#pricing">Pricing</a>
+                        <a className="text-sm font-medium hover:text-neon-cyan transition-colors" href="/pricing">Pricing</a>
                         <a className="text-sm font-medium hover:text-neon-cyan transition-colors" href="#methodology">Methodology</a>
                     </nav>
                     <a href="/login" className="bg-neon-cyan/10 border border-neon-cyan/50 text-neon-cyan px-6 py-2.5 rounded-xl font-bold text-sm transition-all hover:bg-neon-cyan hover:text-black hover:scale-105 active:scale-95 shadow-[0_0_15px_rgba(0,240,255,0.2)]">
@@ -523,7 +523,7 @@
                             <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="#how-it-works">Process</a></li>
                             <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="#the-council">The Council</a></li>
                             <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="#methodology">Methodology</a></li>
-                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="#pricing">Pricing</a></li>
+                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="/pricing">Pricing</a></li>
                         </ul>
                     </div>
                     <div>
@@ -539,8 +539,8 @@
                         <h5 className="font-bold text-sm mb-6 uppercase tracking-widest text-[#c4c4ff] font-display">Legal &amp; Support</h5>
                         <ul className="space-y-4">
                             <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="mailto:support@councilia.ai">support@councilia.ai</a></li>
-                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="#">Privacy Policy</a></li>
-                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="#">Terms of Service</a></li>
+                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="/privacy">Privacy Policy</a></li>
+                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="/terms">Terms of Service</a></li>
                         </ul>
                     </div>
                 </div>
