@@ -30,133 +30,189 @@ export default async function DashboardPage() {
     const recentValidations = validations?.slice(0, 10) || [];
 
     return (
-        <div className="min-h-screen bg-neutral-50 text-neutral-900">
+        <div className="min-h-screen bg-space-black text-slate-100 font-body relative overflow-hidden">
+            {/* Background Grid */}
+            <div className="absolute inset-0 tech-grid pointer-events-none opacity-20"></div>
+
+            {/* Glow Orbs */}
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-neon-cyan/5 blur-[120px] rounded-full pointer-events-none"></div>
+            <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#ff00e5]/5 blur-[150px] rounded-full pointer-events-none"></div>
+
             {/* Header */}
-            <header className="bg-white border-b border-neutral-200">
-                <div className="max-w-6xl mx-auto px-6 py-6">
-                    <div className="flex items-center justify-between">
+            <header className="relative z-10 border-b border-[rgba(0,240,255,0.1)] bg-space-black/80 backdrop-blur-md">
+                <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                        <div className="size-10 bg-neon-cyan/10 rounded-lg flex items-center justify-center border border-neon-cyan/30 shadow-[0_0_15px_rgba(0,242,255,0.2)] shrink-0 overflow-hidden">
+                            <span className="material-symbols-outlined text-neon-cyan font-bold select-none">account_tree</span>
+                        </div>
                         <div>
-                            <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
-                            Recent validations • Portfolio Overview
+                            <h1 className="text-xl font-bold tracking-tight text-white font-display uppercase">Command Center</h1>
+                            <p className="text-[10px] uppercase font-mono tracking-widest text-[#00f2ff]/70">Session overview & metrics</p>
                         </div>
-                        <div className="flex gap-3 items-center">
-                            {/* Keep Export Audit if functionality exists, user had explicit button in their code */}
-                            <a href="/api/audit/export" className="px-4 py-2 text-sm border border-neutral-200 rounded-md hover:border-neutral-300 transition">
-                                Export CSV
-                            </a>
-                            <Link href="/new" className="bg-neutral-900 text-white px-6 py-2 rounded-md text-sm font-medium hover:bg-neutral-800 transition">
-                                New Session
-                            </Link>
-                            {/* Sign Out Logic */}
-                            <form action="/api/auth/signout" method="post">
-                                <button type="submit" className="p-2 hover:bg-neutral-100 rounded-md transition text-sm text-neutral-500 font-medium" title="Sign Out">
-                                    Sign Out
-                                </button>
-                            </form>
-                        </div>
+                    </div>
+
+                    <div className="flex gap-4 items-center">
+                        <a href="/api/audit/export" className="hidden md:flex items-center gap-2 px-4 py-2 text-[10px] font-mono font-bold uppercase tracking-widest border border-slate-700 rounded bg-slate-800/50 hover:bg-slate-800 hover:border-slate-600 transition-colors text-slate-300">
+                            <span className="material-symbols-outlined text-[14px]">download</span>
+                            Export
+                        </a>
+                        <Link href="/new" className="flex items-center gap-2 bg-[#00f2ff]/10 text-[#00f2ff] border border-[#00f2ff]/50 px-6 py-2 rounded font-bold text-xs uppercase tracking-widest hover:bg-[#00f2ff]/20 hover:scale-105 active:scale-95 transition-all shadow-[0_0_15px_rgba(0,242,255,0.2)]">
+                            <span className="material-symbols-outlined text-[16px]">add</span>
+                            New Session
+                        </Link>
+                        <form action="/api/auth/signout" method="post">
+                            <button type="submit" className="p-2 text-slate-500 hover:text-red-400 transition hover:bg-red-400/10 rounded group" title="Terminate Connection">
+                                <span className="material-symbols-outlined group-hover:scale-110 transition-transform">power_settings_new</span>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </header>
 
-            <div className="max-w-6xl mx-auto px-6 py-12">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+            <div className="relative z-10 max-w-7xl mx-auto px-6 py-12">
 
-                    {/* Recent Validations */}
-                    <div className="bg-white rounded-xl border border-neutral-200 p-8">
-                        <div className="flex items-center gap-3 mb-6">
-                            <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                            <h2 className="text-lg font-semibold">Recent validations</h2>
+                {/* Global Metrics Row (Portfolio Overview shifted to top) */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                    {/* Metric 1 */}
+                    <div className="p-6 rounded-xl border border-[rgba(0,240,255,0.1)] bg-panel-blue/40 flex items-center gap-6 relative overflow-hidden group">
+                        <div className="absolute top-0 right-0 w-24 h-24 bg-neon-cyan/10 blur-xl rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-700"></div>
+                        <div className="size-14 rounded-full border border-neon-cyan/30 flex items-center justify-center bg-[#0a0a1f] shrink-0 shadow-[0_0_15px_rgba(0,242,255,0.1)]">
+                            <span className="material-symbols-outlined text-neon-cyan text-2xl">folder_data</span>
+                        </div>
+                        <div>
+                            <div className="text-[10px] font-mono uppercase tracking-widest text-[#00f2ff]/60 mb-1">Total Validations</div>
+                            <div className="text-4xl font-black font-display text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">{totalValidations}</div>
+                        </div>
+                    </div>
+
+                    {/* Metric 2 */}
+                    <div className="p-6 rounded-xl border border-[rgba(0,240,255,0.1)] bg-panel-blue/40 flex items-center gap-6 relative overflow-hidden group">
+                        <div className="absolute top-0 right-0 w-24 h-24 bg-[#ff00e5]/10 blur-xl rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-700"></div>
+                        <div className="size-14 rounded-full border border-[#ff00e5]/30 flex items-center justify-center bg-[#0a0a1f] shrink-0 shadow-[0_0_15px_rgba(255,0,229,0.1)]">
+                            <span className="material-symbols-outlined text-[#ff00e5] text-2xl">timeline</span>
+                        </div>
+                        <div>
+                            <div className="text-[10px] font-mono uppercase tracking-widest text-[#ff00e5]/60 mb-1">Average Score</div>
+                            <div className="flex items-baseline gap-1">
+                                <div className={`text-4xl font-black font-display drop-shadow-[0_0_10px_rgba(255,255,255,0.2)] ${averageScore >= 70 ? 'text-green-400' : averageScore >= 40 ? 'text-amber-400' : 'text-red-400'}`}>{averageScore}</div>
+                                <div className="text-sm font-bold text-slate-500">/100</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Metric 3 */}
+                    <div className="p-6 rounded-xl border border-green-500/20 bg-green-500/5 flex items-center gap-6 relative overflow-hidden group">
+                        <div className="absolute top-0 right-0 w-24 h-24 bg-green-500/10 blur-xl rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-700"></div>
+                        <div className="size-14 rounded-full border border-green-500/30 flex items-center justify-center bg-[#0a0a1f] shrink-0 shadow-[0_0_15px_rgba(34,197,94,0.1)]">
+                            <span className="material-symbols-outlined text-green-400 text-2xl">verified</span>
+                        </div>
+                        <div>
+                            <div className="text-[10px] font-mono uppercase tracking-widest text-green-500/80 mb-1">Viable Projects</div>
+                            <div className="flex items-baseline gap-2">
+                                <div className="text-4xl font-black font-display text-green-300 drop-shadow-[0_0_10px_rgba(34,197,94,0.3)]">{viableIdeas}</div>
+                                <div className="text-[10px] font-bold text-green-500/50 uppercase tracking-widest">Score ≥ 70</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Main Content Area */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+
+                    {/* LEFT COLUMN: Recent Sessions */}
+                    <div className="lg:col-span-8">
+                        <div className="flex items-center gap-3 mb-8">
+                            <span className="material-symbols-outlined text-[#00f2ff]">history</span>
+                            <h2 className="text-lg font-bold font-display uppercase tracking-widest text-white">Execution Logs</h2>
                         </div>
 
                         {recentValidations && recentValidations.length > 0 ? (
-                            <div className="space-y-3">
+                            <div className="flex flex-col gap-4">
                                 {recentValidations.map((v) => (
-                                    <Link key={v.id} href={`/report/${v.id}`} className="block border border-neutral-100 p-4 rounded-lg hover:bg-neutral-50 transition">
-                                        <div className="font-medium text-neutral-900 truncate">{v.idea}</div>
-                                        {/* Status Badge */}
-                                        <div className="flex items-center gap-2 mt-2">
-                                            <span className={`px-2 py-0.5 rounded text-xs font-medium ${v.status === 'complete' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
-                                                {v.status}
-                                            </span>
-                                            <span className="text-xs text-neutral-400">{new Date(v.created_at).toLocaleDateString()}</span>
-                                            {v.consensus_score ? <span className="text-xs font-bold ml-auto text-neutral-600">Score: {Math.round(v.consensus_score)}</span> : null}
+                                    <Link key={v.id} href={`/report/${v.id}`} className="block border border-[rgba(0,240,255,0.1)] bg-panel-blue/20 p-5 rounded-xl hover:bg-panel-blue/40 hover:border-[#00f2ff]/30 transition-all group relative overflow-hidden">
+
+                                        {/* Status Glow Strip */}
+                                        <div className={`absolute left-0 top-0 bottom-0 w-1 ${v.status === 'complete' ? 'bg-[#ff00e5] shadow-[0_0_10px_#ff00e5]' : 'bg-amber-400 shadow-[0_0_10px_#fbbf24]'}`}></div>
+
+                                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pl-3">
+                                            <div className="flex-1 min-w-0">
+                                                <div className="text-sm font-medium text-slate-200 truncate group-hover:text-[#00f2ff] transition-colors">{v.idea}</div>
+                                                <div className="flex items-center gap-4 mt-2">
+                                                    <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-widest border ${v.status === 'complete' ? 'border-[#ff00e5]/30 text-[#ff00e5] bg-[#ff00e5]/10' : 'border-amber-400/30 text-amber-400 bg-amber-400/10'}`}>
+                                                        {v.status === 'complete' ? 'Analyzed' : 'Pending'}
+                                                    </span>
+                                                    <span className="text-[10px] font-mono text-slate-500">{new Date(v.created_at).toLocaleDateString()}</span>
+                                                </div>
+                                            </div>
+
+                                            {/* Score Display (Right Aligned) */}
+                                            {v.consensus_score ? (
+                                                <div className="flex items-center gap-3 bg-[rgba(0,0,0,0.3)] px-4 py-2 rounded-lg border border-slate-700">
+                                                    <span className="text-[10px] uppercase font-mono tracking-widest text-slate-400">Score</span>
+                                                    <span className={`text-xl font-black font-display ${v.consensus_score >= 70 ? 'text-green-400' : v.consensus_score >= 40 ? 'text-amber-400' : 'text-red-400'}`}>
+                                                        {Math.round(v.consensus_score)}
+                                                    </span>
+                                                </div>
+                                            ) : (
+                                                <div className="flex items-center gap-3 bg-[rgba(0,0,0,0.3)] px-4 py-2 rounded-lg border border-slate-700/50 opacity-50">
+                                                    <span className="text-[10px] uppercase font-mono tracking-widest text-slate-500">Processing</span>
+                                                    <span className="material-symbols-outlined text-slate-500 animate-spin text-xl">sync</span>
+                                                </div>
+                                            )}
                                         </div>
                                     </Link>
                                 ))}
                             </div>
                         ) : (
-                            <div className="text-center py-20">
-                                <div className="w-16 h-16 bg-neutral-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                                    <span className="text-2xl text-neutral-400">💭</span>
+                            <div className="text-center py-20 border border-[rgba(0,240,255,0.1)] border-dashed rounded-xl bg-panel-blue/10">
+                                <div className="w-16 h-16 rounded-full border border-slate-700 bg-[#0a0a1f] flex items-center justify-center mx-auto mb-6 shadow-inner">
+                                    <span className="material-symbols-outlined text-2xl text-slate-500">terminal</span>
                                 </div>
-                                <h3 className="text-xl font-semibold mb-2 text-neutral-900">No sessions yet</h3>
-                                <p className="text-neutral-500 mb-8 max-w-sm mx-auto">
-                                    Start your first validation to see the council in action.
-                                    Takes 2 minutes.
+                                <h3 className="text-xl font-display font-bold mb-2 text-white">No active targets</h3>
+                                <p className="text-slate-500 text-sm mb-8 max-w-sm mx-auto">
+                                    Initialize your first strategic validation. The Council is awaiting input data.
                                 </p>
-                                <Link href="/new" className="inline-block bg-neutral-900 text-white px-6 py-3 rounded-md text-sm font-medium hover:bg-neutral-800 transition w-full sm:w-auto">
-                                    Start first session
+                                <Link href="/new" className="inline-block bg-[#00f2ff]/10 border border-[#00f2ff]/50 text-[#00f2ff] font-bold text-xs uppercase tracking-widest px-6 py-3 rounded hover:bg-[#00f2ff] hover:text-black transition-all shadow-[0_0_15px_rgba(0,242,255,0.2)]">
+                                    Initialize Target
                                 </Link>
                             </div>
                         )}
                     </div>
 
-                    {/* Portfolio Overview */}
-                    <div className="bg-white rounded-xl border border-neutral-200 p-8 flex flex-col">
-                        <div className="flex items-center gap-3 mb-6">
-                            <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                            <h2 className="text-lg font-semibold">Portfolio Overview</h2>
-                        </div>
+                    {/* RIGHT COLUMN: Quick Templates */}
+                    <div className="lg:col-span-4">
+                        <div className="sticky top-24">
+                            <div className="flex items-center gap-3 mb-6">
+                                <span className="material-symbols-outlined text-[#ff00e5]">bolt</span>
+                                <h2 className="text-sm font-bold font-display uppercase tracking-widest text-white">Quick Inject</h2>
+                            </div>
 
-                        <div className="grid grid-cols-2 gap-4 flex-1">
-                            <div className="p-5 border border-neutral-100 rounded-xl bg-neutral-50/50 flex flex-col justify-center">
-                                <div className="text-sm font-medium text-neutral-500 mb-1">Total Validations</div>
-                                <div className="text-3xl font-bold text-neutral-900">{totalValidations}</div>
-                            </div>
-                            <div className="p-5 border border-neutral-100 rounded-xl bg-neutral-50/50 flex flex-col justify-center">
-                                <div className="text-sm font-medium text-neutral-500 mb-1">Average Score</div>
-                                <div className="flex items-baseline gap-1">
-                                    <div className={`text-3xl font-bold ${averageScore >= 70 ? 'text-emerald-500' : averageScore >= 40 ? 'text-amber-500' : 'text-red-500'}`}>{averageScore}</div>
-                                    <div className="text-sm font-medium text-neutral-400">/100</div>
-                                </div>
-                            </div>
-                            <div className="p-5 border border-emerald-100 bg-emerald-50/30 rounded-xl col-span-2 flex flex-col justify-center">
-                                <div className="text-sm font-medium text-emerald-700 mb-1">Viable Ideas (Score ≥ 70)</div>
-                                <div className="flex items-center gap-3">
-                                    <div className="text-3xl font-bold text-emerald-600">{viableIdeas}</div>
-                                    <div className="text-sm text-emerald-600/80">ready for investment or build</div>
-                                </div>
+                            <p className="text-xs text-slate-500 mb-6 font-mono leading-relaxed">
+                                Select a pre-configured scenario to deploy a rapid validation test against the Council.
+                            </p>
+
+                            <div className="space-y-4">
+                                <button className="w-full text-left group p-5 border border-[rgba(0,240,255,0.1)] bg-panel-blue/30 rounded-lg hover:border-[#ff00e5]/50 hover:bg-[#ff00e5]/5 transition-all relative overflow-hidden">
+                                    <div className="text-[10px] font-mono text-[#ff00e5]/70 mb-2 uppercase tracking-widest group-hover:text-[#ff00e5] transition-colors">Scenario 01 : SaaS</div>
+                                    <div className="text-slate-300 font-medium text-sm leading-relaxed group-hover:text-white transition-colors">B2B Compliance platform utilizing localized LLMs for EU law.</div>
+                                    <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-700 group-hover:text-[#ff00e5] group-hover:translate-x-1 transition-all opacity-0 group-hover:opacity-100">arrow_forward</span>
+                                </button>
+
+                                <button className="w-full text-left group p-5 border border-[rgba(0,240,255,0.1)] bg-panel-blue/30 rounded-lg hover:border-[#ff00e5]/50 hover:bg-[#ff00e5]/5 transition-all relative overflow-hidden">
+                                    <div className="text-[10px] font-mono text-[#ff00e5]/70 mb-2 uppercase tracking-widest group-hover:text-[#ff00e5] transition-colors">Scenario 02 : Hardware</div>
+                                    <div className="text-slate-300 font-medium text-sm leading-relaxed group-hover:text-white transition-colors">Local edge-computing device for real-time agricultural drone scanning.</div>
+                                    <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-700 group-hover:text-[#ff00e5] group-hover:translate-x-1 transition-all opacity-0 group-hover:opacity-100">arrow_forward</span>
+                                </button>
+
+                                <button className="w-full text-left group p-5 border border-[rgba(0,240,255,0.1)] bg-panel-blue/30 rounded-lg hover:border-[#ff00e5]/50 hover:bg-[#ff00e5]/5 transition-all relative overflow-hidden">
+                                    <div className="text-[10px] font-mono text-[#ff00e5]/70 mb-2 uppercase tracking-widest group-hover:text-[#ff00e5] transition-colors">Scenario 03 : Marketplace</div>
+                                    <div className="text-slate-300 font-medium text-sm leading-relaxed group-hover:text-white transition-colors">P2P rental infrastructure for heavy construction equipment in LATAM.</div>
+                                    <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-700 group-hover:text-[#ff00e5] group-hover:translate-x-1 transition-all opacity-0 group-hover:opacity-100">arrow_forward</span>
+                                </button>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                {/* Quick Start Examples */}
-                <div className="bg-white rounded-xl border border-neutral-200 p-8">
-                    <h3 className="text-lg font-semibold mb-8">Quick start examples</h3>
-
-                    <div className="grid md:grid-cols-3 gap-4">
-                        <Link href="/new" className="block text-left group p-6 border border-neutral-200 rounded-lg hover:border-neutral-300 hover:shadow-sm transition">
-                            <div className="font-mono text-sm text-neutral-500 mb-2 group-hover:text-neutral-900 transition">
-                                "B2B SaaS for Dentists with AI Integration"
-                            </div>
-                            <div className="text-neutral-900 font-medium">B2B SaaS Market</div>
-                        </Link>
-
-                        <Link href="/new" className="block text-left group p-6 border border-neutral-200 rounded-lg hover:border-neutral-300 hover:shadow-sm transition">
-                            <div className="font-mono text-sm text-neutral-500 mb-2 group-hover:text-neutral-900 transition">
-                                "Marketplace for local construction materials"
-                            </div>
-                            <div className="text-neutral-900 font-medium">Marketplace / Local</div>
-                        </Link>
-
-                        <Link href="/new" className="block text-left group p-6 border border-neutral-200 rounded-lg hover:border-neutral-300 hover:shadow-sm transition">
-                            <div className="font-mono text-sm text-neutral-500 mb-2 group-hover:text-neutral-900 transition">
-                                "Freemium PLG tool for Analytics Engineers"
-                            </div>
-                            <div className="text-neutral-900 font-medium">PLG Tooling</div>
-                        </Link>
-                    </div>
                 </div>
             </div>
         </div>
