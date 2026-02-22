@@ -260,13 +260,21 @@ export default function DebateChamber({ runId }: { runId: string }) {
                         const persona = gp(name, lang);
                         const active = speaking === name;
 
-                        // Find the last message from this expert to create a "hint"
-                        const lastMsg = [...messages].reverse().find(m => m.expert_name === name);
+                        // Create a "hint" for the user:
+                        // Since `model_msg` is only written *after* the turn, if they are active, show a dynamic generic hint
                         let hint = t(lang, 'speaking');
-                        if (lastMsg && lastMsg.content) {
-                            const cleanText = lastMsg.content.replace(/\*/g, '').replace(/\[.*\]/g, '').trim();
-                            const words = cleanText.split(' ');
-                            hint = `"${words.slice(0, 5).join(' ')}..."`;
+                        if (active) {
+                            hint = lang === 'pt' ? 'A elaborar argumento...' : lang === 'es' ? 'Elaborando argumento...' : 'Drafting argument...';
+                        } else {
+                            // If they are NOT active, show a snippet of their last completed message (if any)
+                            const lastMsg = [...messages].reverse().find(m => m.expert_name === name);
+                            if (lastMsg && lastMsg.content) {
+                                const cleanText = lastMsg.content.replace(/\*/g, '').replace(/\[.*\]/g, '').trim();
+                                const words = cleanText.split(' ');
+                                hint = `"${words.slice(0, 4).join(' ')}..."`;
+                            } else {
+                                hint = lang === 'pt' ? 'Aguardando...' : lang === 'es' ? 'Esperando...' : 'Waiting...';
+                            }
                         }
 
                         return (
@@ -303,23 +311,21 @@ export default function DebateChamber({ runId }: { runId: string }) {
                                         }}>
                                         {persona.dn}
                                     </span>
-                                    {active && (
-                                        <div
-                                            className="mt-1 px-2 py-1 rounded border shadow-lg max-w-[120px] text-center animate-in fade-in slide-in-from-top-1"
-                                            style={{
-                                                backgroundColor: persona.c + '15',
-                                                borderColor: persona.c + '30',
-                                                backdropFilter: 'blur(4px)'
-                                            }}
+                                    <div
+                                        className={`mt-1 px-2 py-1 rounded border shadow-lg max-w-[120px] text-center transition-all duration-500 ${active ? 'opacity-100 animate-pulse' : 'opacity-60 scale-95'}`}
+                                        style={{
+                                            backgroundColor: persona.c + (active ? '20' : '05'),
+                                            borderColor: persona.c + (active ? '40' : '15'),
+                                            backdropFilter: 'blur(4px)'
+                                        }}
+                                    >
+                                        <span
+                                            className={`text-[8px] font-medium leading-tight line-clamp-2 ${active ? 'text-white' : ''}`}
+                                            style={{ color: active ? '#fff' : persona.c }}
                                         >
-                                            <span
-                                                className="text-[8px] font-medium leading-tight line-clamp-2"
-                                                style={{ color: persona.c }}
-                                            >
-                                                {hint}
-                                            </span>
-                                        </div>
-                                    )}
+                                            {hint}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         );

@@ -110,10 +110,10 @@ export default function SystemReady() {
             <div className="relative z-10 flex flex-col min-h-screen">
                 <header className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
                     <a href="/dashboard" className="flex items-center gap-3 group">
-                        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-purple-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-purple-500/20">
-                            <span className="text-white text-sm font-black">C</span>
+                        <div className="w-9 h-9 rounded-xl flex items-center justify-center border border-white/10 group-hover:bg-white/5 transition-colors">
+                            <span className="text-white/50 text-sm font-black">&larr;</span>
                         </div>
-                        <span className="text-sm font-bold tracking-[0.2em] text-white/60 uppercase">CouncilIA</span>
+                        <span className="text-sm font-bold tracking-[0.2em] text-white/60 uppercase group-hover:text-white transition-colors">Dashboard</span>
                     </a>
                     <div className="flex items-center gap-3">
                         <div className="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-lg">

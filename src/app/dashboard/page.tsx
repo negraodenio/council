@@ -18,15 +18,16 @@ export default async function DashboardPage() {
         .from('validations')
         .select('*')
         .eq('tenant_id', profile?.tenant_id)
-        .order('created_at', { ascending: false })
-        .limit(20);
+        .order('created_at', { ascending: false });
 
-    const { data: repos } = await supabase
-        .from('repositories')
-        .select('*')
-        .eq('tenant_id', profile?.tenant_id)
-        .order('created_at', { ascending: false })
-        .limit(10);
+    const totalValidations = validations?.length || 0;
+    const scoredValidations = validations?.filter(v => v.consensus_score !== null) || [];
+    const averageScore = scoredValidations.length > 0
+        ? Math.round(scoredValidations.reduce((acc, v) => acc + v.consensus_score, 0) / scoredValidations.length)
+        : 0;
+    const viableIdeas = scoredValidations.filter(v => v.consensus_score >= 70).length;
+
+    const recentValidations = validations?.slice(0, 10) || [];
 
     return (
         <div className="min-h-screen bg-neutral-50 text-neutral-900">
@@ -36,9 +37,7 @@ export default async function DashboardPage() {
                     <div className="flex items-center justify-between">
                         <div>
                             <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
-                            <p className="text-neutral-500 text-sm mt-1">
-                                Recent validations • Connected repositories
-                            </p>
+                            Recent validations • Portfolio Overview
                         </div>
                         <div className="flex gap-3 items-center">
                             {/* Keep Export Audit if functionality exists, user had explicit button in their code */}
@@ -69,9 +68,9 @@ export default async function DashboardPage() {
                             <h2 className="text-lg font-semibold">Recent validations</h2>
                         </div>
 
-                        {validations && validations.length > 0 ? (
+                        {recentValidations && recentValidations.length > 0 ? (
                             <div className="space-y-3">
-                                {validations.map((v) => (
+                                {recentValidations.map((v) => (
                                     <Link key={v.id} href={`/report/${v.id}`} className="block border border-neutral-100 p-4 rounded-lg hover:bg-neutral-50 transition">
                                         <div className="font-medium text-neutral-900 truncate">{v.idea}</div>
                                         {/* Status Badge */}
@@ -80,6 +79,7 @@ export default async function DashboardPage() {
                                                 {v.status}
                                             </span>
                                             <span className="text-xs text-neutral-400">{new Date(v.created_at).toLocaleDateString()}</span>
+                                            {v.consensus_score ? <span className="text-xs font-bold ml-auto text-neutral-600">Score: {Math.round(v.consensus_score)}</span> : null}
                                         </div>
                                     </Link>
                                 ))}
@@ -101,38 +101,33 @@ export default async function DashboardPage() {
                         )}
                     </div>
 
-                    {/* Connected Repositories */}
-                    <div className="bg-white rounded-xl border border-neutral-200 p-8">
+                    {/* Portfolio Overview */}
+                    <div className="bg-white rounded-xl border border-neutral-200 p-8 flex flex-col">
                         <div className="flex items-center gap-3 mb-6">
-                            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                            <h2 className="text-lg font-semibold">Connected repositories</h2>
+                            <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                            <h2 className="text-lg font-semibold">Portfolio Overview</h2>
                         </div>
 
-                        {repos && repos.length > 0 ? (
-                            <div className="space-y-3">
-                                {repos.map((r) => (
-                                    <div key={r.id} className="border border-neutral-100 p-4 rounded-lg">
-                                        <div className="font-mono text-sm text-neutral-900">{r.repo_name}</div>
-                                        <div className="text-xs text-neutral-500 mt-1">{r.repo_url}</div>
-                                        <div className="text-xs text-neutral-400 mt-2">Last sync: {new Date(r.created_at).toLocaleDateString()}</div>
-                                    </div>
-                                ))}
+                        <div className="grid grid-cols-2 gap-4 flex-1">
+                            <div className="p-5 border border-neutral-100 rounded-xl bg-neutral-50/50 flex flex-col justify-center">
+                                <div className="text-sm font-medium text-neutral-500 mb-1">Total Validations</div>
+                                <div className="text-3xl font-bold text-neutral-900">{totalValidations}</div>
                             </div>
-                        ) : (
-                            <div className="text-center py-20">
-                                <div className="w-16 h-16 bg-neutral-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                                    <span className="text-2xl text-neutral-400">📂</span>
+                            <div className="p-5 border border-neutral-100 rounded-xl bg-neutral-50/50 flex flex-col justify-center">
+                                <div className="text-sm font-medium text-neutral-500 mb-1">Average Score</div>
+                                <div className="flex items-baseline gap-1">
+                                    <div className={`text-3xl font-bold ${averageScore >= 70 ? 'text-emerald-500' : averageScore >= 40 ? 'text-amber-500' : 'text-red-500'}`}>{averageScore}</div>
+                                    <div className="text-sm font-medium text-neutral-400">/100</div>
                                 </div>
-                                <h3 className="text-xl font-semibold mb-2 text-neutral-900">Connect GitHub</h3>
-                                <p className="text-neutral-500 mb-8 max-w-sm mx-auto">
-                                    Link your repositories to validate PRs, issues, or entire
-                                    codebases directly from GitHub.
-                                </p>
-                                <button className="border border-neutral-200 px-6 py-3 rounded-md text-sm font-medium hover:border-neutral-300 transition w-full sm:w-auto">
-                                    Connect GitHub
-                                </button>
                             </div>
-                        )}
+                            <div className="p-5 border border-emerald-100 bg-emerald-50/30 rounded-xl col-span-2 flex flex-col justify-center">
+                                <div className="text-sm font-medium text-emerald-700 mb-1">Viable Ideas (Score ≥ 70)</div>
+                                <div className="flex items-center gap-3">
+                                    <div className="text-3xl font-bold text-emerald-600">{viableIdeas}</div>
+                                    <div className="text-sm text-emerald-600/80">ready for investment or build</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -143,23 +138,23 @@ export default async function DashboardPage() {
                     <div className="grid md:grid-cols-3 gap-4">
                         <Link href="/new" className="block text-left group p-6 border border-neutral-200 rounded-lg hover:border-neutral-300 hover:shadow-sm transition">
                             <div className="font-mono text-sm text-neutral-500 mb-2 group-hover:text-neutral-900 transition">
-                                "Is this PR production-ready?"
+                                "B2B SaaS for Dentists with AI Integration"
                             </div>
-                            <div className="text-neutral-900 font-medium">Code review</div>
+                            <div className="text-neutral-900 font-medium">B2B SaaS Market</div>
                         </Link>
 
                         <Link href="/new" className="block text-left group p-6 border border-neutral-200 rounded-lg hover:border-neutral-300 hover:shadow-sm transition">
                             <div className="font-mono text-sm text-neutral-500 mb-2 group-hover:text-neutral-900 transition">
-                                "Should we enter the European market?"
+                                "Marketplace for local construction materials"
                             </div>
-                            <div className="text-neutral-900 font-medium">Strategy</div>
+                            <div className="text-neutral-900 font-medium">Marketplace / Local</div>
                         </Link>
 
                         <Link href="/new" className="block text-left group p-6 border border-neutral-200 rounded-lg hover:border-neutral-300 hover:shadow-sm transition">
                             <div className="font-mono text-sm text-neutral-500 mb-2 group-hover:text-neutral-900 transition">
-                                "Are we GDPR compliant?"
+                                "Freemium PLG tool for Analytics Engineers"
                             </div>
-                            <div className="text-neutral-900 font-medium">Compliance</div>
+                            <div className="text-neutral-900 font-medium">PLG Tooling</div>
                         </Link>
                     </div>
                 </div>
