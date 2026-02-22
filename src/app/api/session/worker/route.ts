@@ -301,12 +301,19 @@ rate to get there? Dreams don't pay salaries.`,
 
 // ——— Prompt Builders (v2.3 ACE Engine) ———————————————————
 
+function buildIdeaAnchor(idea: string): string {
+    if (!idea) return '';
+    const safeIdea = idea.length > 500 ? idea.substring(0, 500) + '...' : idea;
+    return `\n\nCRITICAL ANCHOR (ANTI-HALLUCINATION): The original idea being evaluated is STRICTLY about:\n"${safeIdea}"\nIf the debate transcript or your analysis discusses features, target audiences, products, or business models NOT present in this original idea, you must discard them as HALLUCINATIONS and return to the core concept.`;
+}
+
 function buildRound1Prompt(persona: any, lang: string, idea: string = ''): string {
     const cognitivePrompt = PERSONA_PROMPTS[persona.id] || '';
     return `${cognitivePrompt}
 
 YOUR ROLE ON THE COUNCIL: ${persona.role}
 ${inferGeoContext(idea, lang)}
+${buildIdeaAnchor(idea)}
 
 ROUND 1 — THESIS (Delphi Method: independent expert evaluation)
 
@@ -339,6 +346,7 @@ function buildRound2AttackPrompt(persona: any, lang: string, idea: string = ''):
 You are now in ROUND 2 — ANTITHESIS (Red Teaming + Dialectical Inquiry).
 Your role: CRITICAL CHALLENGER. Stress-test the arguments from Round 1.
 ${inferGeoContext(idea, lang)}
+${buildIdeaAnchor(idea)}
 ${targetInstruction}
 
 RULES:
@@ -359,6 +367,7 @@ function buildRound3DefensePrompt(persona: any, lang: string, idea: string = '')
 You are now in ROUND 3 — SYNTHESIS (Hegelian Dialectics: refined truth through conflict).
 Your role: Defend, concede, and REFINE your position after being challenged.
 ${inferGeoContext(idea, lang)}
+${buildIdeaAnchor(idea)}
 
 PROTOCOL:
 1. CONCEDE (be specific): Name what your attacker got RIGHT. Quote them.
@@ -379,7 +388,7 @@ RULES:
   anyway and explain why your position holds.${langInstruction(lang)}`;
 }
 
-function buildJudgePrompt(lang: string): string {
+function buildJudgePrompt(lang: string, idea: string = ''): string {
     const structureEs = `
 ## 🏛️ CouncilIA — Veredicto Final
 
@@ -563,11 +572,11 @@ STRUCTURE YOUR RESPONSE EXACTLY AS:
 ${structure}
 
 RULES:
-1. Base verdict STRICTLY on debate evidence.
+1. Base verdict STRICTLY on debate evidence AND the original idea. 
 2. An unrefuted technical or financial 'kill' argument should drop the consensus below 40.
 3. Keep the tone elite, adversarial, and high-stakes.
 4. Maximum 500 words.
-5. Reference specific experts by name when citing evidence.${langInstruction(lang)}`;
+5. Reference specific experts by name when citing evidence.${buildIdeaAnchor(idea)}${langInstruction(lang)}`;
 }
 
 // ——— Main Worker (v2.3 ACE Engine) ———————————————————
@@ -743,7 +752,7 @@ export async function POST(req: Request) {
         try {
             const judgeModel: ModelConfig = { provider: 'openrouter', model: config.judge.primary };
             const judgeMessages = [
-                { role: 'system', content: buildJudgePrompt(lang) },
+                { role: 'system', content: buildJudgePrompt(lang, ideaRedacted) },
                 { role: 'user', content: `Deliver your verdict on:\n\n"${ideaRedacted}"\n\nFULL ACE DEBATE (3 rounds, 6 experts):\n\n${fullTranscript}` },
             ];
 
@@ -786,7 +795,7 @@ export async function POST(req: Request) {
             try {
                 const fbModel: ModelConfig = { provider: 'openrouter', model: config.judge.fallback };
                 const fbMessages = [
-                    { role: 'system', content: buildJudgePrompt(lang) },
+                    { role: 'system', content: buildJudgePrompt(lang, ideaRedacted) },
                     { role: 'user', content: `Verdict on:\n"${ideaRedacted}"\n\n${fullTranscript}` },
                 ];
                 const fbOut = await callModel(fbModel, fbMessages, { zdr: config.judge.zdr, maxTokens: 1500 });
