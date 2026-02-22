@@ -191,7 +191,7 @@ export default function ConsensusReport({ validation, patches }: {
                                     prose-li:text-slate-200 prose-li:text-[15px]
                                     prose-strong:text-cyan-300
                                     prose-ul:my-3 prose-ol:my-3">
-                                    <ReactMarkdown>{judgeText}</ReactMarkdown>
+                                    <ReactMarkdown>{typeof judgeText === 'string' ? judgeText.replace(/\\n/g, '\n') : judgeText}</ReactMarkdown>
                                 </div>
                             </div>
                         </div>
@@ -331,7 +331,7 @@ function PersonaCard({ entry, lang }: {
                     prose-headings:text-white prose-headings:text-base prose-headings:font-bold prose-headings:mt-3 prose-headings:mb-1
                     prose-li:text-slate-300 prose-li:text-[14px]
                     prose-ul:my-2 prose-ol:my-2">
-                    <ReactMarkdown>{displayText}</ReactMarkdown>
+                    <ReactMarkdown>{typeof displayText === 'string' ? displayText.replace(/\\n/g, '\n') : displayText}</ReactMarkdown>
                 </div>
                 {isLong && (
                     <button
