@@ -191,7 +191,16 @@ export default function ConsensusReport({ validation, patches }: {
                                     prose-li:text-slate-200 prose-li:text-[15px]
                                     prose-strong:text-cyan-300
                                     prose-ul:my-3 prose-ol:my-3">
-                                    <ReactMarkdown>{typeof judgeText === 'string' ? judgeText.replace(/\\n/g, '\n') : judgeText}</ReactMarkdown>
+                                    <ReactMarkdown>
+                                        {(() => {
+                                            if (typeof judgeText !== 'string') return '';
+                                            let text = judgeText.replace(/\\n/g, '\n');
+                                            // Strip out the redundant header block
+                                            text = text.replace(/## 🏛️ CouncilIA.*?Verdict Final\n/i, '');
+                                            text = text.replace(/### (Consensus Score|Puntuación de Consenso|Pontuação de Consenso|Score de Consensus|Konsens-Score|Punteggio di Consenso): \[?\d+\/100\]?\n/i, '');
+                                            return text.trim();
+                                        })()}
+                                    </ReactMarkdown>
                                 </div>
                             </div>
                         </div>
