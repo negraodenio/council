@@ -44,20 +44,18 @@ export default function PDFReportTemplate({ validation, lang }: PDFReportTemplat
     cleanJudgeText = cleanJudgeText.replace(/### (Consensus Score|Puntuación de Consenso|Pontuação de Consenso|Score de Consensus|Konsens-Score|Punteggio di Consenso): \[?\d+\/100\]?\n/i, '');
 
     return (
-        <div id="pdf-report-container" className="bg-[#030712] text-slate-100 font-sans w-[210mm] min-h-[297mm] relative overflow-hidden hidden-in-browser" style={{ fontFamily: "'Inter', sans-serif" }}>
+        <div id="pdf-report-container" className="bg-[#030712] text-slate-100 font-sans w-[210mm] relative overflow-hidden hidden-in-browser" style={{ fontFamily: "'Inter', sans-serif" }}>
 
             <style dangerouslySetInnerHTML={{
                 __html: `
-                .pdf-page { width: 210mm; height: 297mm; padding: 40px; position: relative; overflow: hidden; background-color: #030712; }
+                .pdf-page { width: 210mm; min-height: 297mm; padding: 40px; padding-bottom: 80px; position: relative; background-color: #030712; }
+                .pdf-page.cover { height: 297mm; }
                 .bg-gradient-mesh { background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.15), transparent), radial-gradient(circle at bottom left, rgba(168, 85, 247, 0.1), transparent); }
                 .mono { font-family: monospace; }
-                .gauge-container { position: relative; width: 240px; height: 120px; }
-                .gauge-bg { fill: none; stroke: #1f2937; stroke-width: 12; stroke-dasharray: 100, 100; stroke-linecap: round; }
-                .gauge-fill { fill: none; stroke: #10b981; stroke-width: 12; stroke-dasharray: 85, 100; stroke-linecap: round; filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.5)); transition: stroke-dasharray 1s ease-out; }
             `}} />
 
             {/* --- PAGE 1: COVER --- */}
-            <section className="pdf-page bg-gradient-mesh flex flex-col justify-between">
+            <section className="pdf-page cover bg-gradient-mesh flex flex-col justify-between">
                 <div className="flex justify-between items-start">
                     <div className="flex items-center gap-2">
                         <div className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center font-bold text-xl italic text-white">C</div>
@@ -69,22 +67,22 @@ export default function PDFReportTemplate({ validation, lang }: PDFReportTemplat
                     </div>
                 </div>
 
-                <div className="my-auto text-center py-20">
+                <div className="my-auto text-center py-20 flex flex-col items-center">
                     <h1 className="text-5xl font-extrabold tracking-tighter mb-4 text-white">
                         Strategic Validation <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">Analysis Report</span>
+                        <span className="text-indigo-400">Analysis Report</span>
                     </h1>
-                    <div className="inline-block px-4 py-2 bg-indigo-900/30 border border-indigo-500/30 rounded-full mb-12">
-                        <span className="text-indigo-300 mono text-sm font-semibold tracking-widest">{validation.idea.substring(0, 60)}...</span>
+                    <div className="max-w-xl px-6 py-3 bg-indigo-900/40 border border-indigo-500/30 rounded-xl mb-12">
+                        <span className="text-indigo-200 mono text-sm font-medium leading-relaxed">{validation.idea.substring(0, 150)}{validation.idea.length > 150 ? '...' : ''}</span>
                     </div>
-                    <div className="grid grid-cols-2 gap-8 text-left max-w-md mx-auto pt-10 border-t border-white/10">
+                    <div className="grid grid-cols-2 gap-8 text-left min-w-[300px] pt-10 border-t border-white/10">
                         <div>
                             <p className="text-slate-500 text-xs uppercase font-bold mb-1">Generated On</p>
                             <p className="font-medium text-white">{dateStr}</p>
                         </div>
                         <div>
                             <p className="text-slate-500 text-xs uppercase font-bold mb-1">Engine Version</p>
-                            <p className="font-medium text-white">ACE Engine (Adversarial Consensus)</p>
+                            <p className="font-medium text-white">ACE Engine Formatter v2</p>
                         </div>
                     </div>
                 </div>
@@ -97,13 +95,13 @@ export default function PDFReportTemplate({ validation, lang }: PDFReportTemplat
 
             {/* --- PAGE 2: VERDICT --- */}
             <section className="pdf-page bg-gradient-mesh flex flex-col">
-                <div className="flex justify-between border-b border-white/5 pb-4 mb-8">
+                <div className="flex justify-between border-b border-white/5 pb-4 mb-8 shrink-0">
                     <span className="text-xs font-bold text-indigo-400 uppercase tracking-widest">Section 01 // Executive Summary</span>
                     <span className="text-xs text-slate-500 italic">CouncilIA Report</span>
                 </div>
 
-                <div className="grid grid-cols-12 gap-8 flex-1">
-                    <div className="col-span-12 space-y-6">
+                <div className="grid grid-cols-1 gap-8 flex-1 content-start">
+                    <div className="space-y-6">
                         <h2 className="text-3xl font-bold text-white">Final Verdict</h2>
 
                         <div className="p-6 bg-slate-900/50 border border-white/5 rounded-2xl flex items-center justify-between">
@@ -123,17 +121,17 @@ export default function PDFReportTemplate({ validation, lang }: PDFReportTemplat
                         </div>
 
                         <div className="prose prose-invert prose-sm max-w-none 
-                            prose-headings:text-white prose-headings:font-bold prose-headings:mt-4 prose-headings:mb-2
-                            prose-h3:text-indigo-300 prose-h3:text-sm prose-h3:uppercase prose-h3:tracking-wider
-                            prose-p:text-slate-300 prose-p:leading-relaxed
-                            prose-li:text-slate-300
+                            prose-headings:text-white prose-headings:font-bold prose-headings:mt-6 prose-headings:mb-3
+                            prose-h3:text-indigo-300 prose-h3:text-xs prose-h3:uppercase prose-h3:tracking-widest
+                            prose-p:text-slate-300 prose-p:leading-relaxed prose-p:text-sm
+                            prose-li:text-slate-300 prose-li:text-sm
                             prose-strong:text-cyan-300">
                             <ReactMarkdown>{cleanJudgeText}</ReactMarkdown>
                         </div>
                     </div>
                 </div>
 
-                <div className="absolute bottom-10 left-10 right-10 flex justify-between">
+                <div className="absolute bottom-10 left-10 right-10 flex justify-between shrink-0">
                     <div className="text-xs text-slate-500">Page 2</div>
                 </div>
             </section>
@@ -141,37 +139,40 @@ export default function PDFReportTemplate({ validation, lang }: PDFReportTemplat
             {/* --- PAGE 3: AGENT INSIGHTS --- */}
             {round3.length > 0 && (
                 <section className="pdf-page bg-gradient-mesh flex flex-col">
-                    <div className="flex justify-between border-b border-white/5 pb-4 mb-8">
+                    <div className="flex justify-between border-b border-white/5 pb-4 mb-8 shrink-0">
                         <span className="text-xs font-bold text-indigo-400 uppercase tracking-widest">Section 02 // Agent Synthesis (Round 3)</span>
                         <span className="text-xs text-slate-500 italic">CouncilIA Report</span>
                     </div>
 
-                    <h2 className="text-2xl font-bold mb-6 text-white">Multi-Agent Deliberation Synthesis</h2>
+                    <h2 className="text-2xl font-bold mb-6 text-white shrink-0">Multi-Agent Deliberation Synthesis</h2>
 
                     <div className="grid grid-cols-2 gap-4 flex-1 content-start">
                         {round3.map((r: any) => {
                             const persona = gp(r.name, lang);
+                            // Truncate text manually to avoid html2canvas line-clamp rendering failures
+                            const cleanText = r.text.length > 350 ? r.text.substring(0, 350).trim() + '...' : r.text;
+
                             return (
-                                <div key={r.id} className="p-4 bg-slate-900/40 border border-white/5 rounded-xl relative overflow-hidden">
-                                    <div className="absolute top-0 right-0 w-24 h-24 blur-2xl opacity-20" style={{ backgroundColor: persona.c }}></div>
-                                    <div className="flex items-center gap-3 mb-3">
-                                        <div className="w-10 h-10 rounded-full flex flex-col items-center justify-center border-2" style={{ borderColor: persona.c + '50', backgroundColor: persona.c + '20' }}>
-                                            <span className="text-xl">{persona.em}</span>
+                                <div key={r.id} className="p-5 bg-slate-900/40 border border-white/5 rounded-xl relative overflow-hidden flex flex-col">
+                                    <div className="absolute top-0 right-0 w-32 h-32 blur-[40px] opacity-20 pointer-events-none" style={{ backgroundColor: persona.c }}></div>
+                                    <div className="flex items-center gap-3 mb-4 shrink-0">
+                                        <div className="w-12 h-12 rounded-full flex flex-col items-center justify-center border-2 shrink-0 bg-black/50" style={{ borderColor: persona.c + '50' }}>
+                                            <span className="text-2xl">{persona.em}</span>
                                         </div>
                                         <div>
                                             <h4 className="font-bold text-white text-sm">{persona.dn}</h4>
-                                            <span className="text-[9px] mono uppercase font-bold tracking-tighter" style={{ color: persona.c }}>Council Expert</span>
+                                            <span className="text-[9px] mono uppercase font-bold tracking-widest" style={{ color: persona.c }}>Council Expert</span>
                                         </div>
                                     </div>
-                                    <div className="prose-sm text-slate-400 leading-snug line-clamp-6 text-xs">
-                                        <ReactMarkdown>{r.text}</ReactMarkdown>
+                                    <div className="prose prose-invert prose-sm text-slate-400 leading-relaxed text-xs">
+                                        <ReactMarkdown>{cleanText}</ReactMarkdown>
                                     </div>
                                 </div>
                             );
                         })}
                     </div>
 
-                    <div className="absolute bottom-10 left-10 right-10 flex justify-between">
+                    <div className="absolute bottom-10 left-10 right-10 flex justify-between shrink-0">
                         <div className="text-xs text-slate-500">Page 3</div>
                     </div>
                 </section>
