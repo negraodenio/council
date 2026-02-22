@@ -21,6 +21,7 @@ export default function ConsensusReport({ validation, patches }: {
     validation: any;
     patches: any[];
 }) {
+    const [activeTab, setActiveTab] = useState<'verdict' | 'round1' | 'round2' | 'round3'>('verdict');
     const result = validation.full_result || {};
     const lang: UILang = resolveUILang(result.lang);
 
@@ -174,9 +175,47 @@ export default function ConsensusReport({ validation, patches }: {
                 {/* ════ RIGHT COLUMN ════ */}
                 <section className="flex flex-col gap-10 lg:flex-1 min-w-0">
 
+                    {/* ── TABS NAVIGATION ── */}
+                    <div className="flex overflow-x-auto hide-scrollbar border-b border-white/10 mb-2 mt-4 lg:mt-0">
+                        <button
+                            onClick={() => setActiveTab('verdict')}
+                            className={`px-5 py-3 text-sm font-bold uppercase tracking-wider whitespace-nowrap border-b-2 transition-colors ${activeTab === 'verdict' ? 'border-cyan-400 text-cyan-300' : 'border-transparent text-slate-500 hover:text-slate-300'
+                                }`}
+                        >
+                            {t(lang, 'cr_final_verdict')}
+                        </button>
+                        {round1.length > 0 && (
+                            <button
+                                onClick={() => setActiveTab('round1')}
+                                className={`px-5 py-3 text-sm font-bold bg-gradient-to-r bg-clip-text whitespace-nowrap border-b-2 transition-colors ${activeTab === 'round1' ? 'border-[#06B6D4] text-transparent from-cyan-400 to-cyan-200' : 'border-transparent text-slate-500 hover:text-slate-300'
+                                    }`}
+                            >
+                                ROUND 1
+                            </button>
+                        )}
+                        {round2.length > 0 && (
+                            <button
+                                onClick={() => setActiveTab('round2')}
+                                className={`px-5 py-3 text-sm font-bold bg-gradient-to-r bg-clip-text whitespace-nowrap border-b-2 transition-colors ${activeTab === 'round2' ? 'border-[#EF4444] text-transparent from-red-400 to-red-200' : 'border-transparent text-slate-500 hover:text-slate-300'
+                                    }`}
+                            >
+                                ROUND 2
+                            </button>
+                        )}
+                        {round3.length > 0 && (
+                            <button
+                                onClick={() => setActiveTab('round3')}
+                                className={`px-5 py-3 text-sm font-bold bg-gradient-to-r bg-clip-text whitespace-nowrap border-b-2 transition-colors ${activeTab === 'round3' ? 'border-[#22C55E] text-transparent from-emerald-400 to-emerald-200' : 'border-transparent text-slate-500 hover:text-slate-300'
+                                    }`}
+                            >
+                                ROUND 3
+                            </button>
+                        )}
+                    </div>
+
                     {/* ── JUDGE VERDICT ── */}
-                    {judgeText && (
-                        <div>
+                    {activeTab === 'verdict' && judgeText && (
+                        <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                             <RoundHeader
                                 number="⚖️"
                                 title={t(lang, 'cr_final_verdict')}
@@ -207,8 +246,8 @@ export default function ConsensusReport({ validation, patches }: {
                     )}
 
                     {/* ── ROUND 1 ── */}
-                    {round1.length > 0 && (
-                        <div>
+                    {activeTab === 'round1' && round1.length > 0 && (
+                        <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                             <RoundHeader
                                 number="01"
                                 title={t(lang, 'cr_round1_title')}
@@ -224,8 +263,8 @@ export default function ConsensusReport({ validation, patches }: {
                     )}
 
                     {/* ── ROUND 2 ── */}
-                    {round2.length > 0 && (
-                        <div>
+                    {activeTab === 'round2' && round2.length > 0 && (
+                        <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                             <RoundHeader
                                 number="02"
                                 title={t(lang, 'cr_round2_title')}
@@ -241,8 +280,8 @@ export default function ConsensusReport({ validation, patches }: {
                     )}
 
                     {/* ── ROUND 3 ── */}
-                    {round3.length > 0 && (
-                        <div>
+                    {activeTab === 'round3' && round3.length > 0 && (
+                        <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                             <RoundHeader
                                 number="03"
                                 title={t(lang, 'cr_round3_title')}
@@ -252,23 +291,6 @@ export default function ConsensusReport({ validation, patches }: {
                             <div className="mt-4 grid gap-4">
                                 {round3.map((r) => (
                                     <PersonaCard key={r.id} entry={r} lang={lang} />
-                                ))}
-                            </div>
-                        </div>
-                    )}
-
-                    {/* ── PATCHES ── */}
-                    {patches.length > 0 && (
-                        <div>
-                            <RoundHeader
-                                number="🔧"
-                                title={t(lang, 'cr_patches_title')}
-                                subtitle={t(lang, 'cr_patches_subtitle')}
-                                color="#A855F7"
-                            />
-                            <div className="mt-4 grid gap-4">
-                                {patches.map((p) => (
-                                    <PatchCard key={p.id} patch={p} lang={lang} />
                                 ))}
                             </div>
                         </div>
@@ -355,66 +377,6 @@ function PersonaCard({ entry, lang }: {
                     </button>
                 )}
             </div>
-        </div>
-    );
-}
-
-// ─── Patch Card ────────────────────────────────
-function PatchCard({ patch, lang }: { patch: any; lang: UILang }) {
-    const [loading, setLoading] = useState(false);
-    const [preview, setPreview] = useState<any>(null);
-    const [prUrl, setPrUrl] = useState('');
-
-    async function handlePreview() {
-        setLoading(true);
-        const r = await fetch('/api/patch/preview', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ patch_id: patch.id })
-        });
-        const data = await r.json();
-        setPreview(data);
-        setLoading(false);
-    }
-
-    async function handleOpenPR() {
-        if (!confirm('Open PR in GitHub?')) return;
-        setLoading(true);
-        const r = await fetch('/api/patch/apply_to_github_pr', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ patch_id: patch.id, title: `CouncilIA: ${patch.reasoning}` })
-        });
-        const data = await r.json();
-        if (data.pr_url) setPrUrl(data.pr_url);
-        setLoading(false);
-    }
-
-    return (
-        <div className="bg-white/[0.03] border border-white/10 p-6 rounded-xl">
-            <div className="flex items-start justify-between mb-3">
-                <div>
-                    <div className="text-cyan-300 font-mono text-sm font-bold">{patch.file_path}</div>
-                    <div className="text-slate-400 text-sm mt-1">{patch.reasoning}</div>
-                </div>
-                <div className={`px-2.5 py-1 rounded-md text-xs font-bold ${patch.status === 'applied' ? 'bg-emerald-400/20 text-emerald-300 border border-emerald-400/30' : 'bg-amber-400/20 text-amber-300 border border-amber-400/30'}`}>
-                    {patch.status}
-                </div>
-            </div>
-            <div className="flex gap-2 mt-4">
-                <button onClick={handlePreview} disabled={loading} className="px-4 py-2 bg-white/10 text-white rounded-lg text-sm font-bold hover:bg-white/20 disabled:opacity-50 transition">{t(lang, 'cr_preview')}</button>
-                <button onClick={handleOpenPR} disabled={loading || patch.status === 'applied'} className="px-4 py-2 bg-gradient-to-r from-purple-500 to-cyan-400 text-white rounded-lg text-sm font-bold hover:shadow-lg hover:shadow-purple-500/20 disabled:opacity-50 transition">{t(lang, 'cr_open_pr')}</button>
-            </div>
-            {preview && (
-                <div className="mt-4 p-4 bg-black/40 rounded-lg border border-white/10 overflow-x-auto">
-                    <pre className="text-xs text-slate-300 whitespace-pre-wrap">{preview.ok ? preview.patchedPreview : preview.error}</pre>
-                </div>
-            )}
-            {prUrl && (
-                <div className="mt-4 p-3 bg-emerald-400/10 border border-emerald-400/30 rounded-lg">
-                    <a href={prUrl} target="_blank" rel="noopener" className="text-emerald-300 text-sm font-bold underline">{t(lang, 'cr_view_pr')}</a>
-                </div>
-            )}
         </div>
     );
 }

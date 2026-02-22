@@ -259,6 +259,16 @@ export default function DebateChamber({ runId }: { runId: string }) {
                         const pos = HEX[i % 6];
                         const persona = gp(name, lang);
                         const active = speaking === name;
+
+                        // Find the last message from this expert to create a "hint"
+                        const lastMsg = [...messages].reverse().find(m => m.expert_name === name);
+                        let hint = t(lang, 'speaking');
+                        if (lastMsg && lastMsg.content) {
+                            const cleanText = lastMsg.content.replace(/\*/g, '').replace(/\[.*\]/g, '').trim();
+                            const words = cleanText.split(' ');
+                            hint = `"${words.slice(0, 5).join(' ')}..."`;
+                        }
+
                         return (
                             <div
                                 key={name}
@@ -294,9 +304,21 @@ export default function DebateChamber({ runId }: { runId: string }) {
                                         {persona.dn}
                                     </span>
                                     {active && (
-                                        <span className="text-[8px] font-bold mt-0.5 animate-pulse uppercase tracking-wider" style={{ color: persona.c }}>
-                                            {t(lang, 'speaking')}
-                                        </span>
+                                        <div
+                                            className="mt-1 px-2 py-1 rounded border shadow-lg max-w-[120px] text-center animate-in fade-in slide-in-from-top-1"
+                                            style={{
+                                                backgroundColor: persona.c + '15',
+                                                borderColor: persona.c + '30',
+                                                backdropFilter: 'blur(4px)'
+                                            }}
+                                        >
+                                            <span
+                                                className="text-[8px] font-medium leading-tight line-clamp-2"
+                                                style={{ color: persona.c }}
+                                            >
+                                                {hint}
+                                            </span>
+                                        </div>
                                     )}
                                 </div>
                             </div>
