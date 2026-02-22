@@ -9,11 +9,11 @@ const publicSans = Public_Sans({ subsets: ["latin"], variable: "--font-public-sa
 
 export const metadata: Metadata = {
     title: "CouncilIA — Council as a Service",
-    description: "Six AI experts debate your idea in 3 adversarial rounds. A seventh judges. Powered by the ACE Engine. In any language.",
+    description: "Validate your ideas with CouncilIA. Six AI experts debate your strategy through adversarial rounds while a Judge arbitrates. Elevate your decision-making.",
     metadataBase: new URL("https://www.councilia.com"),
     openGraph: {
         title: "CouncilIA — One AI agrees with you. Six won't.",
-        description: "Submit any decision. 6 AI experts with opposing perspectives debate it. A 7th arbitrates. Council as a Service.",
+        description: "Validate your ideas with CouncilIA. 6 AI experts debate your strategy through adversarial rounds while a Judge arbitrates. Elevate your decision-making.",
         url: "https://www.councilia.com",
         siteName: "CouncilIA",
         locale: "en_US",
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     twitter: {
         card: "summary_large_image",
         title: "CouncilIA — One AI agrees with you. Six won't.",
-        description: "6 AI experts debate your idea in 3 rounds. A 7th judges. Try it free.",
+        description: "Validate your ideas with CouncilIA. 6 AI experts debate your strategy through adversarial rounds while a Judge arbitrates. Elevate your decision-making.",
     },
 };
 

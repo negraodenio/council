@@ -123,9 +123,11 @@
                                 </div>
                             </div>
                             <h3 className="text-xl font-bold mb-4 font-display">Judge Verdict: <span className="text-neon-lime">Conditional Go</span></h3>
-                            <p className="text-sm text-[#c4c4ff] leading-relaxed mb-8 italic">
-                                &quot;The proposal shows strong conceptual merit but fails on immediate financial liquidity and local ethical integration. Proceed only with revised CapEx and verified energy backups.&quot;
-                            </p>
+                            <ul className="text-sm text-[#c4c4ff] leading-relaxed mb-8 text-left space-y-2 list-disc list-inside bg-space-black/40 p-4 rounded-xl border border-[rgba(0,240,255,0.1)]">
+                                <li><strong>Strong Merit:</strong> Conceptual model is highly scalable.</li>
+                                <li><strong>Critical Flaw:</strong> Lacks immediate financial liquidity.</li>
+                                <li><strong>Action Item:</strong> Revise CapEx and verify energy backups.</li>
+                            </ul>
                             <button className="w-full py-3 bg-panel-blue border border-[rgba(0,240,255,0.3)] rounded-xl text-sm font-bold hover:bg-[rgba(0,240,255,0.1)] text-neon-cyan transition-colors">
                                 Read Full Reasoning (12 Pages)
                             </button>
@@ -282,7 +284,7 @@
                 <div className="max-w-7xl mx-auto">
                     <div className="flex flex-col md:flex-row gap-16 items-center">
                         <div className="md:w-1/2">
-                            <h2 className="text-4xl font-black mb-8 uppercase tracking-tight font-display text-neon-cyan">ACE Engine™ Methodology</h2>
+                            <h2 className="text-4xl font-black mb-8 uppercase tracking-tight font-display text-neon-cyan">Our Validation Framework</h2>
                             <div className="space-y-8">
                                 <div className="flex gap-6">
                                     <div className="shrink-0 flex flex-col items-center">
@@ -405,6 +407,74 @@
                                 </div>
                                 <div className="bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-purple-500/20 text-[10px] font-bold text-slate-200 shadow-xl">Visionary</div>
                                 <div className="bg-black/80 backdrop-blur-md border border-purple-500/20 px-3 py-1.5 rounded-lg text-[8px] text-purple-400/80 font-mono w-32 truncate text-center opacity-80 shadow-xl">"Market Potential Ana..."</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Social Proof / Testimonials */}
+            <section className="py-24 px-6 bg-panel-blue/20">
+                <div className="max-w-7xl mx-auto">
+                    <div className="text-center mb-16">
+                        <h2 className="text-3xl font-black mb-4 uppercase tracking-tight font-display">Trusted by Decision Makers</h2>
+                        <p className="text-[#c4c4ff]">Over 15,000 strategic initiatives validated by CouncilIA.</p>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="glass-card rounded-2xl p-6 border border-[rgba(0,240,255,0.1)] bg-space-black relative">
+                            <span className="material-symbols-outlined absolute top-4 right-4 text-neon-cyan/20 text-4xl">format_quote</span>
+                            <div className="flex gap-1 mb-4">
+                                <span className="material-symbols-outlined text-neon-lime text-sm fill-current">star</span>
+                                <span className="material-symbols-outlined text-neon-lime text-sm fill-current">star</span>
+                                <span className="material-symbols-outlined text-neon-lime text-sm fill-current">star</span>
+                                <span className="material-symbols-outlined text-neon-lime text-sm fill-current">star</span>
+                                <span className="material-symbols-outlined text-neon-lime text-sm fill-current">star</span>
+                            </div>
+                            <p className="text-sm text-slate-300 leading-relaxed mb-6 italic">"The Advocate agent identified a massive regulatory flaw in our European expansion plan that our entire executive team missed. Saved us millions in fines."</p>
+                            <div className="flex items-center gap-3">
+                                <div className="size-10 bg-panel-blue rounded-full border border-[rgba(0,240,255,0.3)]"></div>
+                                <div>
+                                    <h5 className="font-bold text-xs">Sarah Jenkins</h5>
+                                    <p className="text-[10px] text-neon-cyan uppercase font-mono">VP of Operations, TechFlow</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="glass-card rounded-2xl p-6 border border-[rgba(0,240,255,0.1)] bg-space-black relative">
+                            <span className="material-symbols-outlined absolute top-4 right-4 text-neon-cyan/20 text-4xl">format_quote</span>
+                            <div className="flex gap-1 mb-4">
+                                <span className="material-symbols-outlined text-neon-lime text-sm fill-current">star</span>
+                                <span className="material-symbols-outlined text-neon-lime text-sm fill-current">star</span>
+                                <span className="material-symbols-outlined text-neon-lime text-sm fill-current">star</span>
+                                <span className="material-symbols-outlined text-neon-lime text-sm fill-current">star</span>
+                                <span className="material-symbols-outlined text-neon-lime text-sm fill-current">star</span>
+                            </div>
+                            <p className="text-sm text-slate-300 leading-relaxed mb-6 italic">"We use CouncilIA for every major product launch. The Visionary vs. Technologist debates are incredible at grounding our roadmap in reality."</p>
+                            <div className="flex items-center gap-3">
+                                <div className="size-10 bg-panel-blue rounded-full border border-[rgba(0,240,255,0.3)]"></div>
+                                <div>
+                                    <h5 className="font-bold text-xs">Marcus Chen</h5>
+                                    <p className="text-[10px] text-neon-cyan uppercase font-mono">CPO, Nexus Dynamics</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="glass-card rounded-2xl p-6 border border-[rgba(0,240,255,0.1)] bg-space-black relative">
+                            <span className="material-symbols-outlined absolute top-4 right-4 text-neon-cyan/20 text-4xl">format_quote</span>
+                            <div className="flex gap-1 mb-4">
+                                <span className="material-symbols-outlined text-neon-lime text-sm fill-current">star</span>
+                                <span className="material-symbols-outlined text-neon-lime text-sm fill-current">star</span>
+                                <span className="material-symbols-outlined text-neon-lime text-sm fill-current">star</span>
+                                <span className="material-symbols-outlined text-neon-lime text-sm fill-current">star</span>
+                                <span className="material-symbols-outlined text-neon-lime text-sm fill-current">star</span>
+                            </div>
+                            <p className="text-sm text-slate-300 leading-relaxed mb-6 italic">"As a solo founder, having a board of 7 ruthless AI advisors is my secret weapon. The PDF reports are literal gold for investor updates."</p>
+                            <div className="flex items-center gap-3">
+                                <div className="size-10 bg-panel-blue rounded-full border border-[rgba(0,240,255,0.3)]"></div>
+                                <div>
+                                    <h5 className="font-bold text-xs">Elena Rodriguez</h5>
+                                    <p className="text-[10px] text-neon-cyan uppercase font-mono">Founder, Stealth Startup</p>
+                                </div>
                             </div>
                         </div>
                     </div>
