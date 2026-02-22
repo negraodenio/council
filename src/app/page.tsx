@@ -17,8 +17,8 @@
                         <a className="text-sm font-medium hover:text-neon-cyan transition-colors" href="/pricing">Pricing</a>
                         <a className="text-sm font-medium hover:text-neon-cyan transition-colors" href="#methodology">Methodology</a>
                     </nav>
-                    <a href="/login" className="bg-neon-cyan/10 border border-neon-cyan/50 text-neon-cyan px-6 py-2.5 rounded-xl font-bold text-sm transition-all hover:bg-neon-cyan hover:text-black hover:scale-105 active:scale-95 shadow-[0_0_15px_rgba(0,240,255,0.2)]">
-                        Start a session
+                    <a href="/login" role="button" aria-label="Start Free Session" className="bg-neon-cyan/10 border border-neon-cyan/50 text-neon-cyan px-6 py-2.5 rounded-xl font-bold text-sm transition-all hover:bg-neon-cyan hover:text-black hover:scale-105 active:scale-95 shadow-[0_0_15px_rgba(0,240,255,0.2)]">
+                        Start Free Session
                     </a>
                 </div>
             </header>
@@ -44,8 +44,8 @@
                         Submit any idea. Six AI experts with opposing perspectives debate it in 3 adversarial rounds. A seventh arbitrates and delivers a reasoned verdict.
                     </p>
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 font-display">
-                        <a href="/login" className="w-full sm:w-auto px-8 py-4 bg-neon-cyan text-black rounded-xl font-bold text-lg hover:shadow-[0_0_30px_rgba(0,240,255,0.4)] transition-all text-center">
-                            Start a free session
+                        <a href="/login" role="button" aria-label="Start Free Session" className="w-full sm:w-auto px-8 py-4 bg-neon-cyan text-black rounded-xl font-bold text-lg hover:shadow-[0_0_30px_rgba(0,240,255,0.4)] transition-all text-center">
+                            Start Free Session
                         </a>
                         <a href="#how-it-works" className="w-full sm:w-auto px-8 py-4 border border-[rgba(0,240,255,0.2)] bg-[#121235]/40 hover:bg-[#121235]/60 rounded-xl font-bold text-lg transition-all text-center text-neon-cyan">
                             See how it works
@@ -439,7 +439,7 @@
                                 Standard Arbitration
                             </li>
                         </ul>
-                        <button className="w-full py-3 border border-[rgba(0,240,255,0.2)] rounded-xl font-bold hover:bg-panel-blue transition-all text-neon-cyan font-display text-sm">Get Started</button>
+                        <button role="button" aria-label="Start Free Session" className="w-full py-3 border border-[rgba(0,240,255,0.2)] rounded-xl font-bold hover:bg-panel-blue transition-all text-neon-cyan font-display text-sm">Start Free Session</button>
                     </div>
                     {/* Pro */}
                     <div className="p-8 rounded-2xl border-2 border-neon-cyan bg-space-black flex flex-col relative glow-cyan scale-105 z-10">
@@ -467,7 +467,7 @@
                                 Exportable PDF Reports
                             </li>
                         </ul>
-                        <button className="w-full py-3 bg-neon-cyan text-black rounded-xl font-bold transition-all shadow-[0_0_15px_rgba(0,240,255,0.4)] font-display text-sm hover:scale-105 active:scale-95">Upgrade Now</button>
+                        <button role="button" aria-label="Start Pro Session" className="w-full py-3 bg-neon-cyan text-black rounded-xl font-bold transition-all shadow-[0_0_15px_rgba(0,240,255,0.4)] font-display text-sm hover:scale-105 active:scale-95">Start Pro Session</button>
                     </div>
                     {/* Team */}
                     <div className="p-8 rounded-2xl border border-[rgba(0,240,255,0.1)] bg-panel-blue/30 flex flex-col">
@@ -540,6 +540,7 @@
                         <ul className="space-y-4">
                             <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="mailto:support@councilia.ai" aria-label="Email Support">support@councilia.ai</a></li>
                             <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="/privacy" aria-label="Privacy Policy">Privacy Policy</a></li>
+                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="/cookies" aria-label="Cookies Policy">Cookies Policy</a></li>
                             <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="/terms" aria-label="Terms of Service">Terms of Service</a></li>
                         </ul>
                     </nav>
