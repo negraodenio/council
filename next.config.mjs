@@ -2,7 +2,24 @@
 const nextConfig = {
     reactStrictMode: true,
     swcMinify: true,
-    // Add any other necessary config here
+    // Security Headers
+    async headers() {
+        return [
+            {
+                source: '/(.*)',
+                headers: [
+                    {
+                        key: 'Strict-Transport-Security',
+                        value: 'max-age=31536000; includeSubDomains',
+                    },
+                    {
+                        key: 'X-Frame-Options',
+                        value: 'SAMEORIGIN',
+                    }
+                ],
+            },
+        ];
+    }
 };
 
 export default nextConfig;

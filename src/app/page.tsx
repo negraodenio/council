@@ -10,10 +10,10 @@
                         </div>
                         <span className="text-xl font-black tracking-tighter uppercase font-display">Council<span className="text-neon-cyan">IA</span></span>
                     </div>
-                    <nav className="hidden md:flex items-center gap-8 font-display">
-                        <a className="text-sm font-medium hover:text-neon-cyan transition-colors" href="#how-it-works">How it works</a>
-                        <a className="text-sm font-medium hover:text-neon-cyan transition-colors" href="#the-council">The Council</a>
-                        <a className="text-sm font-medium hover:text-neon-cyan transition-colors" href="#use-cases">Use cases</a>
+                    <nav className="hidden md:flex items-center gap-8 font-display" aria-label="Main navigation">
+                        <a className="text-sm font-medium hover:text-neon-cyan transition-colors" href="#how-it-works" aria-label="Learn how CouncilIA works">How it works</a>
+                        <a className="text-sm font-medium hover:text-neon-cyan transition-colors" href="#the-council" aria-label="Meet the AI Council">The Council</a>
+                        <a className="text-sm font-medium hover:text-neon-cyan transition-colors" href="#use-cases" aria-label="Explore use cases">Use cases</a>
                         <a className="text-sm font-medium hover:text-neon-cyan transition-colors" href="/pricing">Pricing</a>
                         <a className="text-sm font-medium hover:text-neon-cyan transition-colors" href="#methodology">Methodology</a>
                     </nav>
@@ -513,36 +513,36 @@
                             Part of the Antigravity Ecosystem. Built in Lisbon, Portugal for high-stakes decision validation.
                         </p>
                         <div className="flex gap-4">
-                            <a className="text-slate-500 hover:text-neon-cyan transition-colors" href="#"><span className="material-symbols-outlined select-none">public</span></a>
-                            <a className="text-slate-500 hover:text-neon-cyan transition-colors" href="#"><span className="material-symbols-outlined select-none">mail</span></a>
+                            <a aria-label="Visit our website" className="text-slate-500 hover:text-neon-cyan transition-colors" href="#"><span className="material-symbols-outlined select-none" aria-hidden="true">public</span></a>
+                            <a aria-label="Send us an email" className="text-slate-500 hover:text-neon-cyan transition-colors" href="#"><span className="material-symbols-outlined select-none" aria-hidden="true">mail</span></a>
                         </div>
                     </div>
-                    <div>
+                    <nav aria-label="Footer Platform Links">
                         <h5 className="font-bold text-sm mb-6 uppercase tracking-widest text-[#c4c4ff] font-display">Platform</h5>
                         <ul className="space-y-4">
-                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="#how-it-works">Process</a></li>
-                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="#the-council">The Council</a></li>
-                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="#methodology">Methodology</a></li>
-                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="/pricing">Pricing</a></li>
+                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="#how-it-works" aria-label="Footer link to Process">Process</a></li>
+                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="#the-council" aria-label="Footer link to The Council">The Council</a></li>
+                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="#methodology" aria-label="Footer link to Methodology">Methodology</a></li>
+                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="/pricing" aria-label="Footer link to Pricing">Pricing</a></li>
                         </ul>
-                    </div>
-                    <div>
+                    </nav>
+                    <nav aria-label="Footer Resources Links">
                         <h5 className="font-bold text-sm mb-6 uppercase tracking-widest text-[#c4c4ff] font-display">Resources</h5>
                         <ul className="space-y-4">
-                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="#">Documentation</a></li>
-                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="#">Case Studies</a></li>
-                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="#">Research Papers</a></li>
-                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="#">API Reference</a></li>
+                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="#" aria-label="Documentation">Documentation</a></li>
+                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="#" aria-label="Case Studies">Case Studies</a></li>
+                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="#" aria-label="Research Papers">Research Papers</a></li>
+                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="#" aria-label="API Reference">API Reference</a></li>
                         </ul>
-                    </div>
-                    <div>
+                    </nav>
+                    <nav aria-label="Footer Legal and Support Links">
                         <h5 className="font-bold text-sm mb-6 uppercase tracking-widest text-[#c4c4ff] font-display">Legal &amp; Support</h5>
                         <ul className="space-y-4">
-                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="mailto:support@councilia.ai">support@councilia.ai</a></li>
-                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="/privacy">Privacy Policy</a></li>
-                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="/terms">Terms of Service</a></li>
+                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="mailto:support@councilia.ai" aria-label="Email Support">support@councilia.ai</a></li>
+                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="/privacy" aria-label="Privacy Policy">Privacy Policy</a></li>
+                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="/terms" aria-label="Terms of Service">Terms of Service</a></li>
                         </ul>
-                    </div>
+                    </nav>
                 </div>
                 <div className="max-w-7xl mx-auto border-t border-[rgba(0,240,255,0.1)] mt-16 pt-8 text-center text-slate-600 text-[10px] uppercase tracking-widest font-bold font-mono">
                     © {new Date().getFullYear()} Antigravity Labs. All rights reserved.

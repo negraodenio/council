@@ -21,9 +21,15 @@ export async function createClient() {
                 },
                 setAll(cookiesToSet) {
                     try {
-                        cookiesToSet.forEach(({ name, value, options }) =>
-                            cookieStore.set(name, value, options)
-                        );
+                        cookiesToSet.forEach(({ name, value, options }) => {
+                            const secureOptions = {
+                                ...options,
+                                secure: process.env.NODE_ENV === 'production',
+                                httpOnly: true,
+                                sameSite: 'lax' as const,
+                            };
+                            cookieStore.set(name, value, secureOptions);
+                        });
                     } catch { }
                 },
             },
