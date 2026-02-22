@@ -112,27 +112,7 @@ export async function POST(req: Request) {
         status: 'running',
     });
 
-    const host = req.headers.get('host');
-    const protocol = req.headers.get('x-forwarded-proto') || 'https';
-    const baseUrl = `${protocol}://${host}`;
-
-    console.log(`[Start] Triggering worker at ${baseUrl}/api/session/worker`);
-
-    fetch(`${baseUrl}/api/session/worker`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-internal': '1' },
-        body: JSON.stringify({
-            validationId,
-            runId,
-            tenant_id: t_id,
-            user_id: u_id,
-            idea,
-            region,
-            sensitivity,
-        }),
-    }).catch((err) => {
-        console.error('Worker trigger failed:', err);
-    });
+    console.log(`[Start] Session created. Run ID: ${runId}`);
 
     return NextResponse.json({ validationId, runId });
 }

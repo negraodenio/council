@@ -51,17 +51,19 @@ export default function SystemReady() {
     async function start() {
         setLoading(true);
         try {
+            const payload = {
+                idea: idea || t(lang, 'sys_placeholder'),
+                topic: 'CouncilIA Live Debate',
+                region: 'EU',
+                sensitivity: 'business',
+                tenant_id: tenantId,
+                user_id: userId,
+            };
+
             const res = await fetch('/api/session/start', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    idea: idea || t(lang, 'sys_placeholder'),
-                    topic: 'CouncilIA Live Debate',
-                    region: 'EU',
-                    sensitivity: 'business',
-                    tenant_id: tenantId,
-                    user_id: userId,
-                }),
+                body: JSON.stringify(payload),
             });
 
             const data = await res.json();
@@ -74,6 +76,18 @@ export default function SystemReady() {
             }
 
             if (!data?.runId) throw new Error(data.error || 'Missing runId');
+
+            // Fire worker manually from the client side so serverless doesn't kill it
+            fetch('/api/session/worker', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    ...payload,
+                    validationId: data.validationId,
+                    runId: data.runId,
+                })
+            }).catch(console.error);
+
             router.push('/chamber/' + data.runId);
         } catch (err: any) {
             alert(err.message || 'Something went wrong');
