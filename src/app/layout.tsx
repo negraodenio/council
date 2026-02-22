@@ -1,8 +1,11 @@
 ﻿import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Space_Grotesk, JetBrains_Mono, Inter, Public_Sans } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-space" });
+const jetBrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const publicSans = Public_Sans({ subsets: ["latin"], variable: "--font-public-sans" });
 
 export const metadata: Metadata = {
     title: "CouncilIA — Council as a Service",
@@ -33,7 +36,7 @@ export default function RootLayout({
             <head>
                 <meta charSet="utf-8" />
             </head>
-            <body className={inter.className}>{children}</body>
+            <body className={`${spaceGrotesk.variable} ${jetBrainsMono.variable} ${inter.variable} ${publicSans.variable} font-body bg-deep-blue text-slate-100 selection:bg-neon-lime selection:text-black`}>{children}</body>
         </html>
     );
 }

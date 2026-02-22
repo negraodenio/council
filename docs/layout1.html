@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Antigravity AI - Strategic Analysis Report</title>
+<!-- BEGIN: Tailwind CSS & Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- END: Tailwind CSS & Plugins -->
+<style data-purpose="typography">
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #030712;
+      color: #f8fafc;
+    }
+    
+    h1, h2, h3, h4 {
+      letter-spacing: -0.025em;
+    }
+
+    .mono {
+      font-family: 'JetBrains+Mono', monospace;
+    }
+  </style>
+<style data-purpose="layout">
+    /* A4 Paper Dimensions Simulated (Scale for Web View) */
+    .pdf-page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 2rem auto;
+      background: #0b0f1a;
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* Print settings for actual PDF export */
+    @media print {
+      body { background: none; }
+      .pdf-page {
+        margin: 0;
+        box-shadow: none;
+        page-break-after: always;
+      }
+    }
+
+    /* Background accents */
+    .bg-gradient-mesh {
+      background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.15), transparent),
+                  radial-gradient(circle at bottom left, rgba(168, 85, 247, 0.1), transparent);
+    }
+  </style>
+<style data-purpose="charts">
+    /* Gauge styling */
+    .gauge-container {
+      position: relative;
+      width: 240px;
+      height: 120px;
+    }
+    .gauge-bg {
+      fill: none;
+      stroke: #1f2937;
+      stroke-width: 12;
+      stroke-dasharray: 100, 100;
+      stroke-linecap: round;
+    }
+    .gauge-fill {
+      fill: none;
+      stroke: #10b981;
+      stroke-width: 12;
+      stroke-dasharray: 85, 100;
+      stroke-linecap: round;
+      filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.5));
+    }
+
+    /* Radar Chart Simulation */
+    .radar-line {
+      stroke: #6366f1;
+      stroke-width: 2;
+      fill: rgba(99, 102, 241, 0.2);
+    }
+    .radar-grid {
+      stroke: #374151;
+      stroke-width: 1;
+    }
+  </style>
+</head>
+<body class="antialiased py-10">
+<!-- BEGIN: Page 1 - Cover -->
+<section class="pdf-page bg-gradient-mesh flex flex-flow-col flex-col justify-between" id="page-1">
+<!-- Header Branding -->
+<div class="flex justify-between items-start" data-purpose="header-branding">
+<div class="flex items-center gap-2">
+<div class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center font-bold text-xl italic">A</div>
+<span class="font-bold tracking-tight text-xl">Antigravity AI</span>
+</div>
+<div class="text-right text-xs mono text-slate-500 uppercase tracking-widest">
+        Confidential / Internal Use Only<br/>
+        Ref: AG-2024-8851
+      </div>
+</div>
+<!-- Center Content -->
+<div class="my-auto text-center py-20" data-purpose="cover-main">
+<div class="relative inline-block mb-12">
+<!-- Orbital Graphic Representation -->
+<div class="w-64 h-64 border border-dashed border-indigo-500/30 rounded-full flex items-center justify-center animate-[spin_20s_linear_infinite]">
+<div class="absolute w-4 h-4 bg-indigo-500 rounded-full -top-2 left-1/2"></div>
+<div class="absolute w-3 h-3 bg-purple-500 rounded-full top-1/4 -right-1"></div>
+<div class="absolute w-5 h-5 bg-cyan-400 rounded-full bottom-4 left-10"></div>
+</div>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-32 h-32 bg-indigo-600/20 blur-3xl absolute"></div>
+<img alt="Core AI" class="relative z-10 w-24 h-24 rounded-full border-2 border-white/10 shadow-2xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAaren9cq_IviU__ntqbe5sHqFB38kpvTphjmclVyemDtt9f-Tz23wCAbOmznowmO79bq2Nuc_qo9QwcPdcFLse6M2ktOORidPzFTOn7XQoa_ZxF0uRyrPC7corEvOr2v8SMfGG-kRVFWiU4dDscja38sKRxGog1mS8IN7HXxcv8hoNQ870wxsA7YKtq3G1In_vi_O0VM9odAaBAYO9DFYa2J_G2MtgWSY3g_R0fsiDnyr-g4QHxhr9Cyskdl1GOQl_mxe3Ep69vRy"/>
+</div>
+</div>
+<h1 class="text-6xl font-extrabold tracking-tighter mb-4">
+        Strategic AI <br/>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">Analysis Report</span>
+</h1>
+<div class="inline-block px-4 py-2 bg-indigo-900/30 border border-indigo-500/30 rounded-full mb-12">
+<span class="text-indigo-300 mono text-sm font-semibold tracking-widest">SESSION: PROJECT NEBULA-X</span>
+</div>
+<div class="grid grid-cols-2 gap-8 text-left max-w-md mx-auto pt-10 border-t border-white/10">
+<div>
+<p class="text-slate-500 text-xs uppercase font-bold mb-1">Generated On</p>
+<p class="font-medium">October 24, 2023</p>
+</div>
+<div>
+<p class="text-slate-500 text-xs uppercase font-bold mb-1">Lead Analyst</p>
+<p class="font-medium">Synthesis Engine v4.0</p>
+</div>
+</div>
+</div>
+<!-- Footer Branding -->
+<div class="flex justify-between items-end border-t border-white/5 pt-8" data-purpose="page-footer">
+<div class="text-xs text-slate-500 italic">
+        Exported via Antigravity OS
+      </div>
+<div class="text-xs text-slate-500">
+        Page 01 — IV
+      </div>
+</div>
+</section>
+<!-- END: Page 1 - Cover -->
+<!-- BEGIN: Page 2 - Executive Summary -->
+<section class="pdf-page bg-gradient-mesh" id="page-2">
+<div class="flex justify-between border-b border-white/5 pb-4 mb-10">
+<span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">Section 01 // Overview</span>
+<span class="text-xs text-slate-500 italic">Antigravity AI Report</span>
+</div>
+<div class="grid grid-cols-12 gap-8">
+<!-- Left Column: Gauge & Summary -->
+<div class="col-span-7 space-y-8">
+<h2 class="text-4xl font-bold">Executive Summary</h2>
+<p class="text-slate-400 leading-relaxed">
+          Project Nebula-X represents a high-integrity integration of multi-agent perspectives. The current consensus indicates a strong technical foundation with manageable risks in ethical alignment and long-term financial scalability. 
+        </p>
+<div class="p-6 bg-slate-900/50 border border-white/5 rounded-2xl" data-purpose="score-card">
+<p class="text-xs font-bold text-slate-500 uppercase mb-4">Final Verdict Score</p>
+<div class="flex items-center gap-10">
+<div class="gauge-container">
+<svg class="w-full" viewbox="0 0 100 50">
+<path class="gauge-bg" d="M 10 50 A 40 40 0 0 1 90 50"></path>
+<path class="gauge-fill" d="M 10 50 A 40 40 0 0 1 90 50" stroke-dasharray="100.5, 125.6"></path>
+</svg>
+<div class="absolute bottom-0 left-0 right-0 text-center">
+<span class="text-5xl font-black text-white">85</span>
+<span class="text-xl text-slate-400">/100</span>
+</div>
+</div>
+<div>
+<div class="flex items-center gap-2 mb-2">
+<div class="w-3 h-3 bg-emerald-500 rounded-full"></div>
+<span class="text-sm font-semibold">Strategic Viability: HIGH</span>
+</div>
+<p class="text-xs text-slate-500 leading-tight">Synthesis based on 4 unique agent frameworks with 92% consensus threshold achieved.</p>
+</div>
+</div>
+</div>
+<div class="space-y-4" data-purpose="strengths-risks">
+<div class="space-y-3">
+<h3 class="text-xs font-bold text-emerald-400 uppercase flex items-center gap-2">
+<svg class="h-4 w-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+              Consensual Strengths
+            </h3>
+<ul class="space-y-2 text-sm text-slate-300">
+<li class="bg-emerald-500/5 p-3 border-l-2 border-emerald-500 rounded-r-md">Architecture scalability matches enterprise load projections.</li>
+<li class="bg-emerald-500/5 p-3 border-l-2 border-emerald-500 rounded-r-md">Market timing aligns with Q4 industrial automation trends.</li>
+</ul>
+</div>
+<div class="space-y-3">
+<h3 class="text-xs font-bold text-amber-400 uppercase flex items-center gap-2">
+<svg class="h-4 w-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+              Critical Risks
+            </h3>
+<ul class="space-y-2 text-sm text-slate-300">
+<li class="bg-amber-500/5 p-3 border-l-2 border-amber-500 rounded-r-md">Regulatory lag in EU markets may delay deployment.</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Right Column: Sidebar Stats -->
+<div class="col-span-5 bg-slate-900/30 p-6 rounded-3xl border border-white/5 self-start">
+<h3 class="text-sm font-bold mb-6">Processing Metrics</h3>
+<div class="space-y-6">
+<div data-purpose="metric-row">
+<div class="flex justify-between mb-2">
+<span class="text-xs text-slate-500">Agent Deliberation Time</span>
+<span class="text-xs font-bold mono">12.4s</span>
+</div>
+<div class="w-full bg-slate-800 h-1 rounded-full">
+<div class="bg-indigo-500 w-3/4 h-1 rounded-full"></div>
+</div>
+</div>
+<div data-purpose="metric-row">
+<div class="flex justify-between mb-2">
+<span class="text-xs text-slate-500">Cross-Agent Conflict Rate</span>
+<span class="text-xs font-bold mono">4.2%</span>
+</div>
+<div class="w-full bg-slate-800 h-1 rounded-full">
+<div class="bg-cyan-500 w-1/5 h-1 rounded-full"></div>
+</div>
+</div>
+<div data-purpose="metric-row">
+<div class="flex justify-between mb-2">
+<span class="text-xs text-slate-500">Data Source Integrity</span>
+<span class="text-xs font-bold mono">99.8%</span>
+</div>
+<div class="w-full bg-slate-800 h-1 rounded-full">
+<div class="bg-purple-500 w-full h-1 rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Page Number -->
+<div class="absolute bottom-10 left-10 text-xs text-slate-500">Page 02 — IV</div>
+</section>
+<!-- END: Page 2 - Executive Summary -->
+<!-- BEGIN: Page 3 - Agent Insights -->
+<section class="pdf-page bg-gradient-mesh" id="page-3">
+<div class="flex justify-between border-b border-white/5 pb-4 mb-10">
+<span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">Section 02 // Agent Insights</span>
+<span class="text-xs text-slate-500 italic">Antigravity AI Report</span>
+</div>
+<h2 class="text-3xl font-bold mb-8 text-center">Multi-Agent Deliberation</h2>
+<div class="grid grid-cols-2 gap-6" data-purpose="agent-grid">
+<!-- Agent 1: Visionary -->
+<div class="p-6 bg-slate-900/40 border border-white/5 rounded-2xl relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 blur-2xl"></div>
+<div class="flex items-center gap-4 mb-4">
+<img alt="Visionary Agent" class="w-12 h-12 rounded-full ring-2 ring-indigo-500/50" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDX-hFV-ZPd6k3P-TIMN5gfY_p1V-JPC9adv1WqF5cDm2tTKZbC3GRxs9vDdQEtYsyhwUpBlW7KRjJuowu2Gqt9fTDeLVkoLEXKZsYzdM-dm9P_uaOIWS5l3TjCxk0wFHGx5-Be7AkovuXc8-fRGR-RuvUmGbVvxNYP3JZUD-i5jeH24KTw_QkvLL36B5ru3XuvtM-U7lAMD_AjCHrgT4JY3lRwf7HA6t2CWg_IGCLpNN9rDEdN8GQgCWSaEx4wBJLSC-1qDmWhSj9e"/>
+<div>
+<h4 class="font-bold">The Visionary</h4>
+<span class="text-[10px] mono text-indigo-400 uppercase font-bold tracking-tighter">Strategic Lead</span>
+</div>
+</div>
+<p class="text-xs text-slate-400 leading-relaxed italic">
+          "The long-term roadmap is aggressively positioned. By utilizing quantum-inspired neural nets, we bypass the 2025 hardware ceiling. Market dominance is highly probable."
+        </p>
+</div>
+<!-- Agent 2: Financial -->
+<div class="p-6 bg-slate-900/40 border border-white/5 rounded-2xl relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 blur-2xl"></div>
+<div class="flex items-center gap-4 mb-4">
+<img alt="Financial Agent" class="w-12 h-12 rounded-full ring-2 ring-emerald-500/50" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_ElQzkVFNMyiCuwMyqut68Lk86q2Mo5X2ssnEqVwZoaOPwoa7q47EPCxN_NDDAi4solRmldg0JVCLPGg238H1TrxHjxhVnvJ-GrbuUDSb-7AbY6xOg9b1OxIl1RQKq7XQw2Mdh7tI5-oByR4iI9uu0nULRUgsyrBUDCDgxfVTpCIF-txLBJsj-wvt9DZay3WE8Nz_eEkHoRdWuJbCznt1j6NeRVxPv-358_bXGLe2WNq8pxkY9XnYZT_fXAFdEMUzzPDwED-rd6gC"/>
+<div>
+<h4 class="font-bold">The Quantitative</h4>
+<span class="text-[10px] mono text-emerald-400 uppercase font-bold tracking-tighter">Capital Analyst</span>
+</div>
+</div>
+<p class="text-xs text-slate-400 leading-relaxed italic">
+          "Burn rate is optimized at 0.82x industry average. Projected ROI within 18 months is conservative based on existing pipeline data. Liquidity risks remain low."
+        </p>
+</div>
+<!-- Agent 3: Tech -->
+<div class="p-6 bg-slate-900/40 border border-white/5 rounded-2xl relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-24 h-24 bg-cyan-500/5 blur-2xl"></div>
+<div class="flex items-center gap-4 mb-4">
+<img alt="Systems Agent" class="w-12 h-12 rounded-full ring-2 ring-cyan-500/50" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7NObUAF0bXuf109VEDnA5M6UVh_TtCSySIU1-8jBUBAfIrEbCj7GeQYErKLUzu875JfXZuygLufRfbHmOAwLpe_ysIT5Cyh5waeDYoNGs1eodeCUys4ovRkHhj1W6zpQWxetInUpoejRX75S1mFqTS3Gv4Vv8O8jYuVfeiNgOcoaLZ5gYb_EBRZr752G_rL5hzCoz9te7AjfLdz25s6RrDflzRqz153tTAO-yKW20JPORZ6XVNVcfdEZCtgFaaQB10aRc7Qagcgta"/>
+<div>
+<h4 class="font-bold">The Architect</h4>
+<span class="text-[10px] mono text-cyan-400 uppercase font-bold tracking-tighter">Systems Specialist</span>
+</div>
+</div>
+<p class="text-xs text-slate-400 leading-relaxed italic">
+          "System latency is negligible at 15ms. Micro-agent orchestration is stable. Recommend transition to decentralized nodes by Q3 to ensure redundancy."
+        </p>
+</div>
+<!-- Agent 4: Ethics -->
+<div class="p-6 bg-slate-900/40 border border-white/5 rounded-2xl relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 blur-2xl"></div>
+<div class="flex items-center gap-4 mb-4">
+<img alt="Ethics Agent" class="w-12 h-12 rounded-full ring-2 ring-amber-500/50" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCz0XmmGJWaz2DiS8RMQ4-BrqOQIFK_GafxFJe7LpsQ4-354ImADJTLNp5FVFr2mFYh5XzQjzCl4WbIJxbB6m0BOcQ7JG6V1DcSPxBKAR67cUI67tFGgvQ4YS2fDzejPn228ajhy7X3D0_jdC-JwW_OdUvgPZHEs43cc4-Rdqmy4CF5s5vqd2BWYLPnKJ0VMoLu9URlcf3xNGjRWgKFdKt0CAsszdZNgswW2L5dlRtdec_ZgUNUFBhw-hZnI6lqjk9imkSRWuTbzQXf"/>
+<div>
+<h4 class="font-bold">The Guardian</h4>
+<span class="text-[10px] mono text-amber-400 uppercase font-bold tracking-tighter">Safety &amp; Compliance</span>
+</div>
+</div>
+<p class="text-xs text-slate-400 leading-relaxed italic">
+          "Data privacy protocols meet GDPR 2.0. Minor concerns regarding model bias in training set B-09. Suggest synthetic data injection for balance."
+        </p>
+</div>
+</div>
+<!-- Agent Comparison Table -->
+<div class="mt-10 overflow-hidden border border-white/10 rounded-xl" data-purpose="comparison-table">
+<table class="w-full text-left text-sm">
+<thead class="bg-slate-900/80">
+<tr>
+<th class="p-4 font-bold">Parameter</th>
+<th class="p-4 font-bold">Optimism</th>
+<th class="p-4 font-bold">Integrity</th>
+<th class="p-4 font-bold">Risk Level</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/5">
+<tr>
+<td class="p-4 text-slate-300">Scalability</td>
+<td class="p-4">98%</td>
+<td class="p-4">High</td>
+<td class="p-4"><span class="px-2 py-1 bg-emerald-900/30 text-emerald-400 rounded text-[10px]">LOW</span></td>
+</tr>
+<tr>
+<td class="p-4 text-slate-300">Security</td>
+<td class="p-4">84%</td>
+<td class="p-4">Robust</td>
+<td class="p-4"><span class="px-2 py-1 bg-amber-900/30 text-amber-400 rounded text-[10px]">MED</span></td>
+</tr>
+<tr>
+<td class="p-4 text-slate-300">Market Fit</td>
+<td class="p-4">91%</td>
+<td class="p-4">Confirmed</td>
+<td class="p-4"><span class="px-2 py-1 bg-emerald-900/30 text-emerald-400 rounded text-[10px]">LOW</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Page Number -->
+<div class="absolute bottom-10 left-10 text-xs text-slate-500">Page 03 — IV</div>
+</section>
+<!-- END: Page 3 - Agent Insights -->
+<!-- BEGIN: Page 4 - Consensus Radar -->
+<section class="pdf-page bg-gradient-mesh flex flex-col" id="page-4">
+<div class="flex justify-between border-b border-white/5 pb-4 mb-10">
+<span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">Section 03 // Consensus Mapping</span>
+<span class="text-xs text-slate-500 italic">Antigravity AI Report</span>
+</div>
+<div class="flex-grow flex flex-col items-center justify-center space-y-12">
+<div class="text-center">
+<h2 class="text-3xl font-bold mb-2">Agent Alignment Matrix</h2>
+<p class="text-slate-500 text-sm">Visualizing consensus across core operational dimensions</p>
+</div>
+<!-- Radar Chart Visual -->
+<div class="relative w-96 h-96" data-purpose="radar-chart">
+<svg class="w-full h-full" viewbox="0 0 400 400">
+<!-- Grid Circles -->
+<circle class="radar-grid" cx="200" cy="200" fill="none" r="180"></circle>
+<circle class="radar-grid" cx="200" cy="200" fill="none" r="140"></circle>
+<circle class="radar-grid" cx="200" cy="200" fill="none" r="100"></circle>
+<circle class="radar-grid" cx="200" cy="200" fill="none" r="60"></circle>
+<!-- Axis Lines -->
+<line class="radar-grid" x1="200" x2="200" y1="20" y2="380"></line>
+<line class="radar-grid" x1="20" x2="380" y1="200" y2="200"></line>
+<line class="radar-grid" x1="72" x2="328" y1="72" y2="328"></line>
+<line class="radar-grid" x1="328" x2="72" y1="72" y2="328"></line>
+<!-- Data Polygon -->
+<polygon class="radar-line" points="200,60 300,120 360,200 280,320 200,340 100,280 40,200 120,100"></polygon>
+<!-- Axis Labels -->
+<text class="text-[10px] fill-slate-400 font-bold uppercase" text-anchor="middle" x="200" y="15">Vision</text>
+<text class="text-[10px] fill-slate-400 font-bold uppercase" text-anchor="start" x="385" y="200">Security</text>
+<text class="text-[10px] fill-slate-400 font-bold uppercase" text-anchor="middle" x="200" y="395">Stability</text>
+<text class="text-[10px] fill-slate-400 font-bold uppercase" text-anchor="end" x="15" y="200">Growth</text>
+</svg>
+<!-- Legend -->
+<div class="absolute -bottom-20 left-0 right-0 flex justify-center gap-6">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 bg-indigo-500 rounded-sm"></div>
+<span class="text-xs text-slate-400">Current Alignment</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 border border-slate-700 rounded-sm"></div>
+<span class="text-xs text-slate-400">Target Benchmark</span>
+</div>
+</div>
+</div>
+<div class="max-w-xl w-full mt-24">
+<div class="p-6 bg-indigo-950/20 border border-indigo-500/20 rounded-2xl">
+<h4 class="text-sm font-bold text-indigo-300 mb-2 uppercase tracking-wide">Final Consensus Conclusion</h4>
+<p class="text-sm text-slate-400 leading-relaxed">
+            The multi-agent system has arrived at a "Proceed with Monitoring" status. High scores in Vision and Growth offset moderate concerns in localized Security variables. No catastrophic blockers were identified by any agent during this 12-hour recursive simulation cycle.
+          </p>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="flex justify-between items-end border-t border-white/5 pt-8 mt-auto" data-purpose="report-termination">
+<div class="space-y-1">
+<p class="text-[10px] mono text-slate-600 uppercase">Verification Hash</p>
+<p class="text-[10px] mono text-slate-400">0x882A...F92B1001-A42</p>
+</div>
+<div class="flex items-center gap-2 mb-2">
+<img alt="Logo" class="w-6 h-6 rounded border border-white/10" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKgt1Xv-AS8nAhUH2vB51po5rWlagPkdMlyN4-zjWzfcIu6n1ghq1sgYhdTItYOlJCDnDk-5w-Hj3zvYNLZRCGSXPiYHuwc5b5GfCIaz0Ix6_knfYYNIS1wVEh0is-WMxqvHF3DyRsv4w7MEO2voZq9l6gfB5K-jVCEOGFXk1RWBuhXl3MHLM3ttQr5vtQGBsLmn-r33JF4-KEvnoVyjvXJUkrnNfry4nX4i8O8C5tLhEKsC51FA4KZV4ISc0DFRPe2-br2SzCEGGy"/>
+<span class="text-xs text-slate-500 font-bold">ANTIGRAVITY SYSTEMS</span>
+</div>
+<div class="text-xs text-slate-500">Page 04 — IV</div>
+</div>
+</section>
+<!-- END: Page 4 - Consensus Radar -->
+</body></html>

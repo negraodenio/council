@@ -2,26 +2,81 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+@layer base {
+  body {
+    @apply bg-[#0a0a1f] text-[#c4c4ff] font-mono selection:bg-[#afff33] selection:text-black;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+:root {
+  --primary-accent: #afff33;
+  /* Lime */
+  --secondary-accent: #00f0ff;
+  /* Cyan */
+  --console-bg: #0a0a1f;
+  /* Deep Blue */
+  --panel-bg: #121235;
+  /* Panel Blue */
+  --border-cyan: rgba(0, 240, 255, 0.2);
+  --data-text: #c4c4ff;
+  --bg-gradient: radial-gradient(circle at 50% 0%, #1a0b2e 0%, #05050a 100%);
+}
+
+.data-grid-item {
+  @apply border border-[#00f0ff]/20 bg-[#121235]/40 hover:bg-[#121235]/60 transition-colors p-4;
+}
+
+.metric-label {
+  @apply text-[10px] font-bold uppercase tracking-widest text-[#00f0ff]/70;
+}
+
+.metric-value {
+  @apply text-lg font-bold text-[#afff33];
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #0a0a1f;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #00f0ff;
+  border-radius: 2px;
+}
+
+.glass-blur {
+  backdrop-filter: blur(8px);
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 242, 255, 0.1);
+}
+
+.tech-grid {
+  background-image: linear-gradient(rgba(0, 242, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 242, 255, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.glass-card {
+  background: rgba(18, 18, 53, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+}
+
+.glow-cyan {
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+}
+
+.glow-text {
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
 }

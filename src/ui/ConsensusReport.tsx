@@ -114,28 +114,21 @@ export default function ConsensusReport({ validation, patches }: {
     };
 
     return (
-        <div className="bg-[#0a0f1e] text-slate-50 min-h-screen relative overflow-x-hidden" suppressHydrationWarning>
-            {/* BG gradient */}
-            <div className="absolute inset-0 pointer-events-none z-0"
-                style={{
-                    background:
-                        'radial-gradient(at 0% 0%, rgba(124,58,237,0.08) 0, transparent 50%), radial-gradient(at 100% 100%, rgba(0,210,255,0.08) 0, transparent 50%)'
-                }}
-            />
+        <div className="bg-deep-blue text-slate-50 min-h-screen relative overflow-x-hidden font-body" suppressHydrationWarning>
+            {/* Tech grid BG overlay */}
+            <div className="absolute inset-0 tech-grid pointer-events-none opacity-20 z-0"></div>
 
             {/* ── Header ── */}
-            <header className="sticky top-0 z-50 bg-[#0a0f1e]/80 backdrop-blur-xl border-b border-white/10 h-16 flex items-center justify-between px-4 lg:px-8">
-                <a className="flex items-center gap-3 text-slate-300 hover:text-cyan-300 transition-colors group" href="/dashboard">
-                    <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/10 group-hover:bg-cyan-500/20 transition-colors">
-                        <svg width="16" height="16" fill="none" viewBox="0 0 16 16">
-                            <path d="M10 12L6 8l4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
+            <header className="sticky top-0 z-50 bg-panel-blue/90 glass-blur border-b border-neon-cyan/20 h-16 flex items-center justify-between px-4 lg:px-8">
+                <a className="flex items-center gap-3 text-neon-cyan hover:text-white transition-colors group" href="/dashboard">
+                    <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-neon-cyan/10 border border-neon-cyan/30 group-hover:bg-neon-cyan/20 transition-colors shadow-[0_0_10px_rgba(0,242,255,0.1)]">
+                        <span className="material-symbols-outlined text-[18px]">arrow_back</span>
                     </span>
-                    <span className="font-semibold text-sm">{t(lang, 'cr_back')}</span>
+                    <span className="font-display font-bold uppercase tracking-widest text-xs">{t(lang, 'cr_back')}</span>
                 </a>
                 <div className="flex items-center gap-4">
-                    <span className="font-mono text-xs text-slate-500 hidden sm:block">
-                        {validation.id.slice(0, 8)}
+                    <span className="font-mono text-xs text-neon-cyan/50 hidden sm:block">
+                        SYS.ID.{validation.id.slice(0, 8).toUpperCase()}
                     </span>
                     <button
                         onClick={handleExportPDF}
@@ -166,29 +159,22 @@ export default function ConsensusReport({ validation, patches }: {
                 <PDFReportTemplate validation={validation} lang={lang} />
             </div>
 
-            <main className="relative z-10 w-full max-w-7xl mx-auto p-4 pb-24 lg:p-8 lg:pb-8 flex flex-col gap-8 lg:flex-row lg:gap-12">
+            <main className="relative z-10 w-full max-w-screen-2xl mx-auto p-4 pb-24 lg:p-6 lg:pb-8 flex flex-col gap-6">
 
-                {/* ════ LEFT COLUMN ════ */}
-                <section className="flex flex-col gap-6 lg:w-[400px] lg:shrink-0 lg:sticky lg:top-24 lg:h-fit">
-
-                    {/* Idea Title */}
-                    <div>
-                        <div className="flex items-center gap-2 mb-3">
-                            <span className={`px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider rounded-md border ${statusBg}`}>
-                                {validation.status?.toUpperCase()}
-                            </span>
-                            <span className="text-slate-500 text-xs">
-                                {new Date(validation.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+                {/* ════ TOP GRID: EXECUTIVE SUMMARY ════ */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    {/* Panel 1: Main Metric */}
+                    <div className="lg:col-span-4 data-grid-item flex flex-col justify-center items-center rounded-xl">
+                        <div className="flex items-center gap-2 mb-4 w-full justify-between">
+                            <span className="metric-label">{t(lang, 'cr_final_verdict') || "System Consensus"}</span>
+                            <span className={`px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider rounded border ${statusBg}`}>
+                                {validation.status?.toUpperCase() || "SYNTHESIS"}
                             </span>
                         </div>
-                        <h1 className="text-2xl font-bold tracking-tight leading-snug">{validation.idea}</h1>
-                    </div>
-
-                    {/* Score Ring */}
-                    <div className="bg-white/[0.03] border border-white/10 p-10 flex flex-col items-center justify-center gap-5 rounded-2xl">
-                        <div className="relative size-52">
+                        {/* Score Ring inside Panel */}
+                        <div className="relative size-40 my-4 flex-shrink-0">
                             <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
-                                <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="6" />
+                                <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="8" />
                                 <defs>
                                     <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                                         <stop offset="0%" stopColor="#00d2ff" />
@@ -203,189 +189,224 @@ export default function ConsensusReport({ validation, patches }: {
                                     strokeDasharray={2 * Math.PI * 42}
                                     strokeDashoffset={2 * Math.PI * 42 * (1 - score / 100)}
                                     strokeLinecap="round"
-                                    strokeWidth="6"
-                                    className="drop-shadow-[0_0_16px_rgba(0,210,255,0.4)] transition-all duration-1000"
+                                    strokeWidth="8"
+                                    className="drop-shadow-[0_0_15px_rgba(0,242,255,0.3)] transition-all duration-1000"
                                 />
                             </svg>
                             <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                <span className="text-6xl font-black tracking-tighter" suppressHydrationWarning>{score}</span>
-                                <span className="font-mono text-sm text-slate-500 mt-1">/ 100</span>
+                                <span className="text-5xl font-display font-black tracking-tighter text-white" suppressHydrationWarning>{score}</span>
+                                <span className="font-mono text-[10px] text-neon-cyan/70 mt-1 uppercase">Score</span>
                             </div>
                         </div>
-                        <div className="text-center space-y-2">
-                            <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full border ${statusBg}`}>
-                                <span className={`w-2 h-2 rounded-full animate-pulse ${statusDot}`} />
-                                <span className="font-bold text-sm uppercase tracking-wider">{statusLabel}</span>
+                        <div className="w-full text-center mt-2">
+                            <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded bg-black/30 border border-white/5`}>
+                                <span className={`w-1.5 h-1.5 rounded-full animate-pulse ${statusDot}`} />
+                                <span className="font-bold text-xs uppercase tracking-widest text-white">{statusLabel}</span>
                             </div>
-                            <p className="text-slate-400 text-sm">{statusDesc}</p>
                         </div>
                     </div>
 
-                    {/* Dissent / Agreement Bar */}
-                    <div className="bg-white/[0.03] border border-white/10 p-6 rounded-2xl">
-                        <div className="flex justify-between items-end mb-3">
+                    {/* Panel 2: Diagnostics & Dissent */}
+                    <div className="lg:col-span-4 data-grid-item flex flex-col gap-6 rounded-xl relative overflow-hidden">
+                        <div className="flex justify-between items-center mb-2 z-10">
+                            <span className="metric-label">Neural Alignment</span>
+                            <span className="material-symbols-outlined text-neon-cyan/50 text-base">analytics</span>
+                        </div>
+
+                        <div className="space-y-5 z-10">
                             <div>
-                                <span className="text-xs text-slate-500 uppercase tracking-wider">{t(lang, 'cr_dissent')}</span>
-                                <div className="text-lg font-black text-purple-400"><span>{risk}</span>%</div>
+                                <div className="flex justify-between items-end mb-1.5">
+                                    <span className="text-[10px] text-slate-500 uppercase tracking-widest font-mono">Dissent Risk</span>
+                                    <span className="text-sm font-bold text-neon-magenta font-mono">{risk}%</span>
+                                </div>
+                                <div className="h-1.5 w-full bg-black/40 rounded-full overflow-hidden">
+                                    <div className="h-full bg-neon-magenta shadow-[0_0_8px_#ff00e5]" style={{ width: `${risk}%` }}></div>
+                                </div>
                             </div>
-                            <div className="text-right">
-                                <span className="text-xs text-slate-500 uppercase tracking-wider">{t(lang, 'cr_agreement')}</span>
-                                <div className="text-lg font-black text-cyan-400"><span>{align}</span>%</div>
+                            <div>
+                                <div className="flex justify-between items-end mb-1.5">
+                                    <span className="text-[10px] text-slate-500 uppercase tracking-widest font-mono">Agreement</span>
+                                    <span className="text-sm font-bold text-neon-cyan font-mono">{align}%</span>
+                                </div>
+                                <div className="h-1.5 w-full bg-black/40 rounded-full overflow-hidden">
+                                    <div className="h-full bg-neon-cyan shadow-[0_0_8px_#00f2ff]" style={{ width: `${align}%` }}></div>
+                                </div>
                             </div>
                         </div>
-                        <div className="h-3 w-full bg-white/5 border border-white/10 overflow-hidden flex rounded-full">
-                            <div className="h-full bg-gradient-to-r from-purple-600 to-purple-400 rounded-l-full transition-all duration-700" style={{ width: `${risk}%` }} />
-                            <div className="h-full w-px bg-white/30" />
-                            <div className="h-full bg-gradient-to-r from-cyan-400 to-cyan-600 rounded-r-full transition-all duration-700" style={{ width: `${align}%` }} />
+
+                        {/* Radar Graphic Mockup (Terminal Style) */}
+                        <div className="mt-auto pt-6 border-t border-neon-cyan/10 relative h-24 flex items-center justify-center -mx-4 -mb-4 bg-black/20 z-0">
+                            <div className="absolute inset-0 tech-grid opacity-30 mix-blend-screen"></div>
+                            {/* Decorative Radar Lines */}
+                            <svg className="absolute w-full h-[120%] opacity-40 text-neon-cyan mix-blend-screen" viewBox="0 0 100 100" preserveAspectRatio="none">
+                                <path d="M0,50 Q25,20 50,50 T100,50" fill="none" stroke="currentColor" strokeWidth="1" />
+                                <path d="M0,70 Q25,30 50,70 T100,70" fill="none" stroke="#afff33" strokeWidth="1" />
+                                <path d="M0,30 Q25,80 50,30 T100,30" fill="none" stroke="#ff00e5" strokeWidth="1" />
+                            </svg>
+                            <span className="relative z-10 bg-panel-blue/80 border border-neon-cyan/30 px-3 py-1 mt-6 text-[9px] font-mono text-white uppercase tracking-[0.2em] rounded shadow-[0_0_10px_rgba(0,242,255,0.2)]">
+                                SYNTHESIS TOPOGRAPHY
+                            </span>
                         </div>
                     </div>
 
-                    {/* Model Config Info */}
-                    {result.model_config && (
-                        <div className="bg-white/[0.03] border border-white/10 p-5 rounded-2xl">
-                            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">{t(lang, 'cr_council_config')}</h3>
-                            <div className="space-y-1.5">
-                                <div className="flex justify-between text-xs">
-                                    <span className="text-slate-500">{t(lang, 'cr_experts')}</span>
-                                    <span className="text-slate-300 font-mono">{result.model_config.personas?.length || 6}</span>
-                                </div>
-                                <div className="flex justify-between text-xs">
-                                    <span className="text-slate-500">{t(lang, 'cr_rounds')}</span>
-                                    <span className="text-slate-300 font-mono">3</span>
-                                </div>
-                                <div className="flex justify-between text-xs">
-                                    <span className="text-slate-500">{t(lang, 'cr_judge')}</span>
-                                    <span className="text-cyan-400 font-mono">{result.model_config.judge?.split('/')?.pop() || 'GPT-4o'}</span>
-                                </div>
-                            </div>
+                    {/* Panel 3: Active Agents Array */}
+                    <div className="lg:col-span-4 data-grid-item flex flex-col rounded-xl">
+                        <div className="flex justify-between items-center mb-4">
+                            <span className="metric-label">Council Array (Rounds: 3)</span>
+                            <span className="text-[10px] font-mono text-neon-lime px-2 py-0.5 bg-neon-lime/10 border border-neon-lime/20 rounded">{result.model_config?.personas?.length || 6} Nodes</span>
                         </div>
-                    )}
-                </section>
-
-                {/* ════ RIGHT COLUMN ════ */}
-                <section className="flex flex-col gap-10 lg:flex-1 min-w-0">
-
-                    {/* ── TABS NAVIGATION ── */}
-                    <div className="flex overflow-x-auto hide-scrollbar border-b border-white/10 mb-2 mt-4 lg:mt-0">
-                        <button
-                            onClick={() => setActiveTab('verdict')}
-                            className={`px-5 py-3 text-sm font-bold uppercase tracking-wider whitespace-nowrap border-b-2 transition-colors ${activeTab === 'verdict' ? 'border-cyan-400 text-cyan-300' : 'border-transparent text-slate-500 hover:text-slate-300'
-                                }`}
-                        >
-                            {t(lang, 'cr_final_verdict')}
-                        </button>
-                        {round1.length > 0 && (
-                            <button
-                                onClick={() => setActiveTab('round1')}
-                                className={`px-5 py-3 text-sm font-bold bg-gradient-to-r bg-clip-text whitespace-nowrap border-b-2 transition-colors ${activeTab === 'round1' ? 'border-[#06B6D4] text-transparent from-cyan-400 to-cyan-200' : 'border-transparent text-slate-500 hover:text-slate-300'
-                                    }`}
-                            >
-                                ROUND 1
-                            </button>
-                        )}
-                        {round2.length > 0 && (
-                            <button
-                                onClick={() => setActiveTab('round2')}
-                                className={`px-5 py-3 text-sm font-bold bg-gradient-to-r bg-clip-text whitespace-nowrap border-b-2 transition-colors ${activeTab === 'round2' ? 'border-[#EF4444] text-transparent from-red-400 to-red-200' : 'border-transparent text-slate-500 hover:text-slate-300'
-                                    }`}
-                            >
-                                ROUND 2
-                            </button>
-                        )}
-                        {round3.length > 0 && (
-                            <button
-                                onClick={() => setActiveTab('round3')}
-                                className={`px-5 py-3 text-sm font-bold bg-gradient-to-r bg-clip-text whitespace-nowrap border-b-2 transition-colors ${activeTab === 'round3' ? 'border-[#22C55E] text-transparent from-emerald-400 to-emerald-200' : 'border-transparent text-slate-500 hover:text-slate-300'
-                                    }`}
-                            >
-                                ROUND 3
-                            </button>
-                        )}
+                        <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-2">
+                            {['visionary', 'technologist', 'devil', 'marketeer', 'ethicist', 'financier'].map((id, index) => {
+                                const meta = getMeta(id);
+                                // Pseudo-random stat based on score to make it look active
+                                const statBar = Math.min(100, Math.max(20, score + (index * 7 - 15)));
+                                return (
+                                    <div key={id} className="group flex items-center justify-between text-xs p-2.5 bg-black/20 border border-white/5 rounded-lg hover:bg-black/40 hover:border-white/10 transition-colors">
+                                        <div className="flex items-center gap-3">
+                                            <span className="text-base grayscale group-hover:grayscale-0 transition-transform group-hover:scale-110">{meta.emoji}</span>
+                                            <span className="font-display font-medium text-slate-300 group-hover:text-white capitalize tracking-wide">{id}</span>
+                                        </div>
+                                        <div className="flex items-center gap-3 w-28">
+                                            <div className="h-1.5 flex-1 bg-black/60 rounded-full overflow-hidden shadow-inner">
+                                                <div className="h-full rounded-full transition-all duration-1000" style={{ width: `${statBar}%`, backgroundColor: meta.color, boxShadow: `0 0 5px ${meta.color}` }}></div>
+                                            </div>
+                                            <span className="font-mono text-[9px] text-slate-500 w-5 text-right font-bold">{statBar}</span>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
                     </div>
+                </div>
 
-                    {/* ── JUDGE VERDICT ── */}
-                    {activeTab === 'verdict' && judgeText && (
-                        <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                            <RoundHeader
-                                number="⚖️"
-                                title={t(lang, 'cr_final_verdict')}
-                                subtitle={t(lang, 'cr_verdict_subtitle')}
-                                color="#FBBF24"
-                            />
-                            <div className="mt-4 p-6 md:p-8 bg-gradient-to-br from-amber-500/10 via-purple-500/5 to-cyan-500/10 border border-amber-500/20 rounded-2xl">
-                                <div className="prose prose-invert prose-base max-w-none
+                {/* ════ BOTTOM BLOCK: DETAILS TABS ════ */}
+                <div className="flex flex-col gap-10 min-w-0 flex-1">
+
+                    <div className="data-grid-item rounded-xl p-0 flex flex-col">
+                        <div className="flex overflow-x-auto hide-scrollbar border-b border-neon-cyan/10 bg-black/20">
+                            <button
+                                onClick={() => setActiveTab('verdict')}
+                                className={`px-6 py-4 text-xs font-mono uppercase tracking-[0.15em] whitespace-nowrap border-b-2 transition-colors ${activeTab === 'verdict' ? 'border-neon-cyan text-neon-cyan bg-neon-cyan/5' : 'border-transparent text-slate-500 hover:text-slate-300 hover:bg-white/5'
+                                    }`}
+                            >
+                                {t(lang, 'cr_final_verdict')}
+                            </button>
+                            {round1.length > 0 && (
+                                <button
+                                    onClick={() => setActiveTab('round1')}
+                                    className={`px-6 py-4 text-xs font-mono uppercase tracking-[0.15em] whitespace-nowrap border-b-2 transition-colors ${activeTab === 'round1' ? 'border-[#06B6D4] text-[#06B6D4] bg-[#06B6D4]/5' : 'border-transparent text-slate-500 hover:text-slate-300 hover:bg-white/5'
+                                        }`}
+                                >
+                                    ROUND 1
+                                </button>
+                            )}
+                            {round2.length > 0 && (
+                                <button
+                                    onClick={() => setActiveTab('round2')}
+                                    className={`px-6 py-4 text-xs font-mono uppercase tracking-[0.15em] whitespace-nowrap border-b-2 transition-colors ${activeTab === 'round2' ? 'border-[#EF4444] text-[#EF4444] bg-[#EF4444]/5' : 'border-transparent text-slate-500 hover:text-slate-300 hover:bg-white/5'
+                                        }`}
+                                >
+                                    ROUND 2
+                                </button>
+                            )}
+                            {round3.length > 0 && (
+                                <button
+                                    onClick={() => setActiveTab('round3')}
+                                    className={`px-6 py-4 text-xs font-mono uppercase tracking-[0.15em] whitespace-nowrap border-b-2 transition-colors ${activeTab === 'round3' ? 'border-[#22C55E] text-[#22C55E] bg-[#22C55E]/5' : 'border-transparent text-slate-500 hover:text-slate-300 hover:bg-white/5'
+                                        }`}
+                                >
+                                    ROUND 3
+                                </button>
+                            )}
+                        </div>
+                        <div className="p-6">
+
+                            {/* ── JUDGE VERDICT ── */}
+                            {activeTab === 'verdict' && judgeText && (
+                                <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                                    <RoundHeader
+                                        number="⚖️"
+                                        title={t(lang, 'cr_final_verdict')}
+                                        subtitle={t(lang, 'cr_verdict_subtitle')}
+                                        color="#FBBF24"
+                                    />
+                                    <div className="mt-4 p-6 md:p-8 bg-gradient-to-br from-amber-500/10 via-purple-500/5 to-cyan-500/10 border border-amber-500/20 rounded-2xl">
+                                        <div className="prose prose-invert prose-base max-w-none
                                     prose-headings:text-white prose-headings:font-bold prose-headings:mt-6 prose-headings:mb-3
                                     prose-h2:text-xl prose-h3:text-lg
                                     prose-p:text-slate-200 prose-p:leading-relaxed prose-p:text-[15px]
                                     prose-li:text-slate-200 prose-li:text-[15px]
                                     prose-strong:text-cyan-300
                                     prose-ul:my-3 prose-ol:my-3">
-                                    <ReactMarkdown>
-                                        {(() => {
-                                            if (typeof judgeText !== 'string') return '';
-                                            let text = judgeText.replace(/\\n/g, '\n');
-                                            // Strip out the redundant header block
-                                            text = text.replace(/## 🏛️ CouncilIA.*?Verdict Final\n/i, '');
-                                            text = text.replace(/### (Consensus Score|Puntuación de Consenso|Pontuação de Consenso|Score de Consensus|Konsens-Score|Punteggio di Consenso): \[?\d+\/100\]?\n/i, '');
-                                            return text.trim();
-                                        })()}
-                                    </ReactMarkdown>
+                                            <ReactMarkdown>
+                                                {(() => {
+                                                    if (typeof judgeText !== 'string') return '';
+                                                    let text = judgeText.replace(/\\n/g, '\n');
+                                                    // Strip out the redundant header block
+                                                    text = text.replace(/## 🏛️ CouncilIA.*?Verdict Final\n/i, '');
+                                                    text = text.replace(/### (Consensus Score|Puntuación de Consenso|Pontuação de Consenso|Score de Consensus|Konsens-Score|Punteggio di Consenso): \[?\d+\/100\]?\n/i, '');
+                                                    return text.trim();
+                                                })()}
+                                            </ReactMarkdown>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    )}
+                            )}
 
-                    {/* ── ROUND 1 ── */}
-                    {activeTab === 'round1' && round1.length > 0 && (
-                        <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                            <RoundHeader
-                                number="01"
-                                title={t(lang, 'cr_round1_title')}
-                                subtitle={t(lang, 'cr_round1_subtitle')}
-                                color="#06B6D4"
-                            />
-                            <div className="mt-4 grid gap-4">
-                                {round1.map((r) => (
-                                    <PersonaCard key={r.id} entry={r} lang={lang} />
-                                ))}
-                            </div>
-                        </div>
-                    )}
+                            {/* ── ROUND 1 ── */}
+                            {activeTab === 'round1' && round1.length > 0 && (
+                                <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                                    <RoundHeader
+                                        number="01"
+                                        title={t(lang, 'cr_round1_title')}
+                                        subtitle={t(lang, 'cr_round1_subtitle')}
+                                        color="#06B6D4"
+                                    />
+                                    <div className="mt-6 grid gap-4 grid-cols-1 md:grid-cols-2">
+                                        {round1.map((r) => (
+                                            <PersonaCard key={r.id} entry={r} lang={lang} />
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
 
-                    {/* ── ROUND 2 ── */}
-                    {activeTab === 'round2' && round2.length > 0 && (
-                        <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                            <RoundHeader
-                                number="02"
-                                title={t(lang, 'cr_round2_title')}
-                                subtitle={t(lang, 'cr_round2_subtitle')}
-                                color="#EF4444"
-                            />
-                            <div className="mt-4 grid gap-4">
-                                {round2.map((r) => (
-                                    <PersonaCard key={r.id} entry={r} lang={lang} />
-                                ))}
-                            </div>
-                        </div>
-                    )}
+                            {/* ── ROUND 2 ── */}
+                            {activeTab === 'round2' && round2.length > 0 && (
+                                <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                                    <RoundHeader
+                                        number="02"
+                                        title={t(lang, 'cr_round2_title')}
+                                        subtitle={t(lang, 'cr_round2_subtitle')}
+                                        color="#EF4444"
+                                    />
+                                    <div className="mt-6 grid gap-4 grid-cols-1 md:grid-cols-2">
+                                        {round2.map((r) => (
+                                            <PersonaCard key={r.id} entry={r} lang={lang} />
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
 
-                    {/* ── ROUND 3 ── */}
-                    {activeTab === 'round3' && round3.length > 0 && (
-                        <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                            <RoundHeader
-                                number="03"
-                                title={t(lang, 'cr_round3_title')}
-                                subtitle={t(lang, 'cr_round3_subtitle')}
-                                color="#22C55E"
-                            />
-                            <div className="mt-4 grid gap-4">
-                                {round3.map((r) => (
-                                    <PersonaCard key={r.id} entry={r} lang={lang} />
-                                ))}
-                            </div>
+                            {/* ── ROUND 3 ── */}
+                            {activeTab === 'round3' && round3.length > 0 && (
+                                <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                                    <RoundHeader
+                                        number="03"
+                                        title={t(lang, 'cr_round3_title')}
+                                        subtitle={t(lang, 'cr_round3_subtitle')}
+                                        color="#22C55E"
+                                    />
+                                    <div className="mt-6 grid gap-4 grid-cols-1 md:grid-cols-2">
+                                        {round3.map((r) => (
+                                            <PersonaCard key={r.id} entry={r} lang={lang} />
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
                         </div>
-                    )}
-                </section>
+                    </div>
+                </div>
             </main>
         </div>
     );

@@ -3,6 +3,12 @@ import { getCouncilConfig, councilConfig, ModelConfig } from '@/config/council';
 import { addEvent } from '@/lib/council/events';
 import { redactPII } from '@/lib/privacy/redact';
 import { apiOk, apiError } from '@/lib/api/error';
+import OpenAI from "openai";
+
+const mistralClient = new OpenAI({
+    apiKey: process.env.MISTRAL_API_KEY,
+    baseURL: "https://api.mistral.ai/v1"
+});
 
 // ——— Telemetry stubs (v2.3 — replace with real implementations later) ———
 async function logAICall(data: Record<string, any>) {
@@ -608,6 +614,35 @@ export async function POST(req: Request) {
             await addEvent(supabase, runId, 'system', null, { msg: '🔒 PII detected and redacted.' });
         }
 
+        // --- RAG: Vector Search for Context Injection ---
+        let contextSnippets = "";
+        try {
+            await addEvent(supabase, runId, 'system', null, { msg: '🧠 Memory Engine: Activating Vector Search over Codebase...' });
+            const embeddingRes = await mistralClient.embeddings.create({
+                model: "mistral-embed",
+                input: ideaRedacted,
+            });
+            const queryEmbedding = embeddingRes.data[0].embedding;
+
+            // Only search for repos belonging to this user
+            const { data: chunks, error: matchErr } = await supabase.rpc('match_repo_chunks', {
+                query_embedding: queryEmbedding,
+                match_count: 3,
+                // filter_repo_id: We can leave null to search ALL user repos, RLS protects data.
+            });
+
+            if (!matchErr && chunks && chunks.length > 0) {
+                await addEvent(supabase, runId, 'system', null, { msg: `🔍 Memory Engine: Injected ${chunks.length} hyper-relevant code files into the debate.` });
+                contextSnippets = "\n\n=== VERIFIED CODEBASE CONTEXT (RAG MEMORY) ===\nThe following code snippets from the user's database are highly relevant to their query. Use them to ground your technical analysis:\n" +
+                    chunks.map((c: any) => `\nFile: ${c.file_path}\n${c.chunk_content}\n---\n`).join('');
+            } else {
+                await addEvent(supabase, runId, 'system', null, { msg: `🧠 Memory Engine: No relevant code context found for this input.` });
+            }
+        } catch (err) {
+            console.error("[Worker] Memory Engine Error:", err);
+        }
+        // ------------------------------------------------
+
         const config = getCouncilConfig(region, sensitivity);
         const personas = Object.values(councilConfig.personas);
 
@@ -623,7 +658,7 @@ export async function POST(req: Request) {
                     const assigned = config.assign[p.id as keyof typeof config.assign];
                     const messages = [
                         { role: 'system', content: buildRound1Prompt(p, lang, ideaRedacted) },
-                        { role: 'user', content: `Analyze this startup idea from your expert perspective:\n\n"${ideaRedacted}"` },
+                        { role: 'user', content: `Analyze this objective from your expert perspective:\n\n"${ideaRedacted}"${contextSnippets}` },
                     ];
 
                     const out = await callModel(assigned, messages, { zdr: config.judge.zdr, maxTokens: 1024 });

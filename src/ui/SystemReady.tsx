@@ -5,14 +5,7 @@ import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { t, resolveUILang, type UILang } from '@/lib/i18n/ui-strings';
 
-const EXPERTS = [
-    { emoji: '\u{1F52E}', key: 'visionary', color: '#A855F7' },
-    { emoji: '\u2699\uFE0F', key: 'technologist', color: '#06B6D4' },
-    { emoji: '\u{1F608}', key: 'devil', color: '#EF4444' },
-    { emoji: '\u{1F4CA}', key: 'marketeer', color: '#22C55E' },
-    { emoji: '\u2696\uFE0F', key: 'ethicist', color: '#F59E0B' },
-    { emoji: '\u{1F4B0}', key: 'financier', color: '#3B82F6' },
-];
+// Removed old EXPERTS array as we will use the new Agent Selection Grid directly in the UI.
 
 export default function SystemReady() {
     const router = useRouter();
@@ -27,6 +20,12 @@ export default function SystemReady() {
     const [profileLoading, setProfileLoading] = useState(true);
     const [showUpgrade, setShowUpgrade] = useState(false);
     const [debugInfo, setDebugInfo] = useState<any>(null);
+
+    // Context / RAG variables
+    const [showContextModal, setShowContextModal] = useState(false);
+    const [contextText, setContextText] = useState("");
+    const [repoName, setRepoName] = useState("");
+    const [ingestingContext, setIngestingContext] = useState(false);
 
     useEffect(() => {
         const supabase = createClient();
@@ -96,150 +95,300 @@ export default function SystemReady() {
         }
     }
 
+    async function handleIngestContext() {
+        if (!contextText.trim() || !repoName.trim()) return;
+        setIngestingContext(true);
+        try {
+            // We'll call the text ingest API next
+            const res = await fetch('/api/repo/ingest-text', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    uId: userId,
+                    name: repoName,
+                    content: contextText,
+                }),
+            });
+            const data = await res.json();
+            if (!data.success) throw new Error(data.error);
+            setShowContextModal(false);
+            setContextText("");
+        } catch (err: any) {
+            alert(err.message || 'Failed to ingest context');
+        } finally {
+            setIngestingContext(false);
+        }
+    }
+
     const cc = idea.length;
+    const contextTokens = Math.ceil(contextText.length / 4);
 
     return (
-        <div className="min-h-screen bg-[#060a13] text-white overflow-hidden relative" suppressHydrationWarning>
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-purple-500/[0.07] rounded-full blur-[120px]" />
-                <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-cyan-500/[0.05] rounded-full blur-[120px]" />
-            </div>
+        <div className="flex flex-col md:flex-row h-[100dvh] w-full bg-[#05050a] text-slate-100 overflow-hidden relative font-body" suppressHydrationWarning>
+            {/* Background Grid Overlay */}
+            <div className="absolute inset-0 tech-grid pointer-events-none opacity-40"></div>
 
-            <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
-
-            <div className="relative z-10 flex flex-col min-h-screen">
-                <header className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
-                    <a href="/dashboard" className="flex items-center gap-3 group">
-                        <div className="w-9 h-9 rounded-xl flex items-center justify-center border border-white/10 group-hover:bg-white/5 transition-colors">
-                            <span className="text-white/50 text-sm font-black">&larr;</span>
-                        </div>
-                        <span className="text-sm font-bold tracking-[0.2em] text-white/60 uppercase group-hover:text-white transition-colors">Dashboard</span>
-                    </a>
-                    <div className="flex items-center gap-3">
-                        <div className="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-lg">
-                            <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
-                            <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider">{t(lang, 'sys_online')}</span>
-                        </div>
+            {/* Sidebar Navigation */}
+            <aside className="w-full md:w-20 lg:w-64 flex flex-row md:flex-col border-b md:border-b-0 md:border-r border-[#00f2ff]/10 glass-panel z-20 shrink-0 h-16 md:h-auto items-center md:items-stretch">
+                <div className="px-4 md:p-6 flex items-center gap-3">
+                    <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-[#00f2ff]/10 border border-[#00f2ff]/30 flex items-center justify-center shadow-[0_0_15px_rgba(0,242,255,0.2)]">
+                        <span className="material-symbols-outlined text-[#00f2ff] text-xl md:text-2xl">rocket_launch</span>
                     </div>
-                </header>
-
-                <main className="flex-1 flex flex-col items-center justify-center px-6 py-8 max-w-3xl mx-auto w-full">
-                    <div className="text-center mb-10">
-                        <div className="inline-flex items-center gap-2 bg-white/[0.04] border border-white/[0.08] rounded-full px-4 py-1.5 mb-6">
-                            <span className="w-1.5 h-1.5 bg-purple-400 rounded-full" />
-                            <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-white/40">{t(lang, 'sys_sequence')}</span>
-                        </div>
-                        <h1 className="text-4xl md:text-5xl font-black leading-[1.1] tracking-tight">
-                            <span className="text-white">{t(lang, 'sys_ready')} </span>
-                            <span className="bg-gradient-to-r from-purple-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent">{t(lang, 'sys_init')}</span>
-                        </h1>
-                        <p className="mt-4 text-white/30 text-sm max-w-md mx-auto leading-relaxed">{t(lang, 'sys_sovereignty_desc')}</p>
-                    </div>
-
-                    <div className="flex items-center justify-center gap-1 mb-8">
-                        {EXPERTS.map((ex, i) => (
-                            <div key={ex.key} className="flex flex-col items-center"><div className="w-9 h-9 rounded-full flex items-center justify-center border transition-all hover:scale-110 hover:-translate-y-1 cursor-default" style={{ borderColor: ex.color + '40', backgroundColor: ex.color + '15', transitionDelay: i * 50 + 'ms' }}>
-                                <span className="text-sm">{ex.emoji}</span>
-                            </div>
-                                <span className="text-[7px] font-bold text-white/30 mt-1 uppercase">{ex.key === 'visionary' ? 'Visionary' : ex.key === 'technologist' ? 'Tech' : ex.key === 'devil' ? 'Critic' : ex.key === 'marketeer' ? 'Market' : ex.key === 'ethicist' ? 'Ethics' : 'Finance'}</span></div>
-                        ))}
-                        <span className="text-[10px] text-white/20 ml-3 font-bold uppercase tracking-wider">6 {'AI experts'}</span>
-                    </div>
-
-                    <div className="w-full relative group mb-6">
-                        <div className="absolute -inset-[1px] bg-gradient-to-r from-purple-500/50 via-cyan-500/50 to-purple-500/50 rounded-2xl opacity-0 group-focus-within:opacity-100 transition-opacity duration-500 blur-sm" />
-                        <div className="relative bg-[#0c1220] border border-white/[0.08] group-focus-within:border-white/[0.15] rounded-2xl overflow-hidden transition-colors">
-                            <textarea maxLength={2500} className="w-full bg-transparent text-white placeholder:text-white/15 p-6 pb-3 text-base min-h-[160px] resize-none focus:outline-none focus:ring-0 border-0 leading-relaxed" placeholder={t(lang, 'sys_placeholder')} value={idea} onChange={(e) => setIdea(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) start(); }} />
-                            <div className="flex items-center justify-between px-6 py-3 border-t border-white/[0.04]">
-                                <span className={'text-[10px] font-mono transition-colors ' + (cc > 2000 ? 'text-red-400' : cc > 0 ? 'text-white/40' : 'text-white/10')}>
-                                    <span>{cc > 0 ? `${cc} / 2500 chars` : t(lang, 'sys_input_buffer') + ' 0.00kb'}</span>
-                                </span>
-                                <span className="text-[10px] text-white/10 font-mono">Ctrl+Enter</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="flex flex-wrap gap-2 mb-10 justify-center">
-                        {[
-                            { em: '\u{1F3C4}', tx: String(lang) === 'pt' ? 'Escola de surf na Comporta' : 'Surf school in Portugal' },
-                            { em: '\u{1F916}', tx: String(lang) === 'pt' ? 'App de IA para saude mental' : 'AI mental health app' },
-                            { em: '\u{1F6D2}', tx: String(lang) === 'pt' ? 'Marketplace de produtos locais' : 'Local products marketplace' },
-                        ].map((ex) => (
-                            <button key={ex.tx} onClick={() => setIdea(ex.tx)} className="flex items-center gap-2 bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.06] hover:border-white/[0.12] rounded-xl px-4 py-2 text-xs text-white/40 hover:text-white/70 transition-all">
-                                <span>{ex.em}</span><span>{ex.tx}</span>
-                            </button>
-                        ))}
-                    </div>
-
-                    <button
-                        onClick={start}
-                        disabled={loading || profileLoading || !idea.trim()}
-                        className="w-full bg-gradient-to-r from-purple-500 via-cyan-500 to-purple-500 text-white font-black py-5 rounded-2xl shadow-xl shadow-purple-500/20 hover:shadow-purple-500/40 transition-all active:scale-[0.98] disabled:opacity-50 disabled:grayscale disabled:scale-100 flex items-center justify-center gap-3 group"
-                    >
-                        {loading || profileLoading ? (
-                            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                        ) : (
-                            <>
-                                <span className="text-xl">🏛️</span>
-                                <span className="uppercase tracking-[0.2em]">{t(lang, 'sys_execute')}</span>
-                            </>
-                        )}
-                    </button>
-                    <p className="mt-6 text-white/10 text-[10px] font-mono uppercase tracking-[0.3em]">{t(lang, 'sys_protocol')}</p>
-                </main>
-            </div>
-            {showUpgrade && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
-                    <div className="bg-[#0f172a] border border-white/10 rounded-3xl p-8 max-w-md w-full shadow-2xl shadow-purple-500/20 relative overflow-hidden">
-                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-cyan-500" />
-
-                        <div className="mb-6">
-                            <div className="w-14 h-14 bg-purple-500/10 rounded-2xl flex items-center justify-center mb-4">
-                                <svg className="w-8 h-8 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                </svg>
-                            </div>
-                            <h2 className="text-2xl font-bold text-white mb-2">Limit Reached</h2>
-                            <p className="text-white/50 text-sm leading-relaxed mb-4">
-                                {debugInfo ? (
-                                    <span>Plan: <b className="text-purple-400 uppercase">{debugInfo.debug?.plan}</b> · Usage: <b className="text-white">{debugInfo.usage} / {debugInfo.limit}</b></span>
-                                ) : (
-                                    t(lang, 'sys_limit_reached_desc')
-                                )}
-                            </p>
-
-                            {debugInfo?.debug && (
-                                <div className="p-3 bg-white/[0.03] rounded-xl border border-white/[0.05] mb-4">
-                                    <p className="text-[9px] font-mono text-white/20 uppercase tracking-tighter mb-1">Debug Session Info</p>
-                                    <p className="text-[10px] font-mono text-white/40 break-all leading-tight">
-                                        Tenant: {debugInfo.debug.tenant?.substring(0, 16)}...<br />
-                                        User: {debugInfo.debug.user?.substring(0, 16)}...
-                                    </p>
-                                </div>
-                            )}
-                        </div>
-
-                        <div className="flex flex-col gap-3">
-                            <button
-                                onClick={() => router.push('/pricing?checkout=pro')}
-                                className="w-full bg-gradient-to-r from-purple-600 to-cyan-500 text-white font-bold py-4 rounded-xl hover:shadow-lg hover:shadow-purple-500/30 transition-all active:scale-[0.98]"
-                            >
-                                Upgrade to Pro
-                            </button>
-                            <button
-                                onClick={() => setShowUpgrade(false)}
-                                className="w-full bg-white/5 border border-white/10 text-white/50 font-medium py-3 rounded-xl hover:bg-white/10 transition-all"
-                            >
-                                Close
-                            </button>
-                        </div>
-
-                        <p className="mt-6 text-center text-[10px] text-white/20 uppercase tracking-widest font-bold">
-                            Secure payment via Stripe
-                        </p>
+                    <div className="hidden lg:block">
+                        <h1 className="font-display font-bold text-lg tracking-tight leading-none italic uppercase">Antigravity</h1>
+                        <span className="text-[10px] uppercase tracking-[0.2em] text-[#00f2ff] font-bold">Neural Engine</span>
                     </div>
                 </div>
-            )}
-        </div>
+
+                <nav className="flex-1 px-4 py-8 md:flex flex-col gap-2 hidden">
+                    <a className="flex items-center gap-4 px-4 py-3 rounded-xl bg-white/5 text-white/50 border border-transparent transition-all hover:bg-white/10" href="/dashboard">
+                        <span className="material-symbols-outlined">grid_view</span>
+                        <span className="hidden lg:block font-medium text-sm">Dashboard</span>
+                    </a>
+                    <a className="flex items-center gap-4 px-4 py-3 rounded-xl bg-[#00f2ff]/10 text-[#00f2ff] border border-[#00f2ff]/20 transition-all font-bold" href="#">
+                        <span className="material-symbols-outlined">terminal</span>
+                        <span className="hidden lg:block text-sm">New Session</span>
+                    </a>
+                </nav>
+
+                {/* Mobile top-right actions */}
+                <div className="md:hidden ml-auto px-4 flex items-center gap-4">
+                    <a className="w-8 h-8 flex items-center justify-center rounded-lg bg-white/5 text-white/50" href="/dashboard">
+                        <span className="material-symbols-outlined text-lg">grid_view</span>
+                    </a>
+                </div>
+
+                <div className="p-4 mt-auto hidden md:block">
+                    <div className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10 group cursor-pointer hover:bg-white/10 transition-colors">
+                        <div className="w-10 h-10 rounded-full bg-slate-800 border-2 border-[#afff33]/30 flex-shrink-0 relative">
+                            <img alt="User Avatar" className="w-full h-full rounded-full object-cover grayscale group-hover:grayscale-0 transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAiDCH1C_T1-srX_TVc918wGFKMxefnGfu78tEfqtbThgUqTAyHfD3yDXUBb7rPNYGh2PqVMb1fz5XW3I4uu7fitmkLmN_T_xJuKc5ikjeNxmMG6AduXx1QGsN7GWNjd5x5oCtDXrdSFABo8LE6qp457tNEsU9hSXLEXp1hc_yiFrPMpMmUEzx9Y8ES7G7ch4VgmyOpAc8RnyQbaDfIloDG9nJURg1L9EfibP7-llCDQBZvnUJYJzdNilNoXPELmceJSyFPBjod_79" />
+                            <div className="absolute bottom-0 right-0 w-3 h-3 bg-[#afff33] border-2 border-[#161616] rounded-full animate-pulse"></div>
+                        </div>
+                        <div className="hidden lg:block overflow-hidden">
+                            <p className="text-sm font-semibold truncate font-display">Auth Active</p>
+                            <p className="text-[9px] text-slate-500 uppercase tracking-widest font-mono">ID: {userId.substring(0, 6) || '---'}</p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            {/* Main Workspace (Split Grid) */}
+            <main className="flex-1 flex flex-col xl:flex-row relative z-10 overflow-y-auto xl:overflow-hidden">
+
+                {/* Left Side: Neural Input Field */}
+                <section className="flex-1 flex flex-col p-4 md:p-6 lg:p-10 border-b xl:border-b-0 xl:border-r border-[#00f2ff]/10 relative min-h-[60vh] xl:min-h-0">
+                    <div className="flex items-center justify-between mb-8">
+                        <div>
+                            <h2 className="font-display text-3xl font-extrabold tracking-tight uppercase italic flex items-center gap-3">
+                                <span className="text-white">Neural</span>
+                                <span className="text-[#00f2ff]">Input</span>
+                            </h2>
+                            <p className="text-slate-500 text-xs font-mono uppercase tracking-widest mt-1">Specify validation parameters</p>
+                        </div>
+                        <div className="flex gap-4 text-[10px] uppercase font-bold tracking-widest">
+                            <button
+                                onClick={() => setShowContextModal(true)}
+                                className="flex items-center gap-1.5 px-3 py-1 rounded bg-[#ff00e5]/10 border border-[#ff00e5]/20 text-[#ff00e5] hover:bg-[#ff00e5]/20 transition-colors"
+                            >
+                                <span className="material-symbols-outlined text-[14px]">library_add</span>
+                                Add Context
+                            </button>
+                            <span className="flex items-center gap-1.5 px-3 py-1 rounded bg-[#afff33]/10 border border-[#afff33]/20 text-[#afff33]">
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#afff33] animate-pulse"></span>
+                                System Ready
+                            </span>
+                        </div>
+                    </div>
+
+                    <div className="flex-1 relative w-full group flex flex-col">
+                        {/* Decorative Corners */}
+                        <div className="absolute -top-2 -left-2 w-8 h-8 border-t-2 border-l-2 border-[#00f2ff]/40 rounded-tl-lg pointer-events-none"></div>
+                        <div className="absolute -top-2 -right-2 w-8 h-8 border-t-2 border-r-2 border-[#00f2ff]/40 rounded-tr-lg pointer-events-none"></div>
+                        <div className="absolute -bottom-2 -left-2 w-8 h-8 border-b-2 border-l-2 border-[#00f2ff]/40 rounded-bl-lg pointer-events-none"></div>
+                        <div className="absolute -bottom-2 -right-2 w-8 h-8 border-b-2 border-r-2 border-[#00f2ff]/40 rounded-br-lg pointer-events-none"></div>
+
+                        <div className="flex-1 glass-panel rounded-2xl overflow-hidden focus-within:border-[#00f2ff]/60 transition-all duration-500 shadow-2xl flex flex-col">
+                            <div className="flex items-center gap-2 px-6 py-4 border-b border-[#00f2ff]/10 bg-[#00f2ff]/5">
+                                <span className="material-symbols-outlined text-[#00f2ff] text-sm">psychology</span>
+                                <span className="text-[10px] uppercase font-bold tracking-[0.3em] text-[#00f2ff]/70 font-mono">Console // Input Stream</span>
+                            </div>
+
+                            <textarea
+                                className="flex-1 w-full bg-transparent border-none focus:ring-0 p-8 text-xl text-slate-200 placeholder:text-slate-600 resize-none font-light leading-relaxed custom-scrollbar"
+                                placeholder={t(lang, 'sys_placeholder') || "Enter your complex prompt / objective here..."}
+                                value={idea}
+                                onChange={(e) => setIdea(e.target.value)}
+                                onKeyDown={(e) => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) start(); }}
+                                maxLength={2500}
+                            />
+
+                            <div className="p-4 bg-white/5 border-t border-white/5 flex items-center justify-between text-[10px] font-mono uppercase text-slate-400">
+                                <div className="flex gap-4">
+                                    <span className={cc > 2000 ? "text-red-400" : "text-[#afff33]"}>Tokens: {cc}/2500</span>
+                                    <span>Temp: 0.82</span>
+                                </div>
+                                <span className="flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">keyboard_command_key</span> + Enter to submit</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Right Side: Agent Selection & Submit */}
+                <section className="xl:w-[450px] flex flex-col bg-[#121235]/30 p-4 md:p-6 lg:p-10 relative z-10 overflow-visible xl:overflow-y-auto xl:custom-scrollbar">
+
+                    <div className="mb-8">
+                        <h3 className="font-display font-bold text-sm text-white uppercase tracking-widest flex items-center gap-2 mb-4">
+                            <span className="material-symbols-outlined text-[#ff00e5] text-lg">smart_toy</span>
+                            Assigned Neural Agents
+                        </h3>
+
+                        <div className="grid grid-cols-2 gap-3">
+                            <div className="glass-panel p-3 rounded-lg border border-[#00f2ff]/30 hover:bg-[#00f2ff]/10 cursor-default transition-all">
+                                <div className="flex justify-between items-start mb-2">
+                                    <span className="material-symbols-outlined text-[#00f2ff] text-xl">visibility</span>
+                                    <div className="w-1.5 h-1.5 rounded-full bg-[#afff33] shadow-[0_0_5px_#afff33]"></div>
+                                </div>
+                                <h4 className="font-bold text-xs text-white">Visionary</h4>
+                                <p className="text-[9px] text-[#00f2ff]/60 uppercase font-mono mt-1">Strategic Lead</p>
+                            </div>
+
+                            <div className="glass-panel p-3 rounded-lg border border-white/10 hover:bg-white/5 cursor-default transition-all">
+                                <div className="flex justify-between items-start mb-2">
+                                    <span className="material-symbols-outlined text-white/50 text-xl">terminal</span>
+                                    <div className="w-1.5 h-1.5 rounded-full bg-[#afff33] shadow-[0_0_5px_#afff33]"></div>
+                                </div>
+                                <h4 className="font-bold text-xs text-white">Technologist</h4>
+                                <p className="text-[9px] text-slate-500 uppercase font-mono mt-1">System Architect</p>
+                            </div>
+
+                            <div className="glass-panel p-3 rounded-lg border border-[#ff00e5]/30 hover:bg-[#ff00e5]/10 cursor-default transition-all">
+                                <div className="flex justify-between items-start mb-2">
+                                    <span className="material-symbols-outlined text-[#ff00e5] text-xl">rate_review</span>
+                                    <div className="w-1.5 h-1.5 rounded-full bg-[#afff33] shadow-[0_0_5px_#afff33]"></div>
+                                </div>
+                                <h4 className="font-bold text-xs text-white">Critic</h4>
+                                <p className="text-[9px] text-[#ff00e5]/60 uppercase font-mono mt-1">Logic Validation</p>
+                            </div>
+
+                            <div className="glass-panel p-3 rounded-lg border border-[#afff33]/30 hover:bg-[#afff33]/10 cursor-default transition-all">
+                                <div className="flex justify-between items-start mb-2">
+                                    <span className="material-symbols-outlined text-[#afff33] text-xl">trending_up</span>
+                                    <div className="w-1.5 h-1.5 rounded-full bg-[#afff33] shadow-[0_0_5px_#afff33]"></div>
+                                </div>
+                                <h4 className="font-bold text-xs text-white">Market</h4>
+                                <p className="text-[9px] text-[#afff33]/60 uppercase font-mono mt-1">Trend Analysis</p>
+                            </div>
+
+                            <div className="glass-panel p-3 rounded-lg border border-amber-500/30 hover:bg-amber-500/10 cursor-default transition-all">
+                                <div className="flex justify-between items-start mb-2">
+                                    <span className="material-symbols-outlined text-amber-500 text-xl">gavel</span>
+                                    <div className="w-1.5 h-1.5 rounded-full bg-[#afff33] shadow-[0_0_5px_#afff33]"></div>
+                                </div>
+                                <h4 className="font-bold text-xs text-white">Ethics</h4>
+                                <p className="text-[9px] text-amber-500/60 uppercase font-mono mt-1">Compliance Check</p>
+                            </div>
+
+                            <div className="glass-panel p-3 rounded-lg border border-blue-500/30 hover:bg-blue-500/10 cursor-default transition-all">
+                                <div className="flex justify-between items-start mb-2">
+                                    <span className="material-symbols-outlined text-blue-500 text-xl">account_balance</span>
+                                    <div className="w-1.5 h-1.5 rounded-full bg-[#afff33]"></div>
+                                </div>
+                                <h4 className="font-bold text-xs text-white">Finance</h4>
+                                <p className="text-[9px] text-blue-500/60 uppercase font-mono mt-1">Cost Projection</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="mt-auto pt-8 border-t border-[#00f2ff]/10">
+                        <div className="flex flex-col gap-4 mb-8">
+                            <div className="flex items-center justify-between text-[10px] uppercase tracking-widest font-mono text-slate-400">
+                                <span>Engine Version</span>
+                                <span className="text-[#00f2ff]">ACE v4.2</span>
+                            </div>
+                            <div className="flex items-center justify-between text-[10px] uppercase tracking-widest font-mono text-slate-400">
+                                <span>Council Judges</span>
+                                <span className="text-white">GPT-4o / Claude 3.5</span>
+                            </div>
+                        </div>
+
+                        <button
+                            onClick={start}
+                            disabled={loading || profileLoading || !idea.trim()}
+                            className="w-full relative px-6 py-6 bg-[#00f2ff]/10 border border-[#00f2ff] rounded-xl overflow-hidden transition-all hover:bg-[#00f2ff]/20 active:scale-[0.98] shadow-[0_0_20px_rgba(0,242,255,0.2)] disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed group"
+                        >
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                            <div className="flex items-center justify-center gap-3 relative z-10">
+                                {loading || profileLoading ? (
+                                    <>
+                                        <div className="w-5 h-5 border-2 border-[#00f2ff]/30 border-t-[#00f2ff] rounded-full animate-spin" />
+                                        <span className="font-display font-black text-sm tracking-[0.2em] text-[#00f2ff] uppercase italic">Initializing...</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <span className="font-display font-black text-sm tracking-[0.2em] text-[#00f2ff] uppercase italic glow-text">Initiate Neural Synthesis</span>
+                                        <span className="material-symbols-outlined text-[#00f2ff] animate-pulse">bolt</span>
+                                    </>
+                                )}
+                            </div>
+                        </button>
+                    </div>
+
+                </section>
+            </main>
+            {
+                showUpgrade && (
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
+                        <div className="bg-[#0f172a] border border-white/10 rounded-3xl p-8 max-w-md w-full shadow-2xl shadow-purple-500/20 relative overflow-hidden">
+                            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-cyan-500" />
+
+                            <div className="mb-6">
+                                <div className="w-14 h-14 bg-purple-500/10 rounded-2xl flex items-center justify-center mb-4">
+                                    <svg className="w-8 h-8 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                    </svg>
+                                </div>
+                                <h2 className="text-2xl font-bold text-white mb-2">Limit Reached</h2>
+                                <p className="text-white/50 text-sm leading-relaxed mb-4">
+                                    {debugInfo ? (
+                                        <span>Plan: <b className="text-purple-400 uppercase">{debugInfo.debug?.plan}</b> · Usage: <b className="text-white">{debugInfo.usage} / {debugInfo.limit}</b></span>
+                                    ) : (
+                                        t(lang, 'sys_limit_reached_desc')
+                                    )}
+                                </p>
+
+                                {debugInfo?.debug && (
+                                    <div className="p-3 bg-white/[0.03] rounded-xl border border-white/[0.05] mb-4">
+                                        <p className="text-[9px] font-mono text-white/20 uppercase tracking-tighter mb-1">Debug Session Info</p>
+                                        <p className="text-[10px] font-mono text-white/40 break-all leading-tight">
+                                            Tenant: {debugInfo.debug.tenant?.substring(0, 16)}...<br />
+                                            User: {debugInfo.debug.user?.substring(0, 16)}...
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="flex flex-col gap-3">
+                                <button
+                                    onClick={() => router.push('/pricing?checkout=pro')}
+                                    className="w-full bg-gradient-to-r from-purple-600 to-cyan-500 text-white font-bold py-4 rounded-xl hover:shadow-lg hover:shadow-purple-500/30 transition-all active:scale-[0.98]"
+                                >
+                                    Upgrade to Pro
+                                </button>
+                                <button
+                                    onClick={() => setShowUpgrade(false)}
+                                    className="w-full bg-white/5 border border-white/10 text-white/50 font-medium py-3 rounded-xl hover:bg-white/10 transition-all"
+                                >
+                                    Close
+                                </button>
+                            </div>
+
+                            <p className="mt-6 text-center text-[10px] text-white/20 uppercase tracking-widest font-bold">
+                                Secure payment via Stripe
+                            </p>
+                        </div>
+                    </div>
+                )
+            }
+        </div >
     );
 }

@@ -9,6 +9,19 @@ const config: Config = {
     ],
     theme: {
         extend: {
+            fontFamily: {
+                display: ['var(--font-public-sans)', 'var(--font-space)', 'sans-serif'],
+                body: ['var(--font-inter)', 'sans-serif'],
+                mono: ['var(--font-mono)', 'monospace'],
+            },
+            colors: {
+                'space-black': '#05050a',
+                'deep-blue': '#0a0a1f',
+                'panel-blue': '#121235',
+                'neon-cyan': '#00f2ff',
+                'neon-lime': '#afff33',
+                'neon-magenta': '#ff00e5',
+            },
             backgroundImage: {
                 "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
                 "gradient-conic":

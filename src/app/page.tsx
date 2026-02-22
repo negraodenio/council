@@ -1,485 +1,481 @@
-﻿import { Navbar } from "@/ui/Navbar";
-import { Footer } from "@/ui/Footer";
-
-export default function Home() {
+﻿export default function Home() {
     return (
-        <main className="bg-white text-neutral-900">
-
-            <Navbar />
-
-            {/* HERO */}
-            <section className="pt-40 pb-24 px-6">
-                <div className="max-w-3xl mx-auto text-center">
-
-                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-neutral-100 text-neutral-500 text-sm mb-8">
-                        <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
-                        Council as a Service {"·"} Powered by ACE Engine{"™"}
+        <main className="bg-space-black text-slate-100 font-body selection:bg-neon-lime selection:text-black pt-20 pb-0">
+            {/* Header */}
+            <header className="fixed top-0 w-full z-50 border-b border-panel-blue bg-space-black/80 backdrop-blur-md">
+                <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                        <div className="size-10 bg-neon-cyan/10 rounded-lg flex items-center justify-center border border-neon-cyan/30 shadow-[0_0_15px_rgba(0,240,255,0.2)]">
+                            <span className="material-symbols-outlined text-neon-cyan font-bold">account_tree</span>
+                        </div>
+                        <span className="text-xl font-black tracking-tighter uppercase font-display">Council<span className="text-neon-cyan">IA</span></span>
                     </div>
+                    <nav className="hidden md:flex items-center gap-8 font-display">
+                        <a className="text-sm font-medium hover:text-neon-cyan transition-colors" href="#how-it-works">How it works</a>
+                        <a className="text-sm font-medium hover:text-neon-cyan transition-colors" href="#the-council">The Council</a>
+                        <a className="text-sm font-medium hover:text-neon-cyan transition-colors" href="#use-cases">Use cases</a>
+                        <a className="text-sm font-medium hover:text-neon-cyan transition-colors" href="#pricing">Pricing</a>
+                        <a className="text-sm font-medium hover:text-neon-cyan transition-colors" href="#methodology">Methodology</a>
+                    </nav>
+                    <a href="/login" className="bg-neon-cyan/10 border border-neon-cyan/50 text-neon-cyan px-6 py-2.5 rounded-xl font-bold text-sm transition-all hover:bg-neon-cyan hover:text-black hover:scale-105 active:scale-95 shadow-[0_0_15px_rgba(0,240,255,0.2)]">
+                        Start a session
+                    </a>
+                </div>
+            </header>
 
-                    <h1 className="text-5xl md:text-7xl font-bold leading-[1.05] tracking-tight mb-8">
-                        One AI agrees with you.
-                        <br />
-                        <span className="text-neutral-300">Six won{"'"}t.</span>
+            {/* Hero Section */}
+            <section className="relative py-24 px-6 overflow-hidden">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full pointer-events-none">
+                    <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-neon-cyan/5 blur-[120px] rounded-full"></div>
+                </div>
+                <div className="max-w-4xl mx-auto text-center relative z-10">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-neon-cyan/30 bg-neon-cyan/5 text-neon-cyan text-xs font-bold uppercase tracking-widest mb-8">
+                        <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-neon-cyan opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-neon-cyan"></span>
+                        </span>
+                        Adversarial Multi-Agent System
+                    </div>
+                    <h1 className="text-5xl md:text-7xl font-black leading-[1.1] mb-8 tracking-tight font-display">
+                        One AI agrees with you.<br />
+                        <span className="text-neon-cyan glow-text">Six won&apos;t.</span>
                     </h1>
-
-                    <p className="text-lg md:text-xl text-neutral-500 max-w-2xl mx-auto mb-12 leading-relaxed">
-                        Submit any idea. Six AI experts with opposing perspectives
-                        debate it in 3 adversarial rounds. A seventh arbitrates
-                        and delivers a reasoned verdict. In any language.
+                    <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-12 leading-relaxed">
+                        Submit any idea. Six AI experts with opposing perspectives debate it in 3 adversarial rounds. A seventh arbitrates and delivers a reasoned verdict.
                     </p>
-
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <a
-                            href="/login"
-                            className="bg-neutral-900 text-white px-8 py-4 rounded-md text-base font-medium hover:bg-neutral-800 transition"
-                        >
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 font-display">
+                        <a href="/login" className="w-full sm:w-auto px-8 py-4 bg-neon-cyan text-black rounded-xl font-bold text-lg hover:shadow-[0_0_30px_rgba(0,240,255,0.4)] transition-all text-center">
                             Start a free session
                         </a>
-                        <a
-                            href="#how"
-                            className="border border-neutral-200 text-neutral-600 px-8 py-4 rounded-md text-base font-medium hover:border-neutral-400 transition"
-                        >
+                        <a href="#how-it-works" className="w-full sm:w-auto px-8 py-4 border border-[rgba(0,240,255,0.2)] bg-[#121235]/40 hover:bg-[#121235]/60 rounded-xl font-bold text-lg transition-all text-center text-neon-cyan">
                             See how it works
                         </a>
                     </div>
-
                 </div>
             </section>
 
-            {/* DEBATE VISUAL */}
-            <section className="py-24 px-6 border-t border-neutral-100">
-                <div className="max-w-5xl mx-auto">
-
-                    <div className="bg-neutral-950 rounded-2xl p-8 md:p-12 text-white font-mono text-sm overflow-hidden">
-
-                        <div className="text-neutral-500 mb-2 flex items-center gap-2">
-                            <span className="size-2 rounded-full bg-red-500 animate-pulse" />
-                            LIVE — session #0847
+            {/* Live Demo/Preview */}
+            <section className="py-20 px-6 max-w-7xl mx-auto">
+                <div className="glass-card rounded-2xl overflow-hidden shadow-[0_0_30px_rgba(0,240,255,0.1)]">
+                    <div className="p-6 border-b border-[rgba(0,240,255,0.2)] flex items-center justify-between bg-panel-blue/50">
+                        <div className="flex items-center gap-4">
+                            <div className="px-3 py-1 bg-neon-magenta/10 text-neon-magenta text-[10px] font-black uppercase rounded tracking-tighter flex items-center gap-1.5">
+                                <span className="size-1.5 bg-neon-magenta rounded-full"></span> LIVE
+                            </div>
+                            <h2 className="text-sm font-mono text-[#c4c4ff]/70">SESSION #0847: Coffee Shop Expansion in Lisbon</h2>
                         </div>
-                        <div className="text-neutral-400 mb-6 text-xs">
-                            &quot;Should we open a coffee shop in Colombo Shopping, Lisbon?&quot;
+                        <div className="flex gap-1.5">
+                            <div className="size-3 rounded-full bg-[rgba(0,240,255,0.2)]"></div>
+                            <div className="size-3 rounded-full bg-[rgba(0,240,255,0.2)]"></div>
+                            <div className="size-3 rounded-full bg-[rgba(0,240,255,0.2)]"></div>
                         </div>
-
-                        <div className="space-y-4">
-                            <div className="flex gap-3">
-                                <span className="text-purple-400 shrink-0 w-28">{"🔮"} Visionary</span>
-                                <span className="text-neutral-300">
-                                    Colombo attracts 20M visitors/year. Premium coffee is growing at 12% CAGR in Lisbon. This is a clear market opportunity with potential for brand expansion.
-                                </span>
+                    </div>
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-0">
+                        {/* Debate Feed */}
+                        <div className="lg:col-span-8 p-6 space-y-6 h-[500px] overflow-y-auto custom-scrollbar border-r border-[rgba(0,240,255,0.2)]">
+                            {/* Visionary */}
+                            <div className="flex gap-4">
+                                <div className="size-10 rounded-lg bg-orange-500/10 flex items-center justify-center shrink-0 border border-orange-500/30">
+                                    <span className="material-symbols-outlined text-orange-500 text-sm">lightbulb</span>
+                                </div>
+                                <div className="space-y-1">
+                                    <p className="text-[10px] font-bold text-orange-500 tracking-widest uppercase">VISIONARY</p>
+                                    <div className="p-4 bg-panel-blue/40 rounded-xl rounded-tl-none border border-[rgba(0,240,255,0.1)] text-sm leading-relaxed text-[#c4c4ff]">
+                                        Lisbon&apos;s specialty coffee scene is booming. Expansion is the only path to survival. We need to capture the digital nomad market in Arroios immediately.
+                                    </div>
+                                </div>
                             </div>
-
-                            <div className="flex gap-3">
-                                <span className="text-red-400 shrink-0 w-28">{"😈"} Devil{"'"}s Adv.</span>
-                                <span className="text-neutral-300">
-                                    Rent in Colombo is {"€"}8-15K/month. With Starbucks, Delta, and 12 other caf{"é"}s already there, you need 18% daily capture rate just to break even. That{"'"}s delusional.
-                                </span>
+                            {/* Devil's Advocate */}
+                            <div className="flex gap-4">
+                                <div className="size-10 rounded-lg bg-neon-magenta/10 flex items-center justify-center shrink-0 border border-neon-magenta/30">
+                                    <span className="material-symbols-outlined text-neon-magenta text-sm">gavel</span>
+                                </div>
+                                <div className="space-y-1">
+                                    <p className="text-[10px] font-bold text-neon-magenta tracking-widest uppercase">DEVIL&apos;S ADVOCATE</p>
+                                    <div className="p-4 bg-panel-blue/40 rounded-xl rounded-tl-none border border-[rgba(0,240,255,0.1)] text-sm leading-relaxed text-[#c4c4ff]">
+                                        The market is saturated. There are three Roaster-cafes within 200m of your target spot. Rent spikes in Lisbon are predatory; your 2-year ROI model ignores the potential 30% lease hike.
+                                    </div>
+                                </div>
                             </div>
-
-                            <div className="flex gap-3">
-                                <span className="text-cyan-400 shrink-0 w-28">{"⚙️"} Tech</span>
-                                <span className="text-neutral-300">
-                                    A modular kiosk format with app-based ordering reduces staff from 5 to 2. IoT inventory tracking cuts waste by 30%.
-                                </span>
-                            </div>
-
-                            <div className="flex gap-3">
-                                <span className="text-emerald-400 shrink-0 w-28">{"📊"} Market</span>
-                                <span className="text-neutral-300">
-                                    TAM for specialty coffee in Lisbon metro: {"€"}180M. Colombo captures 8% of foot traffic conversion. SAM is {"€"}14.4M — realistic SOM: {"€"}720K/year.
-                                </span>
-                            </div>
-
-                            <div className="flex gap-3">
-                                <span className="text-blue-400 shrink-0 w-28">{"💰"} Finance</span>
-                                <span className="text-neutral-300">
-                                    Unit economics: {"€"}4.50 average ticket, 280 customers/day needed. Breakeven at month 14 with {"€"}120K initial investment. Tight but feasible.
-                                </span>
-                            </div>
-
-                            <div className="flex gap-3">
-                                <span className="text-amber-400 shrink-0 w-28">{"⚖️"} Ethics</span>
-                                <span className="text-neutral-300">
-                                    Colombo lease contracts have 5-year lock-in. Exit costs are {"€"}40-60K. Regulatory risk is low but lease risk is material.
-                                </span>
-                            </div>
-
-                            <div className="border-t border-neutral-700 pt-4 mt-6">
-                                <div className="flex gap-3">
-                                    <span className="text-yellow-400 shrink-0 w-28">{"🏛️"} Judge</span>
-                                    <span className="text-neutral-100">
-                                        <strong>CONDITIONAL GO — 58/100.</strong> Viable only with premium differentiation and kiosk format. Address rent risk with a revenue-share lease model.
-                                        <span className="text-neutral-500"> Confidence: MEDIUM</span>
-                                    </span>
+                            {/* Tech Lead */}
+                            <div className="flex gap-4">
+                                <div className="size-10 rounded-lg bg-neon-cyan/10 flex items-center justify-center shrink-0 border border-neon-cyan/30">
+                                    <span className="material-symbols-outlined text-neon-cyan text-sm">memory</span>
+                                </div>
+                                <div className="space-y-1">
+                                    <p className="text-[10px] font-bold text-neon-cyan tracking-widest uppercase">TECH LEAD</p>
+                                    <div className="p-4 bg-panel-blue/40 rounded-xl rounded-tl-none border border-[rgba(0,240,255,0.1)] text-sm leading-relaxed text-[#c4c4ff]">
+                                        Operational stack needs 24/7 automation. If you&apos;re targeting nomads, the local grid in Arroios is unstable. You need a dedicated fiber backup or you lose your core demographic.
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
+                        {/* Verdict Sidebar */}
+                        <div className="lg:col-span-4 bg-panel-blue/20 p-8 flex flex-col justify-center items-center text-center">
+                            <div className="mb-8 relative">
+                                <svg className="size-40 rotate-[-90deg]">
+                                    <circle className="text-[rgba(0,240,255,0.1)]" cx="80" cy="80" fill="none" r="70" stroke="currentColor" strokeWidth="12"></circle>
+                                    <circle className="text-neon-lime transition-all duration-1000 shadow-[0_0_20px_rgba(175,255,51,0.5)]" cx="80" cy="80" fill="none" r="70" stroke="currentColor" strokeDasharray="440" strokeDashoffset="185" strokeWidth="12"></circle>
+                                </svg>
+                                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                                    <span className="text-4xl font-black font-display text-neon-lime tracking-tighter">58</span>
+                                    <span className="text-[10px] text-[#00f0ff]/70 font-mono tracking-widest mt-1">SCORE/100</span>
+                                </div>
+                            </div>
+                            <h3 className="text-xl font-bold mb-4 font-display">Judge Verdict: <span className="text-neon-lime">Conditional Go</span></h3>
+                            <p className="text-sm text-[#c4c4ff] leading-relaxed mb-8 italic">
+                                &quot;The proposal shows strong conceptual merit but fails on immediate financial liquidity and local ethical integration. Proceed only with revised CapEx and verified energy backups.&quot;
+                            </p>
+                            <button className="w-full py-3 bg-panel-blue border border-[rgba(0,240,255,0.3)] rounded-xl text-sm font-bold hover:bg-[rgba(0,240,255,0.1)] text-neon-cyan transition-colors">
+                                Read Full Reasoning (12 Pages)
+                            </button>
+                        </div>
                     </div>
-
-                    <p className="text-center text-sm text-neutral-400 mt-6">
-                        Real session output. 6 experts, 3 rounds, unedited.
-                    </p>
-
                 </div>
             </section>
 
-            {/* HOW IT WORKS */}
-            <section id="how" className="py-24 px-6 border-t border-neutral-100">
-                <div className="max-w-4xl mx-auto">
-
-                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-16 text-center">
-                        How it works
-                    </h2>
-
-                    <div className="grid md:grid-cols-3 gap-12">
-
-                        <div>
-                            <div className="text-4xl font-bold text-neutral-200 mb-4">01</div>
-                            <h3 className="text-lg font-semibold mb-2">You submit</h3>
-                            <p className="text-neutral-500 leading-relaxed">
-                                An idea, a business decision, a strategy — in any language.
-                                The council detects your language and responds accordingly.
-                            </p>
-                        </div>
-
-                        <div>
-                            <div className="text-4xl font-bold text-neutral-200 mb-4">02</div>
-                            <h3 className="text-lg font-semibold mb-2">Six experts debate</h3>
-                            <p className="text-neutral-500 leading-relaxed">
-                                Round 1: Each expert analyzes from their perspective.
-                                Round 2: They challenge each other{"'"}s weakest arguments.
-                                Round 3: They defend positions and give final scores.
-                            </p>
-                        </div>
-
-                        <div>
-                            <div className="text-4xl font-bold text-neutral-200 mb-4">03</div>
-                            <h3 className="text-lg font-semibold mb-2">The Judge decides</h3>
-                            <p className="text-neutral-500 leading-relaxed">
-                                GPT-4o reads all 3 rounds, weighs every argument,
-                                and delivers a structured verdict with a consensus score
-                                and actionable recommendations.
-                            </p>
-                        </div>
-
-                    </div>
-
-                </div>
-            </section>
-
-            {/* FEATURES GRID */}
-            <section className="py-24 px-6 bg-neutral-50 border-t border-neutral-100">
-                <div className="max-w-4xl mx-auto">
-
-                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-center">
-                        What{"'"}s inside
-                    </h2>
-                    <p className="text-neutral-500 text-center mb-16 text-lg">
-                        Enterprise-grade AI deliberation, not a chatbot.
-                    </p>
-
-                    <div className="grid md:grid-cols-2 gap-6">
-                        <FeatureCard
-                            icon={"🌐"}
-                            title="Multi-language"
-                            desc="Write in Portuguese, Spanish, French, German, Chinese, Arabic — the entire council responds in your language."
-                        />
-                        <FeatureCard
-                            icon={"⚔️"}
-                            title="3-round adversarial debate"
-                            desc="Not just opinions. Experts analyze, attack each other, then defend. Weak arguments get destroyed."
-                        />
-                        <FeatureCard
-                            icon={"🧠"}
-                            title="7 different AI models"
-                            desc="DeepSeek R1, Gemini 2.5 Flash, Llama 4 Maverick, Mistral Medium 3, GPT-4o, Kimi K2, and Qwen 3."
-                        />
-                        <FeatureCard
-                            icon={"🇪🇺"}
-                            title="EU data sovereignty"
-                            desc="EU-first routing for sensitive requests. Zero Data Retention on supported providers. GDPR-ready."
-                        />
-                        <FeatureCard
-                            icon={"📡"}
-                            title="Live debate streaming"
-                            desc="Watch the experts argue in real-time. Interject mid-debate to steer the discussion."
-                        />
-                        <FeatureCard
-                            icon={"🔧"}
-                            title="GitHub integration"
-                            desc="For code reviews: auto-generate patches and open PRs directly from the verdict."
-                        />
-                    </div>
-
-                </div>
-            </section>
-
-            {/* ACE ENGINE */}
-            <section className="py-24 px-6 border-t border-neutral-100">
-                <div className="max-w-4xl mx-auto">
-
+            {/* Process Section */}
+            <section className="py-24 px-6 bg-panel-blue/20" id="how-it-works">
+                <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-16">
-                        <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
-                            The ACE Engine{"™"}
-                        </h2>
-                        <p className="text-neutral-500 text-lg max-w-2xl mx-auto">
-                            Adversarial Consensus Engine — our multi-agent reasoning framework
-                            that structures debate, eliminates sycophancy, and produces
-                            actionable verdicts you can trust.
-                        </p>
+                        <h2 className="text-4xl font-black mb-4 uppercase tracking-tight font-display">The Protocol</h2>
+                        <p className="text-[#c4c4ff]">Three stages of intellectual purification.</p>
                     </div>
-
-                    <div className="grid md:grid-cols-2 gap-6">
-                        <div className="p-6 rounded-xl border border-neutral-200">
-                            <div className="text-sm font-mono text-neutral-400 mb-2">PHASE 1</div>
-                            <h3 className="font-semibold text-base mb-1">Focus Lock</h3>
-                            <p className="text-neutral-500 text-sm leading-relaxed">
-                                Each AI expert is anchored to its role and perspective. No drift, no generic answers. The Visionary stays visionary, the Devil stays adversarial.
-                            </p>
-                        </div>
-                        <div className="p-6 rounded-xl border border-neutral-200">
-                            <div className="text-sm font-mono text-neutral-400 mb-2">PHASE 2</div>
-                            <h3 className="font-semibold text-base mb-1">Adversarial Challenge</h3>
-                            <p className="text-neutral-500 text-sm leading-relaxed">
-                                In Round 2, each expert reads what the others said and attacks the weakest arguments. Weak reasoning gets exposed and dismantled.
-                            </p>
-                        </div>
-                        <div className="p-6 rounded-xl border border-neutral-200">
-                            <div className="text-sm font-mono text-neutral-400 mb-2">PHASE 3</div>
-                            <h3 className="font-semibold text-base mb-1">Defense {"&"} Concession</h3>
-                            <p className="text-neutral-500 text-sm leading-relaxed">
-                                In Round 3, experts defend their surviving arguments and concede where they were wrong. This produces intellectual honesty, not stubbornness.
-                            </p>
-                        </div>
-                        <div className="p-6 rounded-xl border border-neutral-200">
-                            <div className="text-sm font-mono text-neutral-400 mb-2">PHASE 4</div>
-                            <h3 className="font-semibold text-base mb-1">Judicial Arbitration</h3>
-                            <p className="text-neutral-500 text-sm leading-relaxed">
-                                GPT-4o acts as an impartial judge. It weighs all arguments, penalizes unrefuted attacks, and delivers a scored verdict with concrete recommendations.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div className="text-center mt-8">
-                        <a href="/methodology" className="text-sm text-neutral-500 hover:text-neutral-900 transition underline underline-offset-4">
-                            Read the full methodology {"→"}
-                        </a>
-                    </div>
-
-                </div>
-            </section>
-
-            {/* THE COUNCIL */}
-            <section id="council" className="py-24 px-6 bg-neutral-50 border-t border-neutral-100">
-                <div className="max-w-4xl mx-auto">
-
-                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-16 text-center">
-                        The council
-                    </h2>
-
-                    <div className="grid md:grid-cols-3 gap-6">
-
-                        <CouncilCard color="bg-purple-500" emoji={"🔮"} name="The Visionary"
-                            desc="Finds the 10x opportunity. Thinks like a VC evaluating a Series A. What could this become?" />
-
-                        <CouncilCard color="bg-cyan-500" emoji={"⚙️"} name="The Technologist"
-                            desc="Evaluates feasibility, architecture, scalability. Thinks like a CTO who has built 3 startups." />
-
-                        <CouncilCard color="bg-red-500" emoji={"😈"} name="Devil's Advocate"
-                            desc="Finds every flaw and failure mode. Thinks like a short-seller researching why this will fail." />
-
-                        <CouncilCard color="bg-emerald-500" emoji={"📊"} name="Market Analyst"
-                            desc="TAM/SAM/SOM, competitive landscape, go-to-market. Thinks like a McKinsey partner." />
-
-                        <CouncilCard color="bg-amber-500" emoji={"⚖️"} name="Ethics & Risk"
-                            desc="Regulatory risks, bias, privacy, reputation. Thinks like a compliance officer at a top law firm." />
-
-                        <CouncilCard color="bg-blue-500" emoji={"💰"} name="Financial Strategist"
-                            desc="Unit economics, burn rate, revenue models, path to profitability. Thinks like a CFO with PE experience." />
-
-                    </div>
-
-                    <div className="mt-6 p-8 rounded-xl bg-neutral-950 text-white text-center">
-                        <div className="text-3xl mb-3">{"🏛️"}</div>
-                        <h3 className="font-semibold text-lg mb-1">The Judge — GPT-4o</h3>
-                        <p className="text-neutral-400 text-sm leading-relaxed max-w-lg mx-auto">
-                            Reads all 3 rounds of debate. Weighs every argument. Weights unrefuted attacks heavily.
-                            Delivers the final verdict with a consensus score, strategic recommendations, and confidence level.
-                        </p>
-                    </div>
-
-                </div>
-            </section>
-
-            {/* USE CASES */}
-            <section id="usecases" className="py-24 px-6 border-t border-neutral-100">
-                <div className="max-w-4xl mx-auto">
-
-                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-center">
-                        Debate anything
-                    </h2>
-                    <p className="text-neutral-500 text-center mb-16 text-lg">
-                        Not just code. Any decision that matters.
-                    </p>
-
-                    <div className="grid md:grid-cols-2 gap-6">
-
-                        <UseCaseCard title="Startup validation"
-                            desc="Is this idea viable? Business model stress-test, competitor analysis, market fit, unit economics — debated from 6 angles." />
-
-                        <UseCaseCard title="Business decisions"
-                            desc="Should we enter the European market? Market analysis, risk assessment, financial modeling, timing evaluation." />
-
-                        <UseCaseCard title="Code & architecture"
-                            desc="Is this production-ready? Security, performance, readability, scalability — with auto-generated patches." />
-
-                        <UseCaseCard title="Strategy & planning"
-                            desc="Hire or outsource? Cost analysis, quality trade-offs, timeline impact, long-term implications." />
-
-                        <UseCaseCard title="Content & positioning"
-                            desc="Which positioning wins? Brand voice, audience fit, differentiation, messaging clarity." />
-
-                        <UseCaseCard title="Risk & compliance"
-                            desc="Are we GDPR compliant? Risk vectors, data flow analysis, remediation priorities, compliance gaps." />
-
-                    </div>
-
-                </div>
-            </section>
-
-            {/* PRICING */}
-            <section id="pricing" className="py-24 px-6 bg-neutral-50 border-t border-neutral-100">
-                <div className="max-w-4xl mx-auto">
-
-                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-center">
-                        Pricing
-                    </h2>
-                    <p className="text-neutral-500 text-center mb-16">
-                        Start free. No credit card.
-                    </p>
-
-                    <div className="grid md:grid-cols-3 gap-8">
-
-                        <div className="bg-white p-8 rounded-xl border border-neutral-200">
-                            <h3 className="font-semibold mb-1">Free</h3>
-                            <div className="text-3xl font-bold mb-6">$0</div>
-                            <ul className="space-y-3 text-sm text-neutral-500 mb-8">
-                                <li>{"✓"} 2 sessions / month</li>
-                                <li>{"✓"} 6 experts + judge</li>
-                                <li>{"✓"} 3 adversarial rounds</li>
-                                <li>{"✓"} Multi-language</li>
-                                <li>{"✓"} Full verdict report</li>
-                            </ul>
-                            <a href="/login" className="block text-center border border-neutral-200 py-3 rounded-md text-sm font-medium hover:border-neutral-400 transition cursor-pointer">
-                                Start free
-                            </a>
-                        </div>
-
-                        <div className="bg-white p-8 rounded-xl border-2 border-neutral-900 relative">
-                            <span className="absolute -top-3 left-8 bg-neutral-900 text-white text-xs px-3 py-1 rounded-full">
-                                Most popular
-                            </span>
-                            <h3 className="font-semibold mb-1">Pro</h3>
-                            <div className="text-3xl font-bold mb-6">
-                                €29<span className="text-lg text-neutral-400 font-normal">/mo</span>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div className="p-8 rounded-2xl border border-[rgba(0,240,255,0.1)] bg-space-black relative group">
+                            <span className="text-6xl font-black text-neon-cyan/5 absolute top-4 right-8 group-hover:text-neon-cyan/20 transition-colors font-display">01</span>
+                            <div className="size-12 rounded-lg bg-neon-cyan/10 flex items-center justify-center mb-6">
+                                <span className="material-symbols-outlined text-neon-cyan">upload_file</span>
                             </div>
-                            <ul className="space-y-3 text-sm text-neutral-500 mb-8">
-                                <li>{"✓"} 30 sessions / month</li>
-                                <li>{"✓"} Live debate streaming</li>
-                                <li>{"✓"} Interject mid-debate</li>
-                                <li>{"✓"} Full transcript export</li>
-                                <li>{"✓"} GitHub integration</li>
-                                <li>{"✓"} Priority support</li>
-                            </ul>
-                            <a href="/login" className="block text-center bg-neutral-900 text-white py-3 rounded-md text-sm font-medium hover:bg-neutral-800 transition cursor-pointer">
-                                Start pro
-                            </a>
+                            <h3 className="text-xl font-bold mb-4 font-display">You Submit</h3>
+                            <p className="text-[#c4c4ff] text-sm leading-relaxed">Provide your business plan, hypothesis, or strategic move. Upload PDFs or plain text.</p>
                         </div>
-
-                        <div className="bg-white p-8 rounded-xl border border-neutral-200">
-                            <h3 className="font-semibold mb-1">Team</h3>
-                            <div className="text-3xl font-bold mb-6">
-                                €99<span className="text-lg text-neutral-400 font-normal">/mo</span>
+                        <div className="p-8 rounded-2xl border border-neon-cyan/40 bg-space-black relative group glow-cyan">
+                            <span className="text-6xl font-black text-neon-cyan/5 absolute top-4 right-8 group-hover:text-neon-cyan/30 transition-colors font-display">02</span>
+                            <div className="size-12 rounded-lg bg-neon-cyan/20 flex items-center justify-center mb-6">
+                                <span className="material-symbols-outlined text-neon-cyan">forum</span>
                             </div>
-                            <ul className="space-y-3 text-sm text-neutral-500 mb-8">
-                                <li>{"✓"} 300 sessions / month</li>
-                                <li>{"✓"} Overage: €0.30/session</li>
-                                <li>{"✓"} Team collaboration</li>
-                                <li>{"✓"} Custom personas</li>
-                                <li>{"✓"} EU data sovereignty</li>
-                                <li>{"✓"} API access</li>
-                                <li>{"✓"} SSO + audit logs</li>
-                            </ul>
-                            <a className="block text-center border border-neutral-200 py-3 rounded-md text-sm font-medium hover:border-neutral-400 transition cursor-pointer">
-                                Contact sales
-                            </a>
+                            <h3 className="text-xl font-bold mb-4 font-display">Six Experts Debate</h3>
+                            <p className="text-[#c4c4ff] text-sm leading-relaxed">Our multi-agent system attacks and defends the idea through 3 adversarial rounds.</p>
                         </div>
-
+                        <div className="p-8 rounded-2xl border border-[rgba(0,240,255,0.1)] bg-space-black relative group">
+                            <span className="text-6xl font-black text-neon-cyan/5 absolute top-4 right-8 group-hover:text-neon-cyan/20 transition-colors font-display">03</span>
+                            <div className="size-12 rounded-lg bg-neon-cyan/10 flex items-center justify-center mb-6">
+                                <span className="material-symbols-outlined text-neon-cyan">fact_check</span>
+                            </div>
+                            <h3 className="text-xl font-bold mb-4 font-display">The Judge Decides</h3>
+                            <p className="text-[#c4c4ff] text-sm leading-relaxed">The Arbitrator (GPT-4o) synthesizes all arguments into a final decision score.</p>
+                        </div>
                     </div>
-
-                    <div className="text-center mt-12">
-                        <a
-                            href="/pricing"
-                            className="text-neutral-400 hover:text-neutral-900 transition text-sm font-medium underline underline-offset-4"
-                        >
-                            View detailed pricing, margins & FAQ →
-                        </a>
-                    </div>
-
                 </div>
             </section>
 
-            {/* FINAL CTA */}
-            <section className="py-24 px-6 border-t border-neutral-100">
-                <div className="max-w-2xl mx-auto text-center">
-
-                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-6">
-                        Stop guessing.<br />Start debating.
-                    </h2>
-                    <p className="text-neutral-500 text-lg mb-10">
-                        Your next decision deserves more than one perspective.
-                    </p>
-                    <a href="/login" className="inline-block bg-neutral-900 text-white px-10 py-4 rounded-md text-base font-medium hover:bg-neutral-800 transition cursor-pointer">
-                        Start your first session — free
-                    </a>
-
+            {/* The Council Section */}
+            <section className="py-24 px-6 max-w-7xl mx-auto" id="the-council">
+                <div className="flex flex-col md:flex-row items-end justify-between mb-16 gap-4">
+                    <div className="max-w-xl">
+                        <h2 className="text-4xl font-black mb-4 uppercase tracking-tight font-display">The Council</h2>
+                        <p className="text-[#c4c4ff]">Each agent is trained on specific decision-making frameworks and adversarial logic.</p>
+                    </div>
+                    <div className="text-neon-cyan font-mono text-sm">STATUS: ALL AGENTS ACTIVE</div>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {/* Visionary */}
+                    <div className="p-6 rounded-2xl border border-[rgba(0,240,255,0.1)] bg-panel-blue/40 hover:border-orange-500/50 transition-all group">
+                        <div className="flex items-center gap-3 mb-6">
+                            <div className="size-10 rounded bg-orange-500/10 flex items-center justify-center group-hover:bg-orange-500 transition-colors">
+                                <span className="material-symbols-outlined text-orange-500 text-xl group-hover:text-black">flare</span>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-sm font-display">Visionary</h4>
+                                <p className="text-[10px] text-slate-500 uppercase tracking-widest font-black">Growth First</p>
+                            </div>
+                        </div>
+                        <p className="text-xs text-[#c4c4ff] leading-relaxed italic">&quot;Calculated risk is the only hedge against irrelevance. I focus on scale and long-term dominance.&quot;</p>
+                    </div>
+                    {/* Technologist */}
+                    <div className="p-6 rounded-2xl border border-[rgba(0,240,255,0.1)] bg-panel-blue/40 hover:border-neon-cyan/50 transition-all group">
+                        <div className="flex items-center gap-3 mb-6">
+                            <div className="size-10 rounded bg-neon-cyan/10 flex items-center justify-center group-hover:bg-neon-cyan transition-colors">
+                                <span className="material-symbols-outlined text-neon-cyan text-xl group-hover:text-black">terminal</span>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-sm font-display">Technologist</h4>
+                                <p className="text-[10px] text-slate-500 uppercase tracking-widest font-black">Efficiency</p>
+                            </div>
+                        </div>
+                        <p className="text-xs text-[#c4c4ff] leading-relaxed italic">&quot;If it can&apos;t be automated or measured, it doesn&apos;t exist. I audit the stack and operational feasibility.&quot;</p>
+                    </div>
+                    {/* Devil's Advocate */}
+                    <div className="p-6 rounded-2xl border border-[rgba(0,240,255,0.1)] bg-panel-blue/40 hover:border-neon-magenta/50 transition-all group">
+                        <div className="flex items-center gap-3 mb-6">
+                            <div className="size-10 rounded bg-neon-magenta/10 flex items-center justify-center group-hover:bg-neon-magenta transition-colors">
+                                <span className="material-symbols-outlined text-neon-magenta text-xl group-hover:text-black">skull</span>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-sm font-display">Advocate</h4>
+                                <p className="text-[10px] text-slate-500 uppercase tracking-widest font-black">Destruction</p>
+                            </div>
+                        </div>
+                        <p className="text-xs text-[#c4c4ff] leading-relaxed italic">&quot;I exist to break your pride. My directive is to find the one variable that kills your entire project.&quot;</p>
+                    </div>
+                    {/* Market Analyst */}
+                    <div className="p-6 rounded-2xl border border-[rgba(0,240,255,0.1)] bg-panel-blue/40 hover:border-neon-lime/50 transition-all group">
+                        <div className="flex items-center gap-3 mb-6">
+                            <div className="size-10 rounded bg-neon-lime/10 flex items-center justify-center group-hover:bg-neon-lime transition-colors">
+                                <span className="material-symbols-outlined text-neon-lime text-xl group-hover:text-black">query_stats</span>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-sm font-display">Market Analyst</h4>
+                                <p className="text-[10px] text-slate-500 uppercase tracking-widest font-black">Saturation</p>
+                            </div>
+                        </div>
+                        <p className="text-xs text-[#c4c4ff] leading-relaxed italic">&quot;Data doesn&apos;t lie, but people do. I analyze local density, trends, and consumer fatigue.&quot;</p>
+                    </div>
+                    {/* Ethics & Risk */}
+                    <div className="p-6 rounded-2xl border border-[rgba(0,240,255,0.1)] bg-panel-blue/40 hover:border-purple-500/50 transition-all group">
+                        <div className="flex items-center gap-3 mb-6">
+                            <div className="size-10 rounded bg-purple-500/10 flex items-center justify-center group-hover:bg-purple-500 transition-colors">
+                                <span className="material-symbols-outlined text-purple-500 text-xl group-hover:text-black">security</span>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-sm font-display">Ethics &amp; Risk</h4>
+                                <p className="text-[10px] text-slate-500 uppercase tracking-widest font-black">Sustainability</p>
+                            </div>
+                        </div>
+                        <p className="text-xs text-[#c4c4ff] leading-relaxed italic">&quot;Gentrification and regulatory compliance aren&apos;t hurdles—they&apos;re landmines. I navigate the social cost.&quot;</p>
+                    </div>
+                    {/* Financial Strategist */}
+                    <div className="p-6 rounded-2xl border border-[rgba(0,240,255,0.1)] bg-panel-blue/40 hover:border-yellow-500/50 transition-all group">
+                        <div className="flex items-center gap-3 mb-6">
+                            <div className="size-10 rounded bg-yellow-500/10 flex items-center justify-center group-hover:bg-yellow-500 transition-colors">
+                                <span className="material-symbols-outlined text-yellow-500 text-xl group-hover:text-black">monetization_on</span>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-sm font-display">Finance</h4>
+                                <p className="text-[10px] text-slate-500 uppercase tracking-widest font-black">Liquidity</p>
+                            </div>
+                        </div>
+                        <p className="text-xs text-[#c4c4ff] leading-relaxed italic">&quot;Burn rate is the primary metric of failure. I look for hidden costs and over-optimistic ROI windows.&quot;</p>
+                    </div>
+                    {/* The Judge */}
+                    <div className="p-6 rounded-2xl border border-neon-cyan/50 bg-neon-cyan/5 lg:col-span-2 group relative overflow-hidden">
+                        <div className="absolute -right-4 -bottom-4 opacity-10 group-hover:scale-110 transition-transform">
+                            <span className="material-symbols-outlined text-8xl text-neon-cyan">verified</span>
+                        </div>
+                        <div className="flex items-center gap-3 mb-6">
+                            <div className="size-10 rounded bg-neon-cyan flex items-center justify-center">
+                                <span className="material-symbols-outlined text-black text-xl">account_balance</span>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-sm text-neon-cyan font-display">The Arbitrator (GPT-4o)</h4>
+                                <p className="text-[10px] text-neon-cyan/70 uppercase tracking-widest font-black">Final Verdict</p>
+                            </div>
+                        </div>
+                        <p className="text-sm text-slate-100 leading-relaxed max-w-lg font-body">Powered by GPT-4o with custom logic chains, The Judge synthesizes adversarial data into a cohesive, non-biased final recommendation.</p>
+                    </div>
                 </div>
             </section>
 
-            <Footer />
+            {/* Methodology Section */}
+            <section className="py-24 px-6 bg-deep-blue border-y border-[rgba(0,240,255,0.1)] overflow-hidden" id="methodology">
+                <div className="max-w-7xl mx-auto">
+                    <div className="flex flex-col md:flex-row gap-16 items-center">
+                        <div className="md:w-1/2">
+                            <h2 className="text-4xl font-black mb-8 uppercase tracking-tight font-display text-neon-cyan">ACE Engine™ Methodology</h2>
+                            <div className="space-y-8">
+                                <div className="flex gap-6">
+                                    <div className="shrink-0 flex flex-col items-center">
+                                        <div className="size-8 rounded-full bg-neon-cyan text-black flex items-center justify-center font-bold text-xs">1</div>
+                                        <div className="w-px h-full bg-[rgba(0,240,255,0.2)] my-2"></div>
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold mb-2 font-display">Focus Lock</h4>
+                                        <p className="text-sm text-[#c4c4ff]">The Judge extracts key assumptions and variables from your proposal, creating a &quot;Target Surface&quot; for the council.</p>
+                                    </div>
+                                </div>
+                                <div className="flex gap-6">
+                                    <div className="shrink-0 flex flex-col items-center">
+                                        <div className="size-8 rounded-full border border-[rgba(0,240,255,0.3)] text-neon-cyan flex items-center justify-center font-bold text-xs">2</div>
+                                        <div className="w-px h-full bg-[rgba(0,240,255,0.2)] my-2"></div>
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold mb-2 font-display">Adversarial Challenge</h4>
+                                        <p className="text-sm text-[#c4c4ff]">Agents spend 2 rounds identifying flaws, contradictions, and external risks that could jeopardize success.</p>
+                                    </div>
+                                </div>
+                                <div className="flex gap-6">
+                                    <div className="shrink-0 flex flex-col items-center">
+                                        <div className="size-8 rounded-full border border-[rgba(0,240,255,0.3)] text-neon-cyan flex items-center justify-center font-bold text-xs">3</div>
+                                        <div className="w-px h-full bg-[rgba(0,240,255,0.2)] my-2"></div>
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold mb-2 font-display">Defense &amp; Concession</h4>
+                                        <p className="text-sm text-[#c4c4ff]">The &quot;Visionary&quot; and &quot;Technologist&quot; agents counter-argue. Weaker points are conceded and discarded.</p>
+                                    </div>
+                                </div>
+                                <div className="flex gap-6">
+                                    <div className="shrink-0 flex flex-col items-center">
+                                        <div className="size-8 rounded-full border border-[rgba(0,240,255,0.3)] text-neon-cyan flex items-center justify-center font-bold text-xs">4</div>
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold mb-2 font-display">Judicial Arbitration</h4>
+                                        <p className="text-sm text-[#c4c4ff]">Final score calculation based on the weighted validity of surviving arguments.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="md:w-1/2 relative">
+                            <div className="aspect-square bg-neon-cyan/5 rounded-full border border-neon-cyan/20 flex items-center justify-center p-12">
+                                <div className="w-full h-full bg-neon-cyan/10 rounded-full border border-neon-cyan/30 flex items-center justify-center p-12 animate-pulse">
+                                    <div className="w-full h-full bg-neon-cyan/20 rounded-full border border-neon-cyan flex items-center justify-center">
+                                        <span className="material-symbols-outlined text-6xl text-neon-cyan glow-text">shield_with_heart</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="absolute -z-10 top-0 left-0 w-full h-full opacity-10 tech-grid"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
+            {/* Pricing Section */}
+            <section className="py-24 px-6 max-w-7xl mx-auto" id="pricing">
+                <div className="text-center mb-16">
+                    <h2 className="text-4xl font-black mb-4 uppercase tracking-tight font-display">Secure Your Advantage</h2>
+                    <p className="text-[#c4c4ff]">Choose the depth of scrutiny your ideas deserve.</p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {/* Free */}
+                    <div className="p-8 rounded-2xl border border-[rgba(0,240,255,0.1)] bg-panel-blue/30 flex flex-col">
+                        <h3 className="font-bold text-lg mb-2 font-display">Explorer</h3>
+                        <div className="flex items-baseline gap-1 mb-6">
+                            <span className="text-4xl font-black font-display">$0</span>
+                            <span className="text-slate-500 text-sm">/mo</span>
+                        </div>
+                        <ul className="space-y-4 mb-8 flex-grow">
+                            <li className="flex items-center gap-3 text-sm text-[#c4c4ff]">
+                                <span className="material-symbols-outlined text-neon-cyan text-lg">check_circle</span>
+                                1 session / month
+                            </li>
+                            <li className="flex items-center gap-3 text-sm text-[#c4c4ff]">
+                                <span className="material-symbols-outlined text-neon-cyan text-lg">check_circle</span>
+                                3-Agent Council
+                            </li>
+                            <li className="flex items-center gap-3 text-sm text-[#c4c4ff]">
+                                <span className="material-symbols-outlined text-neon-cyan text-lg">check_circle</span>
+                                Standard Arbitration
+                            </li>
+                        </ul>
+                        <button className="w-full py-3 border border-[rgba(0,240,255,0.2)] rounded-xl font-bold hover:bg-panel-blue transition-all text-neon-cyan font-display text-sm">Get Started</button>
+                    </div>
+                    {/* Pro */}
+                    <div className="p-8 rounded-2xl border-2 border-neon-cyan bg-space-black flex flex-col relative glow-cyan scale-105 z-10">
+                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-neon-cyan text-black text-[10px] font-black uppercase rounded-full tracking-widest">Most Popular</div>
+                        <h3 className="font-bold text-lg mb-2 text-neon-cyan font-display">Strategist</h3>
+                        <div className="flex items-baseline gap-1 mb-6">
+                            <span className="text-4xl font-black font-display text-white">$29</span>
+                            <span className="text-slate-500 text-sm">/mo</span>
+                        </div>
+                        <ul className="space-y-4 mb-8 flex-grow">
+                            <li className="flex items-center gap-3 text-sm text-[#c4c4ff]">
+                                <span className="material-symbols-outlined text-neon-cyan text-lg">check_circle</span>
+                                10 sessions / month
+                            </li>
+                            <li className="flex items-center gap-3 text-sm text-[#c4c4ff]">
+                                <span className="material-symbols-outlined text-neon-cyan text-lg">check_circle</span>
+                                Full 7-Agent Council
+                            </li>
+                            <li className="flex items-center gap-3 text-sm text-[#c4c4ff]">
+                                <span className="material-symbols-outlined text-neon-cyan text-lg">check_circle</span>
+                                ACE Engine™ Analysis
+                            </li>
+                            <li className="flex items-center gap-3 text-sm text-[#c4c4ff]">
+                                <span className="material-symbols-outlined text-neon-cyan text-lg">check_circle</span>
+                                Exportable PDF Reports
+                            </li>
+                        </ul>
+                        <button className="w-full py-3 bg-neon-cyan text-black rounded-xl font-bold transition-all shadow-[0_0_15px_rgba(0,240,255,0.4)] font-display text-sm hover:scale-105 active:scale-95">Upgrade Now</button>
+                    </div>
+                    {/* Team */}
+                    <div className="p-8 rounded-2xl border border-[rgba(0,240,255,0.1)] bg-panel-blue/30 flex flex-col">
+                        <h3 className="font-bold text-lg mb-2 font-display">Corporate</h3>
+                        <div className="flex items-baseline gap-1 mb-6">
+                            <span className="text-4xl font-black font-display">$99</span>
+                            <span className="text-slate-500 text-sm">/mo</span>
+                        </div>
+                        <ul className="space-y-4 mb-8 flex-grow">
+                            <li className="flex items-center gap-3 text-sm text-[#c4c4ff]">
+                                <span className="material-symbols-outlined text-neon-cyan text-lg">check_circle</span>
+                                Unlimited sessions
+                            </li>
+                            <li className="flex items-center gap-3 text-sm text-[#c4c4ff]">
+                                <span className="material-symbols-outlined text-neon-cyan text-lg">check_circle</span>
+                                Custom Council Persona Training
+                            </li>
+                            <li className="flex items-center gap-3 text-sm text-[#c4c4ff]">
+                                <span className="material-symbols-outlined text-neon-cyan text-lg">check_circle</span>
+                                Priority Judicial Processing
+                            </li>
+                            <li className="flex items-center gap-3 text-sm text-[#c4c4ff]">
+                                <span className="material-symbols-outlined text-neon-cyan text-lg">check_circle</span>
+                                Team Collaboration Tools
+                            </li>
+                        </ul>
+                        <button className="w-full py-3 border border-[rgba(0,240,255,0.2)] rounded-xl font-bold hover:bg-panel-blue transition-all text-neon-cyan font-display text-sm">Contact Sales</button>
+                    </div>
+                </div>
+            </section>
+
+            {/* Footer */}
+            <footer className="bg-space-black border-t border-[rgba(0,240,255,0.1)] py-16 px-6">
+                <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+                    <div className="col-span-1 md:col-span-1">
+                        <div className="flex items-center gap-3 mb-6">
+                            <div className="size-8 bg-neon-cyan/10 border border-[rgba(0,240,255,0.3)] rounded flex items-center justify-center">
+                                <span className="material-symbols-outlined text-neon-cyan text-sm font-bold">account_tree</span>
+                            </div>
+                            <span className="text-lg font-black tracking-tighter uppercase font-display">Council<span className="text-neon-cyan">IA</span></span>
+                        </div>
+                        <p className="text-slate-500 text-sm mb-6 leading-relaxed">
+                            Part of the Antigravity Ecosystem. Built in Lisbon, Portugal for high-stakes decision validation.
+                        </p>
+                        <div className="flex gap-4">
+                            <a className="text-slate-500 hover:text-neon-cyan transition-colors" href="#"><span className="material-symbols-outlined">public</span></a>
+                            <a className="text-slate-500 hover:text-neon-cyan transition-colors" href="#"><span className="material-symbols-outlined">mail</span></a>
+                        </div>
+                    </div>
+                    <div>
+                        <h5 className="font-bold text-sm mb-6 uppercase tracking-widest text-[#c4c4ff] font-display">Platform</h5>
+                        <ul className="space-y-4">
+                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="#how-it-works">Process</a></li>
+                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="#the-council">The Council</a></li>
+                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="#methodology">Methodology</a></li>
+                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="#pricing">Pricing</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 className="font-bold text-sm mb-6 uppercase tracking-widest text-[#c4c4ff] font-display">Resources</h5>
+                        <ul className="space-y-4">
+                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="#">Documentation</a></li>
+                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="#">Case Studies</a></li>
+                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="#">Research Papers</a></li>
+                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="#">API Reference</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 className="font-bold text-sm mb-6 uppercase tracking-widest text-[#c4c4ff] font-display">Legal &amp; Support</h5>
+                        <ul className="space-y-4">
+                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="mailto:support@councilia.ai">support@councilia.ai</a></li>
+                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="#">Privacy Policy</a></li>
+                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="#">Terms of Service</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div className="max-w-7xl mx-auto border-t border-[rgba(0,240,255,0.1)] mt-16 pt-8 text-center text-slate-600 text-[10px] uppercase tracking-widest font-bold font-mono">
+                    © {new Date().getFullYear()} Antigravity Labs. All rights reserved.
+                </div>
+            </footer>
         </main>
-    );
-}
-
-// --- Reusable Components ---
-
-function FeatureCard({ icon, title, desc }: { icon: string; title: string; desc: string }) {
-    return (
-        <div className="bg-white p-6 rounded-xl border border-neutral-200 hover:border-neutral-300 transition">
-            <div className="text-2xl mb-3">{icon}</div>
-            <h3 className="font-semibold text-base mb-1">{title}</h3>
-            <p className="text-neutral-500 text-sm leading-relaxed">{desc}</p>
-        </div>
-    );
-}
-
-function CouncilCard({ color, emoji, name, desc }: { color: string; emoji: string; name: string; desc: string }) {
-    return (
-        <div className="p-6 rounded-xl border border-neutral-200 hover:border-neutral-300 transition">
-            <div className={`w-3 h-3 rounded-full ${color} mb-4`} />
-            <div className="text-xl mb-2">{emoji}</div>
-            <h3 className="font-semibold text-base mb-1">{name}</h3>
-            <p className="text-neutral-500 text-sm leading-relaxed">{desc}</p>
-        </div>
-    );
-}
-
-function UseCaseCard({ title, desc }: { title: string; desc: string }) {
-    return (
-        <div className="bg-white p-6 rounded-xl border border-neutral-200 hover:border-neutral-300 transition">
-            <h3 className="font-semibold text-base mb-2">{title}</h3>
-            <p className="text-neutral-500 text-sm leading-relaxed">{desc}</p>
-        </div>
     );
 }
