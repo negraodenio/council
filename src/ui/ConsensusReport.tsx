@@ -5,6 +5,25 @@ import { t, resolveUILang, type UILang } from '@/lib/i18n/ui-strings';
 import PDFReportTemplate from './PDFReportTemplate';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer-continued';
+
+// ─── UTILS: Extract Code Patches ────────────────
+function extractPatches(roundsTextData: string[]) {
+    const patches: { oldCode: string, newCode: string }[] = [];
+    const regex = /<OLD_CODE>([\s\S]*?)<\/OLD_CODE>\s*<NEW_CODE>([\s\S]*?)<\/NEW_CODE>/g;
+
+    roundsTextData.forEach(text => {
+        if (!text) return;
+        let match;
+        while ((match = regex.exec(text)) !== null) {
+            patches.push({
+                oldCode: match[1].trim(),
+                newCode: match[2].trim()
+            });
+        }
+    });
+    return patches;
+}
 
 // ─── V2 Persona config ────────────────────────
 const PERSONA_META: Record<string, { color: string; gradient: string; emoji: string }> = {
@@ -24,7 +43,7 @@ export default function ConsensusReport({ validation, patches }: {
     validation: any;
     patches: any[];
 }) {
-    const [activeTab, setActiveTab] = useState<'verdict' | 'round1' | 'round2' | 'round3'>('verdict');
+    const [activeTab, setActiveTab] = useState<'verdict' | 'round1' | 'round2' | 'round3' | 'patches'>('verdict');
     const [isExporting, setIsExporting] = useState(false);
     const result = validation.full_result || {};
     const lang: UILang = resolveUILang(result.lang);
@@ -38,6 +57,17 @@ export default function ConsensusReport({ validation, patches }: {
     const round1 = (result.round1 || []) as { id: string; name: string; emoji?: string; text: string }[];
     const round2 = (result.round2 || []) as { id: string; name: string; emoji?: string; text: string }[];
     const round3 = (result.round3 || []) as { id: string; name: string; emoji?: string; text: string }[];
+
+    const allTranscriptTexts = [
+        ...round1.map(r => r.text),
+        ...round2.map(r => r.text),
+        ...round3.map(r => r.text),
+        judgeText
+    ];
+    const generatedPatches = extractPatches(allTranscriptTexts);
+
+    // If activeTab is patches but there are none, fallback
+    const validTab = (activeTab === 'patches' && generatedPatches.length === 0) ? 'verdict' : activeTab;
 
     const statusLabel = score >= 70 ? t(lang, 'cr_viable') : score >= 40 ? t(lang, 'cr_caution') : t(lang, 'cr_high_risk');
     const statusBg = score >= 70
@@ -318,11 +348,24 @@ export default function ConsensusReport({ validation, patches }: {
                                     ROUND 3
                                 </button>
                             )}
+                            {generatedPatches.length > 0 && (
+                                <button
+                                    onClick={() => setActiveTab('patches')}
+                                    className={`px-6 py-4 text-xs font-mono uppercase tracking-[0.15em] whitespace-nowrap border-b-2 transition-colors ${activeTab === 'patches' ? 'border-[#ff00e5] text-[#ff00e5] bg-[#ff00e5]/5' : 'border-transparent text-slate-500 hover:text-slate-300 hover:bg-white/5'
+                                        }`}
+                                >
+                                    <span className="flex items-center gap-2">
+                                        <span className="material-symbols-outlined text-sm">code_blocks</span>
+                                        CODE PATCHES
+                                        <span className="bg-[#ff00e5]/20 text-[#ff00e5] px-1.5 py-0.5 rounded-md text-[10px] ml-1">{generatedPatches.length}</span>
+                                    </span>
+                                </button>
+                            )}
                         </div>
                         <div className="p-6">
 
                             {/* ── JUDGE VERDICT ── */}
-                            {activeTab === 'verdict' && judgeText && (
+                            {validTab === 'verdict' && judgeText && (
                                 <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                                     <RoundHeader
                                         number="⚖️"
@@ -399,6 +442,49 @@ export default function ConsensusReport({ validation, patches }: {
                                     <div className="mt-6 grid gap-4 grid-cols-1 md:grid-cols-2">
                                         {round3.map((r) => (
                                             <PersonaCard key={r.id} entry={r} lang={lang} />
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* ── PATCHES ENGINE ── */}
+                            {validTab === 'patches' && generatedPatches.length > 0 && (
+                                <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                                    <RoundHeader
+                                        number="< />"
+                                        title="Council Patch Engine"
+                                        subtitle="Actionable code diffs mapped from the Vector RAG memory."
+                                        color="#ff00e5"
+                                    />
+                                    <div className="mt-6 flex flex-col gap-6">
+                                        {generatedPatches.map((patch, idx) => (
+                                            <div key={idx} className="bg-black/40 border border-[#ff00e5]/20 rounded-xl overflow-hidden shadow-[0_0_15px_rgba(255,0,229,0.05)]">
+                                                <div className="bg-[#ff00e5]/10 px-4 py-2 border-b border-[#ff00e5]/20 flex items-center gap-2">
+                                                    <span className="material-symbols-outlined text-[#ff00e5] text-sm">auto_fix_high</span>
+                                                    <span className="text-[#ff00e5] font-mono text-xs uppercase tracking-widest font-bold">Suggested Code Refactor #{idx + 1}</span>
+                                                </div>
+                                                <div className="text-[12px] font-mono p-1 opacity-90">
+                                                    <ReactDiffViewer
+                                                        oldValue={patch.oldCode}
+                                                        newValue={patch.newCode}
+                                                        splitView={false}
+                                                        useDarkTheme={true}
+                                                        styles={{
+                                                            variables: {
+                                                                dark: {
+                                                                    diffViewerBackground: 'transparent',
+                                                                    addedBackground: 'rgba(0, 242, 255, 0.1)',
+                                                                    addedColor: '#00f2ff',
+                                                                    removedBackground: 'rgba(255, 0, 229, 0.1)',
+                                                                    removedColor: '#ff00e5',
+                                                                    wordAddedBackground: 'rgba(0, 242, 255, 0.3)',
+                                                                    wordRemovedBackground: 'rgba(255, 0, 229, 0.3)'
+                                                                }
+                                                            }
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
                                         ))}
                                     </div>
                                 </div>

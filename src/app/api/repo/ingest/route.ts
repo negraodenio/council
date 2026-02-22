@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { fetchGithubRepoTree } from "@/lib/repo/github";
 import { dispatchRepoIndexTask } from "@/lib/queue/indexer";
 // Uncomment and configure your supabase client when the types are generated properly
-import { getAdminSupabase } from "@/lib/supabase/admin";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 export async function POST(req: NextRequest) {
     try {
@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
 
         console.log(`[Ingest API] Starting ingestion for ${owner}/${repo}`);
 
-        const sbAdmin = getAdminSupabase();
+        const sbAdmin = createAdminClient();
 
         // 1. Create or Find Repository Record
         const { data: repoRecord, error: repoErr } = await sbAdmin
@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
                 content_hash: "v1-" + Buffer.from(file.content).toString('base64').substring(0, 10), // Simple hash
                 language: file.path.split('.').pop(),
                 tokens: Math.ceil(file.content.length / 4) // Rough estimate
-            }, { onConflict: 'repo_id,file_path' }).select('id').single().then(({ data }) => {
+            }, { onConflict: 'repo_id,file_path' }).select('id').single().then(({ data }: any) => {
                 if (data?.id) {
                     return dispatchRepoIndexTask(repoId, data.id); // shardId = document_id
                 }
