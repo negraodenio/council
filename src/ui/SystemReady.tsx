@@ -149,10 +149,10 @@ export default function SystemReady() {
                     <div className="w-full relative group mb-6">
                         <div className="absolute -inset-[1px] bg-gradient-to-r from-purple-500/50 via-cyan-500/50 to-purple-500/50 rounded-2xl opacity-0 group-focus-within:opacity-100 transition-opacity duration-500 blur-sm" />
                         <div className="relative bg-[#0c1220] border border-white/[0.08] group-focus-within:border-white/[0.15] rounded-2xl overflow-hidden transition-colors">
-                            <textarea className="w-full bg-transparent text-white placeholder:text-white/15 p-6 pb-3 text-base min-h-[160px] resize-none focus:outline-none focus:ring-0 border-0 leading-relaxed" placeholder={t(lang, 'sys_placeholder')} value={idea} onChange={(e) => setIdea(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) start(); }} />
+                            <textarea maxLength={2500} className="w-full bg-transparent text-white placeholder:text-white/15 p-6 pb-3 text-base min-h-[160px] resize-none focus:outline-none focus:ring-0 border-0 leading-relaxed" placeholder={t(lang, 'sys_placeholder')} value={idea} onChange={(e) => setIdea(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) start(); }} />
                             <div className="flex items-center justify-between px-6 py-3 border-t border-white/[0.04]">
-                                <span className={'text-[10px] font-mono transition-colors ' + (cc > 2000 ? 'text-red-400' : cc > 0 ? 'text-white/25' : 'text-white/10')}>
-                                    <span>{cc > 0 ? cc + ' chars' : t(lang, 'sys_input_buffer') + ' 0.00kb'}</span>
+                                <span className={'text-[10px] font-mono transition-colors ' + (cc > 2000 ? 'text-red-400' : cc > 0 ? 'text-white/40' : 'text-white/10')}>
+                                    <span>{cc > 0 ? `${cc} / 2500 chars` : t(lang, 'sys_input_buffer') + ' 0.00kb'}</span>
                                 </span>
                                 <span className="text-[10px] text-white/10 font-mono">Ctrl+Enter</span>
                             </div>
