@@ -1,19 +1,42 @@
 node_modules
 .next
-.env*.local
 dist
 build
+coverage
+.turbo
+.cache
+
+# ——— Secrets & Credentials (NEVER commit) ———
+.env
+.env.*
+!.env.example
+sb_key.txt
+sb_service.txt
+sb_url.txt
+site_url.txt
+src/token.txt
+src/url.txt
+prod_vars.txt
+headers.txt
+
+# ——— Build artifacts & Logs ———
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.vercel
-.turbo
-.cache
-coverage
+build-error*.log
+build_error*.txt
+build_error*.log
+build_output*.txt
+audit_api.log
+
+# ——— IDE & OS ———
 .idea
 .vscode
-headers.txt
-.env.inspect
-.env.prod.inspect
-.env.production
+.vercel
+~
+
+# ——— Misc ———
+tsconfig.tsbuildinfo
+silicon_models.json
+test_worker.json

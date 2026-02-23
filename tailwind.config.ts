@@ -15,12 +15,12 @@ const config: Config = {
                 mono: ['var(--font-mono)', 'monospace'],
             },
             colors: {
-                'space-black': '#05050a',
-                'deep-blue': '#0a0a1f',
-                'panel-blue': '#121235',
-                'neon-cyan': '#00f2ff',
-                'neon-lime': '#afff33',
-                'neon-magenta': '#ff00e5',
+                'space-black': '#06070d',
+                'deep-blue': '#0c0d1e',
+                'panel-blue': '#13152e',
+                'neon-cyan': '#38bdf8',
+                'neon-lime': '#d4a853',
+                'neon-magenta': '#e879a0',
             },
             backgroundImage: {
                 "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

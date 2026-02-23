@@ -66,7 +66,6 @@ export default function ConsensusReport({ validation, patches }: {
     ];
     const generatedPatches = extractPatches(allTranscriptTexts);
 
-    // If activeTab is patches but there are none, fallback
     const validTab = (activeTab === 'patches' && generatedPatches.length === 0) ? 'verdict' : activeTab;
 
     const statusLabel = score >= 70 ? t(lang, 'cr_viable') : score >= 40 ? t(lang, 'cr_caution') : t(lang, 'cr_high_risk');
@@ -76,11 +75,37 @@ export default function ConsensusReport({ validation, patches }: {
             ? 'bg-amber-400/10 text-amber-300 border-amber-400/30'
             : 'bg-red-400/10 text-red-300 border-red-400/30';
     const statusDot = score >= 70 ? 'bg-emerald-400' : score >= 40 ? 'bg-amber-400' : 'bg-red-400';
-    const statusDesc = score >= 70
-        ? t(lang, 'cr_viable_desc')
-        : score >= 40
-            ? t(lang, 'cr_caution_desc')
-            : t(lang, 'cr_high_risk_desc');
+
+    // Extract real per-persona scores from Round 3 (final scores)
+    const personaScores: Record<string, number> = {};
+    for (const r of round3) {
+        const matches = r.text.match(/(\d{1,3})\/100/g);
+        if (matches && matches.length > 0) {
+            const lastMatch = matches[matches.length - 1];
+            const num = parseInt(lastMatch.replace('/100', ''), 10);
+            if (num >= 0 && num <= 100) personaScores[r.id] = num;
+        }
+    }
+    // Fallback: try round1 if round3 is empty
+    if (Object.keys(personaScores).length === 0) {
+        for (const r of round1) {
+            const matches = r.text.match(/(\d{1,3})\/100/g);
+            if (matches && matches.length > 0) {
+                const lastMatch = matches[matches.length - 1];
+                const num = parseInt(lastMatch.replace('/100', ''), 10);
+                if (num >= 0 && num <= 100) personaScores[r.id] = num;
+            }
+        }
+    }
+
+    const scoreValues = Object.values(personaScores);
+    const realDissent = scoreValues.length >= 2
+        ? Math.max(...scoreValues) - Math.min(...scoreValues)
+        : risk;
+    const realAlignment = scoreValues.length >= 2
+        ? 100 - realDissent
+        : align;
+
     const ringColor = score >= 70 ? '#22c55e' : score >= 40 ? '#f59e0b' : '#ef4444';
 
     const handleExportPDF = async () => {
@@ -246,20 +271,20 @@ export default function ConsensusReport({ validation, patches }: {
                         <div className="space-y-5 z-10">
                             <div>
                                 <div className="flex justify-between items-end mb-1.5">
-                                    <span className="text-[10px] text-slate-500 uppercase tracking-widest font-mono">Dissent Risk</span>
-                                    <span className="text-sm font-bold text-neon-magenta font-mono">{risk}%</span>
+                                    <span className="text-[11px] text-slate-500 uppercase tracking-widest font-mono">Dissent Range</span>
+                                    <span className="text-sm font-bold text-neon-magenta font-mono">{realDissent}pts</span>
                                 </div>
                                 <div className="h-1.5 w-full bg-black/40 rounded-full overflow-hidden">
-                                    <div className="h-full bg-neon-magenta shadow-[0_0_8px_#ff00e5]" style={{ width: `${risk}%` }}></div>
+                                    <div className="h-full bg-neon-magenta shadow-[0_0_6px_rgba(232,121,160,0.4)]" style={{ width: `${realDissent}%` }}></div>
                                 </div>
                             </div>
                             <div>
                                 <div className="flex justify-between items-end mb-1.5">
-                                    <span className="text-[10px] text-slate-500 uppercase tracking-widest font-mono">Agreement</span>
-                                    <span className="text-sm font-bold text-neon-cyan font-mono">{align}%</span>
+                                    <span className="text-[11px] text-slate-500 uppercase tracking-widest font-mono">Alignment</span>
+                                    <span className="text-sm font-bold text-neon-cyan font-mono">{realAlignment}%</span>
                                 </div>
                                 <div className="h-1.5 w-full bg-black/40 rounded-full overflow-hidden">
-                                    <div className="h-full bg-neon-cyan shadow-[0_0_8px_#00f2ff]" style={{ width: `${align}%` }}></div>
+                                    <div className="h-full bg-neon-cyan shadow-[0_0_6px_rgba(56,189,248,0.4)]" style={{ width: `${realAlignment}%` }}></div>
                                 </div>
                             </div>
                         </div>
@@ -288,8 +313,7 @@ export default function ConsensusReport({ validation, patches }: {
                         <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-2">
                             {['visionary', 'technologist', 'devil', 'marketeer', 'ethicist', 'financier'].map((id, index) => {
                                 const meta = getMeta(id);
-                                // Pseudo-random stat based on score to make it look active
-                                const statBar = Math.min(100, Math.max(20, score + (index * 7 - 15)));
+                                const statBar = personaScores[id] ?? score;
                                 return (
                                     <div key={id} className="group flex items-center justify-between text-xs p-2.5 bg-black/20 border border-white/5 rounded-lg hover:bg-black/40 hover:border-white/10 transition-colors">
                                         <div className="flex items-center gap-3">

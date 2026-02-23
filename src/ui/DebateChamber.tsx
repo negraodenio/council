@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
+import ReactMarkdown from 'react-markdown';
 
 type UILang = 'pt' | 'en' | 'es';
 function resolveUILang(locale: string): UILang {
@@ -303,7 +304,7 @@ export default function DebateChamber({ runId }: { runId: string }) {
                                     </div>
                                 </div>
                                 <div className={`flex flex-col items-center gap-0.5 mt-2 transition-all duration-500 ${active ? 'translate-y-1' : 'translate-y-0'}`}>
-                                    <span className={`text-[9px] font-bold px-2.5 py-1 rounded-full text-center max-w-[85px] truncate transition-colors duration-500 border
+                                    <span className={`text-[11px] font-bold px-2.5 py-1 rounded-full text-center max-w-[85px] truncate transition-colors duration-500 border
                                         ${active ? 'text-white bg-black/80 shadow-md' : 'text-white/50 bg-black/40 border-transparent'}`}
                                         style={{
                                             borderColor: active ? persona.c + '60' : 'transparent',
@@ -320,7 +321,7 @@ export default function DebateChamber({ runId }: { runId: string }) {
                                         }}
                                     >
                                         <span
-                                            className={`text-[8px] font-medium leading-tight line-clamp-2 ${active ? 'text-white' : ''}`}
+                                            className={`text-[11px] font-medium leading-tight line-clamp-2 ${active ? 'text-white' : ''}`}
                                             style={{ color: active ? '#fff' : persona.c }}
                                         >
                                             {hint}
@@ -341,7 +342,7 @@ export default function DebateChamber({ runId }: { runId: string }) {
 
                 <div className="px-5 py-2 border-y border-white/5">
                     <div className="flex justify-between items-center mb-1">
-                        <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em]">
+                        <span className="text-[11px] font-black text-white/30 uppercase tracking-[0.2em]">
                             {t(lang, 'consensus')}
                         </span>
                         <span className="text-xs font-mono font-bold text-purple-400">{consensus}%</span>
@@ -355,7 +356,7 @@ export default function DebateChamber({ runId }: { runId: string }) {
                 </div>
 
                 <div ref={scrollRef} className="flex-1 overflow-y-auto px-5 py-4 space-y-3 max-h-[50vh]">
-                    <h3 className="text-white/20 text-[10px] font-black uppercase tracking-[0.3em] mb-3">
+                    <h3 className="text-white/20 text-[11px] font-black uppercase tracking-[0.3em] mb-3">
                         {t(lang, 'transcript')} - {messages.length} {t(lang, 'msgs')}
                     </h3>
 
@@ -371,12 +372,14 @@ export default function DebateChamber({ runId }: { runId: string }) {
                                 </div>
                                 <div className="flex-1 bg-white/[0.03] hover:bg-white/[0.05] rounded-xl p-3 border border-white/5">
                                     <div className="flex items-center justify-between mb-1">
-                                        <span className="text-[10px] font-black uppercase tracking-wider" style={{ color: persona.c }}>
+                                        <span className="text-[11px] font-black uppercase tracking-wider" style={{ color: persona.c }}>
                                             <span>{persona.dn}</span> <span>{msg.is_judge ? ' (Juiz)' : ''}</span>
                                         </span>
                                         <span className="text-white/15 text-[9px] font-mono"><span>R</span><span>{msg.round}</span></span>
                                     </div>
-                                    <p className="text-sm text-white/80 leading-relaxed whitespace-pre-wrap"><span>{msg.content}</span></p>
+                                    <div className="text-sm text-white/80 leading-relaxed prose prose-invert prose-sm max-w-none prose-p:text-slate-300 prose-p:leading-relaxed prose-strong:text-white prose-headings:text-white prose-headings:text-sm prose-headings:font-bold prose-headings:mt-2 prose-headings:mb-1 prose-li:text-slate-300 prose-ul:my-1 prose-ol:my-1">
+                                        <ReactMarkdown>{typeof msg.content === 'string' ? msg.content.replace(/\\n/g, '\n') : msg.content}</ReactMarkdown>
+                                    </div>
                                 </div>
                             </div>
                         );

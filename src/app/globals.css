@@ -4,34 +4,34 @@
 
 @layer base {
   body {
-    @apply bg-[#0a0a1f] text-[#c4c4ff] font-mono selection:bg-[#afff33] selection:text-black;
+    @apply bg-[#0c0d1e] text-[#d1d5db] font-body selection:bg-[#38bdf8]/30 selection:text-white;
   }
 }
 
 :root {
-  --primary-accent: #afff33;
-  /* Lime */
-  --secondary-accent: #00f0ff;
-  /* Cyan */
-  --console-bg: #0a0a1f;
+  --primary-accent: #38bdf8;
+  /* Sky Blue (was neon cyan) */
+  --secondary-accent: #d4a853;
+  /* Warm Gold (was neon lime) */
+  --console-bg: #0c0d1e;
   /* Deep Blue */
-  --panel-bg: #121235;
+  --panel-bg: #13152e;
   /* Panel Blue */
-  --border-cyan: rgba(0, 240, 255, 0.2);
-  --data-text: #c4c4ff;
-  --bg-gradient: radial-gradient(circle at 50% 0%, #1a0b2e 0%, #05050a 100%);
+  --border-accent: rgba(56, 189, 248, 0.15);
+  --data-text: #d1d5db;
+  --bg-gradient: radial-gradient(circle at 50% 0%, #151030 0%, #06070d 100%);
 }
 
 .data-grid-item {
-  @apply border border-[#00f0ff]/20 bg-[#121235]/40 hover:bg-[#121235]/60 transition-colors p-4;
+  @apply border border-[#38bdf8]/10 bg-[#13152e]/40 hover:bg-[#13152e]/60 transition-colors p-4;
 }
 
 .metric-label {
-  @apply text-[10px] font-bold uppercase tracking-widest text-[#00f0ff]/70;
+  @apply text-[11px] font-bold uppercase tracking-widest text-[#38bdf8]/60;
 }
 
 .metric-value {
-  @apply text-lg font-bold text-[#afff33];
+  @apply text-lg font-bold text-[#d4a853];
 }
 
 .scrollbar-hide::-webkit-scrollbar {
@@ -43,11 +43,11 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: #0a0a1f;
+  background: #0c0d1e;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #00f0ff;
+  background: #38bdf8;
   border-radius: 2px;
 }
 
@@ -58,25 +58,25 @@
 .glass-panel {
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(16px);
-  border: 1px solid rgba(0, 242, 255, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.08);
 }
 
 .tech-grid {
-  background-image: linear-gradient(rgba(0, 242, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 242, 255, 0.05) 1px, transparent 1px);
+  background-image: linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
   background-size: 40px 40px;
 }
 
 .glass-card {
-  background: rgba(18, 18, 53, 0.7);
+  background: rgba(19, 21, 46, 0.7);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(0, 240, 255, 0.2);
+  border: 1px solid rgba(56, 189, 248, 0.12);
 }
 
 .glow-cyan {
-  box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
 }
 
 .glow-text {
-  text-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
+  text-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
 }
