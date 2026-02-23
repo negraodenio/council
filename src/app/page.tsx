@@ -15,7 +15,7 @@
                         <a className="text-sm font-medium hover:text-neon-cyan transition-colors" href="#the-council" aria-label="Meet the AI Council">The Council</a>
                         <a className="text-sm font-medium hover:text-neon-cyan transition-colors" href="#use-cases" aria-label="Explore use cases">Use cases</a>
                         <a className="text-sm font-medium hover:text-neon-cyan transition-colors" href="/pricing">Pricing</a>
-                        <a className="text-sm font-medium hover:text-neon-cyan transition-colors" href="#methodology">Methodology</a>
+                        <a className="text-sm font-medium hover:text-neon-cyan transition-colors" href="/methodology">Methodology</a>
                     </nav>
                     <a href="/login" role="button" aria-label="Start Free Session" className="bg-neon-cyan/10 border border-neon-cyan/50 text-neon-cyan px-6 py-2.5 rounded-xl font-bold text-sm transition-all hover:bg-neon-cyan hover:text-black hover:scale-105 active:scale-95 shadow-[0_0_15px_rgba(0,240,255,0.2)]">
                         Start Free Session
@@ -413,73 +413,7 @@
                 </div>
             </section>
 
-            {/* Social Proof / Testimonials */}
-            <section className="py-24 px-6 bg-panel-blue/20">
-                <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl font-black mb-4 uppercase tracking-tight font-display">Trusted by Decision Makers</h2>
-                        <p className="text-[#c4c4ff]">Over 15,000 strategic initiatives validated by CouncilIA.</p>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div className="glass-card rounded-2xl p-6 border border-[rgba(0,240,255,0.1)] bg-space-black relative">
-                            <span className="material-symbols-outlined absolute top-4 right-4 text-neon-cyan/20 text-4xl">format_quote</span>
-                            <div className="flex gap-1 mb-4">
-                                <span className="material-symbols-outlined text-neon-lime text-sm fill-current">star</span>
-                                <span className="material-symbols-outlined text-neon-lime text-sm fill-current">star</span>
-                                <span className="material-symbols-outlined text-neon-lime text-sm fill-current">star</span>
-                                <span className="material-symbols-outlined text-neon-lime text-sm fill-current">star</span>
-                                <span className="material-symbols-outlined text-neon-lime text-sm fill-current">star</span>
-                            </div>
-                            <p className="text-sm text-slate-300 leading-relaxed mb-6 italic">"The Advocate agent identified a massive regulatory flaw in our European expansion plan that our entire executive team missed. Saved us millions in fines."</p>
-                            <div className="flex items-center gap-3">
-                                <div className="size-10 bg-panel-blue rounded-full border border-[rgba(0,240,255,0.3)]"></div>
-                                <div>
-                                    <h5 className="font-bold text-xs">Sarah Jenkins</h5>
-                                    <p className="text-[10px] text-neon-cyan uppercase font-mono">VP of Operations, TechFlow</p>
-                                </div>
-                            </div>
-                        </div>
 
-                        <div className="glass-card rounded-2xl p-6 border border-[rgba(0,240,255,0.1)] bg-space-black relative">
-                            <span className="material-symbols-outlined absolute top-4 right-4 text-neon-cyan/20 text-4xl">format_quote</span>
-                            <div className="flex gap-1 mb-4">
-                                <span className="material-symbols-outlined text-neon-lime text-sm fill-current">star</span>
-                                <span className="material-symbols-outlined text-neon-lime text-sm fill-current">star</span>
-                                <span className="material-symbols-outlined text-neon-lime text-sm fill-current">star</span>
-                                <span className="material-symbols-outlined text-neon-lime text-sm fill-current">star</span>
-                                <span className="material-symbols-outlined text-neon-lime text-sm fill-current">star</span>
-                            </div>
-                            <p className="text-sm text-slate-300 leading-relaxed mb-6 italic">"We use CouncilIA for every major product launch. The Visionary vs. Technologist debates are incredible at grounding our roadmap in reality."</p>
-                            <div className="flex items-center gap-3">
-                                <div className="size-10 bg-panel-blue rounded-full border border-[rgba(0,240,255,0.3)]"></div>
-                                <div>
-                                    <h5 className="font-bold text-xs">Marcus Chen</h5>
-                                    <p className="text-[10px] text-neon-cyan uppercase font-mono">CPO, Nexus Dynamics</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="glass-card rounded-2xl p-6 border border-[rgba(0,240,255,0.1)] bg-space-black relative">
-                            <span className="material-symbols-outlined absolute top-4 right-4 text-neon-cyan/20 text-4xl">format_quote</span>
-                            <div className="flex gap-1 mb-4">
-                                <span className="material-symbols-outlined text-neon-lime text-sm fill-current">star</span>
-                                <span className="material-symbols-outlined text-neon-lime text-sm fill-current">star</span>
-                                <span className="material-symbols-outlined text-neon-lime text-sm fill-current">star</span>
-                                <span className="material-symbols-outlined text-neon-lime text-sm fill-current">star</span>
-                                <span className="material-symbols-outlined text-neon-lime text-sm fill-current">star</span>
-                            </div>
-                            <p className="text-sm text-slate-300 leading-relaxed mb-6 italic">"As a solo founder, having a board of 7 ruthless AI advisors is my secret weapon. The PDF reports are literal gold for investor updates."</p>
-                            <div className="flex items-center gap-3">
-                                <div className="size-10 bg-panel-blue rounded-full border border-[rgba(0,240,255,0.3)]"></div>
-                                <div>
-                                    <h5 className="font-bold text-xs">Elena Rodriguez</h5>
-                                    <p className="text-[10px] text-neon-cyan uppercase font-mono">Founder, Stealth Startup</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
             {/* Pricing Section */}
             <section className="py-24 px-6 max-w-7xl mx-auto" id="pricing">
@@ -592,7 +526,7 @@
                         <ul className="space-y-4">
                             <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="#how-it-works" aria-label="Footer link to Process">Process</a></li>
                             <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="#the-council" aria-label="Footer link to The Council">The Council</a></li>
-                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="#methodology" aria-label="Footer link to Methodology">Methodology</a></li>
+                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="/methodology" aria-label="Footer link to Methodology">Methodology</a></li>
                             <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="/pricing" aria-label="Footer link to Pricing">Pricing</a></li>
                         </ul>
                     </nav>
