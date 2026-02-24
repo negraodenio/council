@@ -546,6 +546,7 @@
                             <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="/privacy" aria-label="Privacy Policy">Privacy Policy</a></li>
                             <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="/cookies" aria-label="Cookies Policy">Cookies Policy</a></li>
                             <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="/terms" aria-label="Terms of Service">Terms of Service</a></li>
+                            <li><a className="text-sm text-slate-500 hover:text-neon-cyan transition-colors" href="/security" aria-label="Data Security">Data Security</a></li>
                         </ul>
                     </nav>
                 </div>
