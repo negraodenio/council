@@ -711,8 +711,74 @@ export async function POST(req: Request) {
         }
         // ------------------------------------------------
 
+        // ══════ CUSTOM EXPERT PERSONA (7th Member) ══════
+        let customPersona: any = null;
+        let customPersonaContext = '';
+        try {
+            if (user_id) {
+                const { data: cp } = await supabase
+                    .from('custom_personas')
+                    .select('*')
+                    .eq('user_id', user_id)
+                    .eq('is_active', true)
+                    .order('updated_at', { ascending: false })
+                    .limit(1)
+                    .single();
+
+                if (cp && cp.document_count > 0) {
+                    customPersona = cp;
+                    await addEvent(supabase, runId, 'system', null, {
+                        msg: `🏢 Custom Expert "${cp.name}" activated — querying internal knowledge base...`,
+                    });
+
+                    // RAG query for custom persona context
+                    try {
+                        const embRes = await mistralClient.embeddings.create({
+                            model: 'mistral-embed',
+                            input: ideaRedacted,
+                        });
+                        const qEmb = embRes.data[0].embedding;
+
+                        const { data: personaChunks } = await supabase.rpc('match_persona_chunks', {
+                            query_embedding: qEmb,
+                            p_persona_id: cp.id,
+                            match_count: 5,
+                        });
+
+                        if (personaChunks && personaChunks.length > 0) {
+                            customPersonaContext = '\n\n=== INTERNAL COMPANY DATA (CONFIDENTIAL) ===\n' +
+                                personaChunks.map((c: any) => c.chunk_content).join('\n---\n') +
+                                '\n=== END INTERNAL DATA ===';
+                            await addEvent(supabase, runId, 'system', null, {
+                                msg: `📄 Injected ${personaChunks.length} internal documents into ${cp.name}'s context.`,
+                            });
+                        }
+                    } catch (ragErr) {
+                        console.error('[Worker] Custom Persona RAG Error:', ragErr);
+                    }
+                }
+            }
+        } catch (cpErr) {
+            console.error('[Worker] Custom Persona lookup error:', cpErr);
+        }
+
         const config = getCouncilConfig(region, sensitivity);
         const personas = Object.values(councilConfig.personas);
+
+        // If custom persona exists, add it to the persona array
+        if (customPersona) {
+            personas.push({
+                id: 'custom_expert',
+                name: customPersona.name,
+                role: customPersona.role || 'Internal Strategic Advisor',
+                emoji: customPersona.emoji || '🏢',
+                c: customPersona.color || '#6366f1',
+                dn: customPersona.name,
+            } as any);
+
+            // Add custom model assignment
+            (config.assign as any)['custom_expert'] = config.assign['visionary'];
+        }
 
         // ══════ ROUND 1: THESIS (Delphi Method) ══════
         await addEvent(supabase, runId, 'system', null, {
@@ -725,7 +791,26 @@ export async function POST(req: Request) {
                 try {
                     const assigned = config.assign[p.id as keyof typeof config.assign];
                     const messages = [
-                        { role: 'system', content: buildRound1Prompt(p, lang, ideaRedacted) },
+                        {
+                            role: 'system', content: p.id === 'custom_expert'
+                                ? `You are ${customPersona?.name || 'Custom Expert'}, ${customPersona?.role || 'Internal Strategic Advisor'}.
+${customPersona?.description || 'You represent the company\'s internal perspective and argue using real internal data.'}
+
+You have access to CONFIDENTIAL INTERNAL COMPANY DATA provided below. Use it to argue with SPECIFIC numbers, dates, and facts from the company's own documents.
+
+RULES:
+1. ALWAYS cite specific data from the INTERNAL COMPANY DATA when making claims.
+2. If the internal data contradicts other experts, say so explicitly.
+3. Your perspective is unique: you know what the company ACTUALLY has (resources, numbers, capabilities).
+4. Score the idea 0-100 based on internal feasibility, not just market theory.
+5. Maximum 300 words.
+
+Provide your analysis in this format:
+## ${customPersona?.name || 'Custom Expert'} Analysis
+**Internal Assessment Score: [X]/100**
+${customPersonaContext}`
+                                : buildRound1Prompt(p, lang, ideaRedacted)
+                        },
                         { role: 'user', content: `Analyze this objective from your expert perspective:\n\n"${ideaRedacted}"${contextSnippets}` },
                     ];
 
@@ -767,7 +852,19 @@ export async function POST(req: Request) {
                 try {
                     const assigned = config.assign[p.id as keyof typeof config.assign];
                     const messages = [
-                        { role: 'system', content: buildRound2AttackPrompt(p, lang, ideaRedacted) },
+                        {
+                            role: 'system', content: p.id === 'custom_expert'
+                                ? `You are ${customPersona?.name || 'Custom Expert'}, ${customPersona?.role || 'Internal Strategic Advisor'}.
+You are cross-examining the other experts using REAL INTERNAL DATA.
+
+Your ATTACK PROTOCOL:
+1. Find where other experts made ASSUMPTIONS that your internal data DISPROVES.
+2. Challenge unrealistic projections with your actual company numbers.
+3. Identify opportunities that only someone with internal knowledge would see.
+4. Maximum 250 words.
+${customPersonaContext}`
+                                : buildRound2AttackPrompt(p, lang, ideaRedacted)
+                        },
                         { role: 'user', content: `Original idea: "${ideaRedacted}"\n\n=== ROUND 1 ANALYSES ===\n${transcriptR1}\n\nExecute your attack protocol. Primary target first, then secondary scan.` },
                     ];
 
@@ -861,7 +958,7 @@ export async function POST(req: Request) {
             const judgeModel: ModelConfig = { provider: 'openrouter', model: config.judge.primary };
             const judgeMessages = [
                 { role: 'system', content: buildJudgePrompt(lang, ideaRedacted) },
-                { role: 'user', content: `Deliver your verdict on:\n\n"${ideaRedacted}"\n\nFULL ACE DEBATE (3 rounds, 6 experts):\n\n${fullTranscript}` },
+                { role: 'user', content: `Deliver your verdict on:\n\n"${ideaRedacted}"\n\nFULL ACE DEBATE (3 rounds, ${customPersona ? '7' : '6'} experts${customPersona ? ' including custom expert ' + customPersona.name : ''}):\n\n${fullTranscript}` },
             ];
 
             const judgeOut = await callModel(judgeModel, judgeMessages, { zdr: config.judge.zdr, maxTokens: 1500, temperature: 0.2 });
