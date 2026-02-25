@@ -210,6 +210,27 @@ export default async function DashboardPage() {
                                     <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-700 group-hover:text-[#ff00e5] group-hover:translate-x-1 transition-all opacity-0 group-hover:opacity-100">arrow_forward</span>
                                 </button>
                             </div>
+
+                            <div className="mt-8 border-t border-[rgba(0,240,255,0.1)] pt-6">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <span className="material-symbols-outlined text-amber-400">psychology</span>
+                                    <h2 className="text-sm font-bold font-display uppercase tracking-widest text-white">Custom Expert</h2>
+                                </div>
+                                <p className="text-xs text-slate-500 mb-4 font-mono leading-relaxed">
+                                    Train a 7th Council member with your company's internal data to argue on your behalf.
+                                </p>
+                                <Link href="/dashboard/custom-persona" className="flex items-center justify-between group p-4 border border-amber-400/20 bg-amber-400/5 rounded-lg hover:border-amber-400/50 hover:bg-amber-400/10 transition-all">
+                                    <div className="flex items-center gap-3">
+                                        <div className="size-8 rounded flex items-center justify-center bg-amber-400/10 text-amber-400 border border-amber-400/30">
+                                            <span className="material-symbols-outlined text-[16px]">settings_account_box</span>
+                                        </div>
+                                        <div>
+                                            <div className="text-xs font-bold text-white group-hover:text-amber-400 transition-colors uppercase tracking-widest">Train Persona</div>
+                                        </div>
+                                    </div>
+                                    <span className="material-symbols-outlined text-slate-600 group-hover:text-amber-400 transition-colors">arrow_forward</span>
+                                </Link>
+                            </div>
                         </div>
                     </div>
 

@@ -41,7 +41,7 @@
                         <span className="text-neon-cyan glow-text">Six won&apos;t.</span>
                     </h1>
                     <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-12 leading-relaxed">
-                        Submit any idea. Six AI experts with opposing perspectives debate it in 3 adversarial rounds. A seventh arbitrates and delivers a reasoned verdict.
+                        Submit any idea. Up to seven AI experts with opposing perspectives debate it in 3 adversarial rounds. An autonomous Arbitrator synthesizes the debate and delivers a reasoned verdict.
                     </p>
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 font-display">
                         <a href="/login" role="button" aria-label="Start Free Session" className="w-full sm:w-auto px-8 py-4 bg-neon-cyan text-black rounded-xl font-bold text-lg hover:shadow-[0_0_30px_rgba(0,240,255,0.4)] transition-all text-center">
@@ -260,8 +260,21 @@
                         </div>
                         <p className="text-xs text-[#c4c4ff] leading-relaxed italic">&quot;Burn rate is the primary metric of failure. I look for hidden costs and over-optimistic ROI windows.&quot;</p>
                     </div>
+                    {/* The Custom Expert */}
+                    <div className="p-6 rounded-2xl border border-[rgba(0,240,255,0.1)] bg-panel-blue/40 hover:border-indigo-500/50 transition-all group">
+                        <div className="flex items-center gap-3 mb-6">
+                            <div className="size-10 rounded bg-indigo-500/10 flex items-center justify-center group-hover:bg-indigo-500 transition-colors">
+                                <span className="material-symbols-outlined text-indigo-500 text-xl group-hover:text-black">psychology</span>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-sm font-display">Custom Expert</h4>
+                                <p className="text-[10px] text-slate-500 uppercase tracking-widest font-black">Internal Data</p>
+                            </div>
+                        </div>
+                        <p className="text-xs text-[#c4c4ff] leading-relaxed italic">&quot;I represent your company's proprietary knowledge. I ensure external strategies align with internal context.&quot;</p>
+                    </div>
                     {/* The Judge */}
-                    <div className="p-6 rounded-2xl border border-neon-cyan/50 bg-neon-cyan/5 lg:col-span-2 group relative overflow-hidden">
+                    <div className="p-6 rounded-2xl border border-neon-cyan/50 bg-neon-cyan/5 group relative overflow-hidden">
                         <div className="absolute -right-4 -bottom-4 opacity-10 group-hover:scale-110 transition-transform">
                             <span className="material-symbols-outlined text-8xl text-neon-cyan">verified</span>
                         </div>
@@ -373,21 +386,21 @@
 
                             {/* Agent 3: Finance (Bottom-Right) - ACTIVE GLOW */}
                             <div className="absolute bottom-[20%] right-[2%] flex flex-col items-center gap-2 hover:scale-105 transition-transform cursor-default z-20">
-                                <div className="relative size-14 rounded-full border-2 border-blue-500/80 bg-[#0a0a1f] flex items-center justify-center shadow-[0_0_40px_rgba(59,130,246,0.5)]">
-                                    <div className="absolute inset-0 rounded-full border-[3px] border-blue-400 opacity-50 animate-ping"></div>
-                                    <span className="material-symbols-outlined shrink-0 select-none text-blue-400 text-2xl drop-shadow-[0_0_8px_rgba(59,130,246,0.8)]">account_balance</span>
+                                <div className="relative size-14 rounded-full border-2 border-yellow-500/80 bg-[#0a0a1f] flex items-center justify-center shadow-[0_0_40px_rgba(234,179,8,0.5)]">
+                                    <div className="absolute inset-0 rounded-full border-[3px] border-yellow-400 opacity-50 animate-ping"></div>
+                                    <span className="material-symbols-outlined shrink-0 select-none text-yellow-500 text-2xl drop-shadow-[0_0_8px_rgba(234,179,8,0.8)]">monetization_on</span>
                                 </div>
-                                <div className="bg-black/90 backdrop-blur-md px-4 py-1.5 rounded-full border border-blue-500 text-xs font-bold text-white shadow-[0_4px_15px_rgba(0,0,0,0.5)]">Finance</div>
-                                <div className="bg-black/90 backdrop-blur-md border border-blue-500/40 px-3 py-2 rounded-lg text-[9px] text-blue-300 font-mono w-36 truncate text-center shadow-xl">"A elaborar argumento..."</div>
+                                <div className="bg-black/90 backdrop-blur-md px-4 py-1.5 rounded-full border border-yellow-500 text-xs font-bold text-white shadow-[0_4px_15px_rgba(0,0,0,0.5)]">Finance</div>
+                                <div className="bg-black/90 backdrop-blur-md border border-yellow-500/40 px-3 py-2 rounded-lg text-[9px] text-yellow-300 font-mono w-36 truncate text-center shadow-xl">"A elaborar argumento..."</div>
                             </div>
 
                             {/* Agent 4: Ethics (Bottom) */}
                             <div className="absolute bottom-[5%] left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 hover:scale-105 transition-transform cursor-default">
-                                <div className="size-12 rounded-full border border-amber-500/30 bg-[#0a0a1f] flex items-center justify-center shadow-[0_0_15px_rgba(245,158,11,0.1)]">
-                                    <span className="material-symbols-outlined shrink-0 select-none text-amber-500 text-xl">gavel</span>
+                                <div className="size-12 rounded-full border border-purple-500/30 bg-[#0a0a1f] flex items-center justify-center shadow-[0_0_15px_rgba(168,85,247,0.1)]">
+                                    <span className="material-symbols-outlined shrink-0 select-none text-purple-500 text-xl">security</span>
                                 </div>
-                                <div className="bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-amber-500/20 text-[10px] font-bold text-slate-200 shadow-xl">Ethics & Risk</div>
-                                <div className="bg-black/80 backdrop-blur-md border border-amber-500/20 px-3 py-1.5 rounded-lg text-[8px] text-amber-400/80 font-mono w-32 truncate text-center opacity-80 shadow-xl">"Regulatory & Compl..."</div>
+                                <div className="bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-purple-500/20 text-[10px] font-bold text-slate-200 shadow-xl">Ethics & Risk</div>
+                                <div className="bg-black/80 backdrop-blur-md border border-purple-500/20 px-3 py-1.5 rounded-lg text-[8px] text-purple-400/80 font-mono w-32 truncate text-center opacity-80 shadow-xl">"Regulatory & Compl..."</div>
                             </div>
 
                             {/* Agent 5: Advocate (Bottom-Left) - ACTIVE GLOW */}
@@ -402,11 +415,20 @@
 
                             {/* Agent 6: Visionary (Top-Left) */}
                             <div className="absolute top-[20%] left-[2%] flex flex-col items-center gap-2 hover:scale-105 transition-transform cursor-default">
-                                <div className="size-12 rounded-full border border-purple-500/30 bg-[#0a0a1f] flex items-center justify-center shadow-[0_0_15px_rgba(168,85,247,0.1)]">
-                                    <span className="material-symbols-outlined shrink-0 select-none text-purple-400 text-xl">visibility</span>
+                                <div className="size-12 rounded-full border border-orange-500/30 bg-[#0a0a1f] flex items-center justify-center shadow-[0_0_15px_rgba(249,115,22,0.1)]">
+                                    <span className="material-symbols-outlined shrink-0 select-none text-orange-500 text-xl">flare</span>
                                 </div>
-                                <div className="bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-purple-500/20 text-[10px] font-bold text-slate-200 shadow-xl">Visionary</div>
-                                <div className="bg-black/80 backdrop-blur-md border border-purple-500/20 px-3 py-1.5 rounded-lg text-[8px] text-purple-400/80 font-mono w-32 truncate text-center opacity-80 shadow-xl">"Market Potential Ana..."</div>
+                                <div className="bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-orange-500/20 text-[10px] font-bold text-slate-200 shadow-xl">Visionary</div>
+                                <div className="bg-black/80 backdrop-blur-md border border-orange-500/20 px-3 py-1.5 rounded-lg text-[8px] text-orange-400/80 font-mono w-32 truncate text-center opacity-80 shadow-xl">"Market Potential Ana..."</div>
+                            </div>
+                            {/* Agent 7: Custom Expert (Orbiting) */}
+                            <div className="absolute top-1/2 left-1/2 z-30 animate-[spin_20s_linear_infinite]">
+                                <div className="absolute -left-6 top-[-180px] animate-[spin_20s_linear_infinite_reverse] flex flex-col items-center gap-2 hover:scale-105 transition-transform cursor-default">
+                                    <div className="size-12 rounded-full border border-indigo-500/50 bg-[#0a0a1f] flex items-center justify-center shadow-[0_0_20px_rgba(99,102,241,0.2)]">
+                                        <span className="material-symbols-outlined shrink-0 select-none text-indigo-500 text-xl">psychology</span>
+                                    </div>
+                                    <div className="bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-indigo-500/30 text-[10px] font-bold text-slate-200 shadow-xl whitespace-nowrap">Custom Expert</div>
+                                </div>
                             </div>
                         </div>
                     </div>

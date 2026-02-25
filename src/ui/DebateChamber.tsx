@@ -58,6 +58,8 @@ const HEX = [
     { left: '15%', top: '30%' }, // Top Left
 ];
 
+const ORBIT_POSITION = { left: '50%', top: '50%' };
+
 interface Msg {
     id: string;
     expert_name: string;
@@ -257,7 +259,8 @@ export default function DebateChamber({ runId }: { runId: string }) {
                     </div>
 
                     {experts.map((name, i) => {
-                        const pos = HEX[i % 6];
+                        const isOrbiting = i >= 6;
+                        const pos = isOrbiting ? ORBIT_POSITION : HEX[i % 6];
                         const persona = gp(name, lang);
                         const active = speaking === name;
 
@@ -281,10 +284,15 @@ export default function DebateChamber({ runId }: { runId: string }) {
                         return (
                             <div
                                 key={name}
-                                className="absolute flex flex-col items-center gap-1"
-                                style={{ left: pos.left, top: pos.top, transform: 'translate(-50%, -50%)' }}
+                                className={`absolute flex flex-col items-center gap-1 ${isOrbiting ? 'animate-[spin_20s_linear_infinite]' : ''}`}
+                                style={{
+                                    left: pos.left,
+                                    top: pos.top,
+                                    transform: isOrbiting ? 'translate(-50%, -50%) translateX(100px) rotate(0deg)' : 'translate(-50%, -50%)',
+                                    transformOrigin: '0 0'
+                                }}
                             >
-                                <div className="relative">
+                                <div className={`relative ${isOrbiting ? 'animate-[spin_20s_linear_infinite_reverse]' : ''}`}>
                                     {active && (
                                         <div
                                             className="absolute inset-0 rounded-full animate-ping opacity-20"
