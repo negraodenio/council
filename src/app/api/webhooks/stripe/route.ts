@@ -53,11 +53,14 @@ export async function POST(req: Request) {
             const plan = sub.metadata?.plan || 'pro';
 
             if (tenantId) {
+                // Determine status and set end period correctly
+                const status = sub.status === 'past_due' || sub.status === 'unpaid' ? 'canceled' : sub.status;
+
                 await supabase.from('subscriptions').upsert({
                     id: sub.id,
                     tenant_id: tenantId,
                     stripe_customer_id: sub.customer as string,
-                    status: sub.status,
+                    status: status,
                     plan: plan,
                     current_period_start: new Date((sub as any).current_period_start * 1000).toISOString(),
                     current_period_end: new Date((sub as any).current_period_end * 1000).toISOString()

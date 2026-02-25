@@ -50,7 +50,8 @@ export async function middleware(req: NextRequest) {
     const isProtected = protectedPaths.some(p => req.nextUrl.pathname.startsWith(p));
 
     // Allow internal worker calls to bypass auth
-    const isInternal = req.headers.get('x-internal') === '1';
+    const internalSecret = process.env.INTERNAL_WORKER_SECRET;
+    const isInternal = req.headers.get('x-internal') === internalSecret && !!internalSecret;
 
     if (isProtected && !user && !isInternal) {
         const redirectUrl = req.nextUrl.clone();
