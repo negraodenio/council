@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { embedMistralCached } from "@/lib/embeddings/mistral";
+const pdf = require("pdf-parse");
 
 // Chunk text into overlapping segments
 function chunkText(text: string, maxChunkSize = 800, overlap = 100): string[] {
@@ -19,10 +20,22 @@ function chunkText(text: string, maxChunkSize = 800, overlap = 100): string[] {
 }
 
 // Extract text from different file types
-function extractText(content: string, fileType: string): string {
-    // For now, treat all as plain text.
-    // PDF parsing would need a library like pdf-parse but we handle that via QStash
-    return content;
+async function extractTextFromFile(file: File, filename: string): Promise<string> {
+    const ext = filename.split(".").pop()?.toLowerCase() || "txt";
+    const buffer = Buffer.from(await file.arrayBuffer());
+
+    if (ext === "pdf") {
+        try {
+            const data = await pdf(buffer);
+            return data.text;
+        } catch (err) {
+            console.error(`[Upload API] PDF parsing error for ${filename}:`, err);
+            throw new Error(`Failed to parse PDF: ${filename}`);
+        }
+    }
+
+    // Default to plain text for .txt, .md, .csv etc.
+    return buffer.toString("utf-8");
 }
 
 export async function POST(req: NextRequest) {
@@ -38,7 +51,9 @@ export async function POST(req: NextRequest) {
         const personaId = formData.get("persona_id") as string;
         const file = formData.get("file") as File | null;
         const textContent = formData.get("text_content") as string | null;
-        const filename = formData.get("filename") as string || file?.name || "untitled.txt";
+        const filename = (formData.get("filename") as string) || file?.name || `upload-${Date.now()}.txt`;
+
+        console.log(`[Upload API] Starting upload for persona ${personaId}, file: ${filename}`);
 
         if (!personaId) {
             return NextResponse.json({ error: "persona_id is required" }, { status: 400 });
@@ -53,26 +68,27 @@ export async function POST(req: NextRequest) {
             .single();
 
         if (personaErr || !persona) {
-            return NextResponse.json({ error: "Persona not found" }, { status: 404 });
+            console.error("[Upload API] Persona verification failed:", personaErr);
+            return NextResponse.json({ error: "Persona not found or access denied" }, { status: 404 });
         }
 
         // Get text content from file or direct text
         let rawText: string;
         if (file) {
-            rawText = await file.text();
+            console.log(`[Upload API] Extracting text from file ${filename}`);
+            rawText = await extractTextFromFile(file, filename);
         } else if (textContent) {
+            console.log(`[Upload API] Using direct text content`);
             rawText = textContent;
         } else {
             return NextResponse.json({ error: "No file or text content provided" }, { status: 400 });
         }
 
-        if (rawText.length < 100) {
-            return NextResponse.json({ error: "Content too short (minimum 100 characters)" }, { status: 400 });
+        if (rawText.trim().length < 50) {
+            return NextResponse.json({ error: "Content too short (minimum 50 characters of actual text)" }, { status: 400 });
         }
 
-        // Detect file type
-        const ext = filename.split(".").pop()?.toLowerCase() || "txt";
-        const processedText = extractText(rawText, ext);
+        console.log(`[Upload API] Processing ${rawText.length} characters of raw text`);
 
         // Create document record
         const sbAdmin = createAdminClient();
@@ -82,7 +98,7 @@ export async function POST(req: NextRequest) {
                 persona_id: personaId,
                 user_id: user.id,
                 filename,
-                file_type: ext,
+                file_type: filename.split(".").pop()?.toLowerCase() || "txt",
                 file_size_bytes: rawText.length,
                 status: "processing",
             })
@@ -90,11 +106,18 @@ export async function POST(req: NextRequest) {
             .single();
 
         if (docErr || !docRecord) {
+            console.error("[Upload API] Failed to create document record:", docErr);
             return NextResponse.json({ error: "Failed to create document record" }, { status: 500 });
         }
 
         // Chunk the text
-        const chunks = chunkText(processedText);
+        const chunks = chunkText(rawText);
+        console.log(`[Upload API] Created ${chunks.length} chunks`);
+
+        if (chunks.length === 0) {
+            await sbAdmin.from("custom_persona_documents").update({ status: "error", error_message: "No meaningful text found to chunk" }).eq("id", docRecord.id);
+            return NextResponse.json({ error: "No meaningful text segments found in document" }, { status: 400 });
+        }
 
         // Generate embeddings in batches of 10
         const batchSize = 10;
@@ -110,8 +133,8 @@ export async function POST(req: NextRequest) {
                     persona_id: personaId,
                     user_id: user.id,
                     chunk_content: chunk,
-                    embedding: JSON.stringify(embeddings[idx]),
-                    document_id: null,
+                    embedding: embeddings[idx], // Send as array, Supabase pgvector handles it
+                    document_id: docRecord.id, // Link to the document we just created
                 }));
 
                 const { error: insertErr } = await sbAdmin
@@ -119,16 +142,17 @@ export async function POST(req: NextRequest) {
                     .insert(rows);
 
                 if (insertErr) {
-                    console.error(`[Custom Persona Upload] Embedding insert error batch ${i}:`, insertErr);
+                    console.error(`[Upload API] Embedding insert error batch ${i}:`, insertErr);
                 } else {
                     totalEmbedded += batch.length;
                 }
             } catch (embErr) {
-                console.error(`[Custom Persona Upload] Embedding generation error batch ${i}:`, embErr);
+                console.error(`[Upload API] Embedding generation error batch ${i}:`, embErr);
             }
         }
 
         // Update document status
+        console.log(`[Upload API] Finalizing document ${docRecord.id}. Embedded ${totalEmbedded}/${chunks.length} chunks.`);
         await sbAdmin
             .from("custom_persona_documents")
             .update({
@@ -139,10 +163,16 @@ export async function POST(req: NextRequest) {
             .eq("id", docRecord.id);
 
         // Update persona document count
+        const { data: allDocs } = await sbAdmin
+            .from("custom_persona_documents")
+            .select("id")
+            .eq("persona_id", personaId)
+            .eq("status", "ready");
+
         await sbAdmin
             .from("custom_personas")
             .update({
-                document_count: chunks.length,
+                document_count: allDocs?.length || 0,
                 updated_at: new Date().toISOString(),
             })
             .eq("id", personaId);
@@ -156,7 +186,7 @@ export async function POST(req: NextRequest) {
         });
 
     } catch (error: any) {
-        console.error("[Custom Persona Upload] Error:", error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        console.error("[Upload API] Fatal error:", error);
+        return NextResponse.json({ error: error.message || "Internal Server Error" }, { status: 500 });
     }
 }

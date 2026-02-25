@@ -35,55 +35,74 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const body = await req.json();
-    const { name, role, description, color, emoji } = body;
+    try {
+        const body = await req.json();
+        const { name, role, description, color, emoji } = body;
 
-    if (!name || !role) {
-        return NextResponse.json({ error: "Name and role are required" }, { status: 400 });
+        console.log(`[Custom Persona API] Create attempt by user ${user.id}`, { name, role });
+
+        if (!name || !role) {
+            return NextResponse.json({ error: "Name and role are required" }, { status: 400 });
+        }
+
+        // Get tenant_id from user metadata or profiles
+        const { data: profile, error: profileErr } = await supabase
+            .from("profiles")
+            .select("tenant_id")
+            .eq("id", user.id)
+            .single();
+
+        if (profileErr) {
+            console.error("[Custom Persona API] Profile fetch error:", profileErr);
+        }
+
+        const tenantId = profile?.tenant_id || user.id;
+        console.log(`[Custom Persona API] Using tenantId: ${tenantId}`);
+
+        // Check plan limits (free users cannot create custom personas)
+        const { data: existing, error: countErr } = await supabase
+            .from("custom_personas")
+            .select("id")
+            .eq("user_id", user.id);
+
+        if (countErr) {
+            console.error("[Custom Persona API] Count check error:", countErr);
+            return NextResponse.json({ error: "Database error checking limits" }, { status: 500 });
+        }
+
+        const count = existing?.length || 0;
+        console.log(`[Custom Persona API] Current persona count: ${count}`);
+
+        if (count >= 3) {
+            return NextResponse.json({ error: "Maximum personas reached for your plan (limit: 3)" }, { status: 403 });
+        }
+
+        const { data: persona, error } = await supabase
+            .from("custom_personas")
+            .insert({
+                tenant_id: tenantId,
+                user_id: user.id,
+                name,
+                role: role || "Internal Strategic Advisor",
+                description: description || "",
+                color: color || "#6366f1",
+                emoji: emoji || "🏢",
+            })
+            .select()
+            .single();
+
+        if (error) {
+            console.error("[Custom Persona API] Insert error:", error);
+            return NextResponse.json({ error: `Failed to insert persona: ${error.message}` }, { status: 500 });
+        }
+
+        console.log(`[Custom Persona API] Successfully created persona: ${persona.id}`);
+        return NextResponse.json({ persona }, { status: 201 });
+
+    } catch (err: any) {
+        console.error("[Custom Persona API] Fatal error:", err);
+        return NextResponse.json({ error: err.message || "Internal Server Error" }, { status: 500 });
     }
-
-    // Get tenant_id from user metadata or profiles
-    const { data: profile } = await supabase
-        .from("profiles")
-        .select("tenant_id")
-        .eq("id", user.id)
-        .single();
-
-    const tenantId = profile?.tenant_id || user.id;
-
-    // Check plan limits (free users cannot create custom personas)
-    const { data: existing } = await supabase
-        .from("custom_personas")
-        .select("id")
-        .eq("user_id", user.id);
-
-    const count = existing?.length || 0;
-
-    // TODO: Check plan tier for persona limits
-    // For now: max 3 personas per user
-    if (count >= 3) {
-        return NextResponse.json({ error: "Maximum personas reached for your plan" }, { status: 403 });
-    }
-
-    const { data: persona, error } = await supabase
-        .from("custom_personas")
-        .insert({
-            tenant_id: tenantId,
-            user_id: user.id,
-            name,
-            role: role || "Internal Strategic Advisor",
-            description: description || "",
-            color: color || "#6366f1",
-            emoji: emoji || "🏢",
-        })
-        .select()
-        .single();
-
-    if (error) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-
-    return NextResponse.json({ persona }, { status: 201 });
 }
 
 // DELETE — Delete a persona by ID (cascades to docs + embeddings)

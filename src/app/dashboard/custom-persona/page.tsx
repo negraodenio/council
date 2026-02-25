@@ -53,16 +53,26 @@ export default function CustomPersonaPage() {
     const handleCreate = async () => {
         if (!name.trim()) return;
         setCreating(true);
-        const res = await fetch('/api/custom-persona', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, role, description, color, emoji }),
-        });
-        if (res.ok) {
-            setName(''); setDescription('');
-            await fetchPersonas();
+        try {
+            const res = await fetch('/api/custom-persona', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, role, description, color, emoji }),
+            });
+            const data = await res.json();
+            if (res.ok) {
+                setName(''); setDescription('');
+                await fetchPersonas();
+            } else {
+                console.error('[Create Persona Error]', data);
+                alert(`Failed to create expert: ${data.error || 'Unknown error'}`);
+            }
+        } catch (err) {
+            console.error('[Create Persona Exception]', err);
+            alert('A network error occurred while creating the expert.');
+        } finally {
+            setCreating(false);
         }
-        setCreating(false);
     };
 
     const handleDelete = async (id: string) => {
@@ -73,28 +83,50 @@ export default function CustomPersonaPage() {
 
     const handleUpload = async (personaId: string, files: FileList) => {
         setUploading(true);
-        for (const file of Array.from(files)) {
-            const formData = new FormData();
-            formData.append('persona_id', personaId);
-            formData.append('file', file);
-            formData.append('filename', file.name);
-            await fetch('/api/custom-persona/upload', { method: 'POST', body: formData });
+        try {
+            for (const file of Array.from(files)) {
+                const formData = new FormData();
+                formData.append('persona_id', personaId);
+                formData.append('file', file);
+                formData.append('filename', file.name);
+                const res = await fetch('/api/custom-persona/upload', { method: 'POST', body: formData });
+                const data = await res.json();
+                if (!res.ok) {
+                    console.error(`[Upload Error] ${file.name}:`, data);
+                    alert(`Failed to upload ${file.name}: ${data.error || 'Unknown error'}`);
+                }
+            }
+        } catch (err) {
+            console.error('[Upload Exception]', err);
+            alert('A network error occurred during upload.');
+        } finally {
+            await fetchPersonas();
+            setUploading(false);
         }
-        await fetchPersonas();
-        setUploading(false);
     };
 
     const handleTextUpload = async (personaId: string) => {
         const text = prompt('Paste your text content (business plan, strategy doc, financials, etc.):');
         if (!text || text.length < 100) { alert('Content must be at least 100 characters.'); return; }
         setUploading(true);
-        const formData = new FormData();
-        formData.append('persona_id', personaId);
-        formData.append('text_content', text);
-        formData.append('filename', `text-${Date.now()}.txt`);
-        await fetch('/api/custom-persona/upload', { method: 'POST', body: formData });
-        await fetchPersonas();
-        setUploading(false);
+        try {
+            const formData = new FormData();
+            formData.append('persona_id', personaId);
+            formData.append('text_content', text);
+            formData.append('filename', `text-${Date.now()}.txt`);
+            const res = await fetch('/api/custom-persona/upload', { method: 'POST', body: formData });
+            const data = await res.json();
+            if (!res.ok) {
+                console.error('[Text Upload Error]', data);
+                alert(`Failed to save text content: ${data.error || 'Unknown error'}`);
+            }
+        } catch (err) {
+            console.error('[Text Upload Exception]', err);
+            alert('A network error occurred while saving text.');
+        } finally {
+            await fetchPersonas();
+            setUploading(false);
+        }
     };
 
     return (
