@@ -271,7 +271,10 @@
                                 <p className="text-[10px] text-slate-500 uppercase tracking-widest font-black">Internal Data</p>
                             </div>
                         </div>
-                        <p className="text-xs text-[#c4c4ff] leading-relaxed italic">&quot;I represent your company's proprietary knowledge. I ensure external strategies align with internal context.&quot;</p>
+                        <p className="text-xs text-[#c4c4ff] leading-relaxed italic mb-4">&quot;I represent your company's proprietary knowledge. I ensure external strategies align with internal context.&quot;</p>
+                        <a href="/login" className="inline-flex items-center gap-2 text-[10px] font-bold text-indigo-400 hover:text-indigo-300 uppercase tracking-widest transition-colors">
+                            Train Yours <span className="material-symbols-outlined text-[12px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        </a>
                     </div>
                     {/* The Judge */}
                     <div className="p-6 rounded-2xl border border-neon-cyan/50 bg-neon-cyan/5 group relative overflow-hidden">

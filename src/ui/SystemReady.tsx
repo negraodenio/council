@@ -27,6 +27,9 @@ export default function SystemReady() {
     const [repoName, setRepoName] = useState("");
     const [ingestingContext, setIngestingContext] = useState(false);
 
+    // Custom Persona variable
+    const [customPersona, setCustomPersona] = useState<any>(null);
+
     useEffect(() => {
         const supabase = createClient();
         (async () => {
@@ -43,6 +46,18 @@ export default function SystemReady() {
                 .eq('id', user.id)
                 .single();
             if (profile) setTenantId(profile.tenant_id);
+
+            // Fetch active custom persona
+            const { data: personaData } = await supabase
+                .from('custom_personas')
+                .select('*')
+                .eq('user_id', user.id)
+                .eq('is_active', true)
+                .order('updated_at', { ascending: false })
+                .limit(1)
+                .single();
+            if (personaData) setCustomPersona(personaData);
+
             setProfileLoading(false);
         })();
     }, []);
@@ -296,6 +311,35 @@ export default function SystemReady() {
                                 <h4 className="font-bold text-xs text-white">Finance</h4>
                                 <p className="text-[9px] text-blue-500/60 uppercase font-mono mt-1">Cost Projection</p>
                             </div>
+                        </div>
+
+                        {/* Custom Expert Slot */}
+                        <div className="mt-3">
+                            {customPersona && customPersona.document_count > 0 ? (
+                                <div className="glass-panel p-3 rounded-lg border hover:bg-white/5 transition-all flex items-center gap-3 cursor-default" style={{ borderColor: `${customPersona.color}40` }}>
+                                    <div className="flex-1 flex justify-between items-center">
+                                        <div className="flex flex-col">
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-lg">{customPersona.emoji || '🏢'}</span>
+                                                <h4 className="font-bold text-xs text-white">{customPersona.name}</h4>
+                                            </div>
+                                            <p className="text-[9px] uppercase font-mono mt-1" style={{ color: customPersona.color }}>{customPersona.role || 'Custom Persona'}</p>
+                                        </div>
+                                        <div className="w-1.5 h-1.5 rounded-full bg-[#afff33] shadow-[0_0_5px_#afff33]"></div>
+                                    </div>
+                                </div>
+                            ) : (
+                                <a href="/dashboard/custom-persona" className="glass-panel p-3 rounded-lg border border-dashed border-white/20 hover:border-neon-cyan/50 hover:bg-neon-cyan/5 transition-all flex justify-between items-center group">
+                                    <div className="flex items-center gap-3">
+                                        <span className="material-symbols-outlined text-slate-500 group-hover:text-neon-cyan transition-colors">add_circle</span>
+                                        <div>
+                                            <h4 className="font-bold text-xs text-slate-300 group-hover:text-white transition-colors">{t(lang, 'sys_train_persona') || 'Train Custom Expert'}</h4>
+                                            <p className="text-[9px] text-slate-500 uppercase font-mono mt-1">{t(lang, 'sys_train_persona_desc') || 'Add internal data perspective'}</p>
+                                        </div>
+                                    </div>
+                                    <span className="material-symbols-outlined text-slate-600 group-hover:text-neon-cyan transition-colors">arrow_forward</span>
+                                </a>
+                            )}
                         </div>
                     </div>
 

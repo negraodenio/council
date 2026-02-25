@@ -43,6 +43,12 @@ export default function PDFReportTemplate({ validation, lang }: PDFReportTemplat
     cleanJudgeText = cleanJudgeText.replace(/## 🏛️ CouncilIA.*?Verdict Final\n/i, '');
     cleanJudgeText = cleanJudgeText.replace(/### (Consensus Score|Puntuación de Consenso|Pontuação de Consenso|Score de Consensus|Konsens-Score|Punteggio di Consenso): \[?\d+\/100\]?\n/i, '');
 
+    // Chunk round 3 into pages of 4 cards max to avoid vertical overflow
+    const round3Chunks = [];
+    for (let i = 0; i < round3.length; i += 4) {
+        round3Chunks.push(round3.slice(i, i + 4));
+    }
+
     return (
         <div id="pdf-report-container" className="bg-[#030712] text-slate-100 font-sans w-[210mm] relative overflow-hidden hidden-in-browser" style={{ fontFamily: "'Inter', sans-serif" }}>
 
@@ -73,7 +79,7 @@ export default function PDFReportTemplate({ validation, lang }: PDFReportTemplat
                         <span className="text-indigo-400">Analysis Report</span>
                     </h1>
                     <div className="max-w-xl px-6 py-3 bg-indigo-900/40 border border-indigo-500/30 rounded-xl mb-12">
-                        <span className="text-indigo-200 mono text-sm font-medium leading-relaxed">{validation.idea.substring(0, 150)}{validation.idea.length > 150 ? '...' : ''}</span>
+                        <span className="text-indigo-200 mono text-sm font-medium leading-relaxed">{validation.idea.substring(0, 80)}{validation.idea.length > 80 ? '...' : ''}</span>
                     </div>
                     <div className="grid grid-cols-2 gap-8 text-left min-w-[300px] pt-10 border-t border-white/10">
                         <div>
@@ -136,18 +142,18 @@ export default function PDFReportTemplate({ validation, lang }: PDFReportTemplat
                 </div>
             </section>
 
-            {/* --- PAGE 3: AGENT INSIGHTS --- */}
-            {round3.length > 0 && (
-                <section className="pdf-page bg-gradient-mesh flex flex-col">
+            {/* --- AGENT INSIGHTS PAGES --- */}
+            {round3Chunks.map((chunk, pageIndex) => (
+                <section key={pageIndex} className="pdf-page bg-gradient-mesh flex flex-col">
                     <div className="flex justify-between border-b border-white/5 pb-4 mb-8 shrink-0">
-                        <span className="text-xs font-bold text-indigo-400 uppercase tracking-widest">Section 02 // Agent Synthesis (Round 3)</span>
+                        <span className="text-xs font-bold text-indigo-400 uppercase tracking-widest">Section 02 // Agent Synthesis (Round 3) {pageIndex > 0 ? '(Cont.)' : ''}</span>
                         <span className="text-xs text-slate-500 italic">CouncilIA Report</span>
                     </div>
 
-                    <h2 className="text-2xl font-bold mb-6 text-white shrink-0">Multi-Agent Deliberation Synthesis</h2>
+                    {pageIndex === 0 && <h2 className="text-2xl font-bold mb-6 text-white shrink-0">Multi-Agent Deliberation Synthesis</h2>}
 
                     <div className="grid grid-cols-2 gap-4 flex-1 content-start">
-                        {round3.map((r: any) => {
+                        {chunk.map((r: any) => {
                             const persona = gp(r.name, lang);
                             // Truncate text manually to avoid html2canvas line-clamp rendering failures
                             const cleanText = r.text.length > 350 ? r.text.substring(0, 350).trim() + '...' : r.text;
@@ -173,10 +179,10 @@ export default function PDFReportTemplate({ validation, lang }: PDFReportTemplat
                     </div>
 
                     <div className="absolute bottom-10 left-10 right-10 flex justify-between shrink-0">
-                        <div className="text-xs text-slate-500">Page 3</div>
+                        <div className="text-xs text-slate-500">Page {3 + pageIndex}</div>
                     </div>
                 </section>
-            )}
+            ))}
         </div>
     );
 }

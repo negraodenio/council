@@ -122,16 +122,7 @@ export default function ConsensusReport({ validation, patches }: {
             container.style.position = 'absolute';
             container.style.top = '-9999px';
 
-            const canvas = await html2canvas(container, {
-                scale: 2, // High resolution
-                useCORS: true,
-                logging: false,
-                backgroundColor: '#030712'
-            });
-
-            container.style.display = 'none';
-
-            const imgData = canvas.toDataURL('image/png');
+            const pages = container.querySelectorAll('.pdf-page');
 
             // Generate A4 PDF
             const pdf = new jsPDF({
@@ -140,25 +131,30 @@ export default function ConsensusReport({ validation, patches }: {
                 format: 'a4'
             });
 
-            const imgProps = pdf.getImageProperties(imgData);
             const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-            // Handle multi-page if the HTML is taller than a single A4 height
-            let heightLeft = pdfHeight;
-            let position = 0;
             const pageHeight = pdf.internal.pageSize.getHeight();
 
-            pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
-            heightLeft -= pageHeight;
+            for (let i = 0; i < pages.length; i++) {
+                if (i > 0) pdf.addPage();
+                const pageEl = pages[i] as HTMLElement;
 
-            while (heightLeft >= 0) {
-                position = heightLeft - pdfHeight;
-                pdf.addPage();
-                pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
-                heightLeft -= pageHeight;
+                const canvas = await html2canvas(pageEl, {
+                    scale: 2, // High resolution
+                    useCORS: true,
+                    logging: false,
+                    backgroundColor: '#030712'
+                });
+
+                const imgData = canvas.toDataURL('image/png');
+                const imgProps = pdf.getImageProperties(imgData);
+                const ratio = imgProps.width / imgProps.height;
+                const renderHeight = pdfWidth / ratio;
+
+                // Draw the specific page canvas starting at 0,0
+                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, renderHeight);
             }
 
+            container.style.display = 'none';
             pdf.save(`CouncilIA_${validation.id.substring(0, 8)}.pdf`);
         } catch (error) {
             console.error('Failed to generate PDF:', error);

@@ -24,6 +24,8 @@ const strings: Record<UILang, Record<string, string>> = {
         sys_marketplace: 'Marketplace',
         sys_vault: 'Vault',
         sys_node: 'Node',
+        sys_train_persona: 'Train Custom Expert',
+        sys_train_persona_desc: 'Add internal data perspective',
 
         // DebateChamber
         dc_title: 'Live Debate Chamber',
@@ -99,6 +101,8 @@ const strings: Record<UILang, Record<string, string>> = {
         sys_marketplace: 'Marketplace',
         sys_vault: 'Cofre',
         sys_node: 'Nó',
+        sys_train_persona: 'Treinar Especialista',
+        sys_train_persona_desc: 'Adicionar perspetiva de dados internos',
 
         dc_title: 'Câmara de Debate ao Vivo',
         dc_subtitle: 'CouncilIA v2 — 6 Especialistas, 3 Rondas',
@@ -172,6 +176,8 @@ const strings: Record<UILang, Record<string, string>> = {
         sys_marketplace: 'Marketplace',
         sys_vault: 'Bóveda',
         sys_node: 'Nodo',
+        sys_train_persona: 'Entrenar Experto',
+        sys_train_persona_desc: 'Agregar perspectiva de datos internos',
 
         dc_title: 'Cámara de Debate en Vivo',
         dc_subtitle: 'CouncilIA v2 — 6 Expertos, 3 Rondas',
@@ -245,6 +251,8 @@ const strings: Record<UILang, Record<string, string>> = {
         sys_marketplace: 'Marketplace',
         sys_vault: 'Coffre',
         sys_node: 'Nœud',
+        sys_train_persona: 'Former Expert',
+        sys_train_persona_desc: 'Ajouter une perspective interne',
 
         dc_title: 'Chambre de Débat en Direct',
         dc_subtitle: 'CouncilIA v2 — 6 Experts, 3 Tours',
@@ -318,6 +326,8 @@ const strings: Record<UILang, Record<string, string>> = {
         sys_marketplace: 'Marktplatz',
         sys_vault: 'Tresor',
         sys_node: 'Knoten',
+        sys_train_persona: 'Experte Trainieren',
+        sys_train_persona_desc: 'Interne Datenperspektive',
 
         dc_title: 'Live-Debattenkammer',
         dc_subtitle: 'CouncilIA v2 — 6 Experten, 3 Runden',
@@ -391,6 +401,8 @@ const strings: Record<UILang, Record<string, string>> = {
         sys_marketplace: 'Marketplace',
         sys_vault: 'Cassaforte',
         sys_node: 'Nodo',
+        sys_train_persona: 'Addestra Esperto',
+        sys_train_persona_desc: 'Aggiungi dati interni',
 
         dc_title: 'Camera di Dibattito dal Vivo',
         dc_subtitle: 'CouncilIA v2 — 6 Esperti, 3 Round',
@@ -464,6 +476,8 @@ const strings: Record<UILang, Record<string, string>> = {
         sys_marketplace: 'Marktplaats',
         sys_vault: 'Kluis',
         sys_node: 'Knooppunt',
+        sys_train_persona: 'Expert Trainen',
+        sys_train_persona_desc: 'Interne dataperspectief toevoegen',
 
         dc_title: 'Live Debatkamer',
         dc_subtitle: 'CouncilIA v2 — 6 Experts, 3 Rondes',
