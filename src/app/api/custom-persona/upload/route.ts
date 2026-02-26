@@ -27,7 +27,21 @@ async function extractTextFromFile(file: File, filename: string): Promise<string
     if (ext === "pdf") {
         try {
             const data = await pdf(buffer);
-            return data.text;
+            // Clean and normalize extracted text
+            let text = data.text || "";
+
+            // 1. Remove control characters and non-printable chars (except common ones)
+            text = text.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F]/g, "");
+
+            // 2. Normalize whitespace: replace multiple spaces with one, multiple newlines with at most two
+            text = text.replace(/ +/g, " ");
+            text = text.replace(/\n{3,}/g, "\n\n");
+
+            // 3. Trim
+            text = text.trim();
+
+            console.log(`[Upload API] Normalized PDF text for ${filename}. Length: ${text.length}`);
+            return text;
         } catch (err) {
             console.error(`[Upload API] PDF parsing error for ${filename}:`, err);
             throw new Error(`Failed to parse PDF: ${filename}`);

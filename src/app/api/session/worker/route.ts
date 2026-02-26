@@ -659,7 +659,7 @@ export async function POST(req: Request) {
     console.log('[Worker] v2.3 — ACE Engine (Adversarial Consensus Engine) starting');
     try {
         const body = await req.json() || {};
-        const { validationId, runId, tenant_id, user_id, idea, region, sensitivity } = body;
+        const { validationId, runId, tenant_id, user_id, idea, region, sensitivity, useCustomExpert } = body;
 
         if (!runId || !idea) {
             console.error('[Worker] Missing required params:', { runId, idea: !!idea });
@@ -715,7 +715,7 @@ export async function POST(req: Request) {
         let customPersona: any = null;
         let customPersonaContext = '';
         try {
-            if (user_id) {
+            if (user_id && useCustomExpert !== false) {
                 const { data: cp } = await supabase
                     .from('custom_personas')
                     .select('*')
@@ -808,7 +808,7 @@ RULES:
 Provide your analysis in this format:
 ## ${customPersona?.name || 'Custom Expert'} Analysis
 **Internal Assessment Score: [X]/100**
-${customPersonaContext}`
+${customPersonaContext}${langInstruction(lang)}`
                                 : buildRound1Prompt(p, lang, ideaRedacted)
                         },
                         { role: 'user', content: `Analyze this objective from your expert perspective:\n\n"${ideaRedacted}"${contextSnippets}` },
@@ -862,7 +862,7 @@ Your ATTACK PROTOCOL:
 2. Challenge unrealistic projections with your actual company numbers.
 3. Identify opportunities that only someone with internal knowledge would see.
 4. Maximum 250 words.
-${customPersonaContext}`
+${customPersonaContext}${langInstruction(lang)}`
                                 : buildRound2AttackPrompt(p, lang, ideaRedacted)
                         },
                         { role: 'user', content: `Original idea: "${ideaRedacted}"\n\n=== ROUND 1 ANALYSES ===\n${transcriptR1}\n\nExecute your attack protocol. Primary target first, then secondary scan.` },

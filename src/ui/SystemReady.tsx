@@ -29,6 +29,7 @@ export default function SystemReady() {
 
     // Custom Persona variable
     const [customPersona, setCustomPersona] = useState<any>(null);
+    const [useCustomExpert, setUseCustomExpert] = useState(true);
 
     useEffect(() => {
         const supabase = createClient();
@@ -72,6 +73,7 @@ export default function SystemReady() {
                 sensitivity: 'business',
                 tenant_id: tenantId,
                 user_id: userId,
+                useCustomExpert: useCustomExpert && !!customPersona,
             };
 
             const res = await fetch('/api/session/start', {
@@ -316,16 +318,27 @@ export default function SystemReady() {
                         {/* Custom Expert Slot */}
                         <div className="mt-3">
                             {customPersona && customPersona.document_count > 0 ? (
-                                <div className="glass-panel p-3 rounded-lg border hover:bg-white/5 transition-all flex items-center gap-3 cursor-default" style={{ borderColor: `${customPersona.color}40` }}>
+                                <div
+                                    className={`glass-panel p-3 rounded-lg border transition-all flex items-center gap-3 cursor-pointer ${useCustomExpert ? 'bg-white/5' : 'bg-black/20 opacity-50 grayscale'}`}
+                                    style={{ borderColor: useCustomExpert ? `${customPersona.color}40` : 'rgba(255,255,255,0.1)' }}
+                                    onClick={() => setUseCustomExpert(!useCustomExpert)}
+                                >
                                     <div className="flex-1 flex justify-between items-center">
                                         <div className="flex flex-col">
                                             <div className="flex items-center gap-2">
                                                 <span className="text-lg">{customPersona.emoji || '🏢'}</span>
                                                 <h4 className="font-bold text-xs text-white">{customPersona.name}</h4>
                                             </div>
-                                            <p className="text-[9px] uppercase font-mono mt-1" style={{ color: customPersona.color }}>{customPersona.role || 'Custom Persona'}</p>
+                                            <p className="text-[9px] uppercase font-mono mt-1" style={{ color: useCustomExpert ? customPersona.color : '#666' }}>
+                                                {customPersona.role || 'Custom Persona'}
+                                            </p>
                                         </div>
-                                        <div className="w-1.5 h-1.5 rounded-full bg-[#afff33] shadow-[0_0_5px_#afff33]"></div>
+                                        <div className="flex items-center gap-2">
+                                            <div className="text-[8px] font-bold text-[#00f2ff]/60 uppercase tracking-widest mr-1">
+                                                {useCustomExpert ? 'Active' : 'Disabled'}
+                                            </div>
+                                            <div className={`w-1.5 h-1.5 rounded-full ${useCustomExpert ? 'bg-[#afff33] shadow-[0_0_5px_#afff33]' : 'bg-slate-600'}`}></div>
+                                        </div>
                                     </div>
                                 </div>
                             ) : (
